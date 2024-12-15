@@ -10,9 +10,8 @@ class MyfoText extends StatelessWidget {
   final String textType;
   final String locale;
 
-  const MyfoText({
+  const MyfoText(String this.text, {
     Key? key,
-    required this.text,
     this.fontSize = 16.0,
     this.fontWeight = FontWeight.normal,
     this.color = Colors.black,
@@ -31,6 +30,7 @@ class MyfoText extends StatelessWidget {
           fontSize: fontSize,
           fontWeight: fontWeight,
           color: color,
+          letterSpacing: -0.4
         ),
         textAlign: textAlign,
       );

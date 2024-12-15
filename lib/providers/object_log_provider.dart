@@ -15,7 +15,7 @@ class ObjectLogProvider extends ChangeNotifier {
         title: "니드모어 스웨터",
         subtitle: "",
         images: ["https://marithe-official.com/web/product/big/202403/e2a7511212556cd4784cb0d4518d5393.jpg"],
-        description: "탑다운으로 뜨는 니트",
+        description: "이거 뜨는데 7개월이나 걸림 진짜 대박 어려움 그리고 서술형 도안임 그래도 너무너무 이쁘다. 다시 입고 싶은 이유가 뭔지 알겠다. 진짜 너무 존예 볼때마다 행복해져",
         tags: ["탑다운", "새글런", "기성복"],
         needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
         yarns: ["솜솜뜨개 프빌 포레스트 2합"],

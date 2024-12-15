@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:myfo/components/myfo_text.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:myfo/models/object_log.dart';
+import 'package:myfo/screens/myfo_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 class MyfoListScreen extends StatelessWidget {
@@ -18,12 +20,11 @@ class MyfoListScreen extends StatelessWidget {
             pinned: true, // 스크롤 시 AppBar를 고정
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
-              title: const MyfoText(
-                text: "myFo",
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+              title: Text("my favorite objects",
+                  style: GoogleFonts.jost(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black)),
             ),
           ),
           // GridView를 SliverList로 대체
@@ -36,7 +37,11 @@ class MyfoListScreen extends StatelessWidget {
                 if (logs.isEmpty) {
                   return const SliverToBoxAdapter(
                     child: Center(
-                      child: Text('새로운 작품을 등록해보세요!'),
+                      child: MyfoText(
+                        "새로운 작품을 등록해보세요!",
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   );
                 }
@@ -49,18 +54,18 @@ class MyfoListScreen extends StatelessWidget {
                     // childAspectRatio: 0.8, // 항목의 가로:세로 비율
                   ),
                   delegate: SliverChildBuilderDelegate(
-                        (context, index) {
+                    (context, index) {
                       final ObjectLog log = logs[index];
 
                       return GestureDetector(
                         onTap: () {
                           // 상세 페이지 이동 (필요 시 구현)
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => ObjectLogDetailScreen(log: log),
-                          //   ),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    MyfoDetailScreen(objectLogId: log.id)),
+                          );
                         },
                         child: Container(
                           child: Column(
@@ -71,13 +76,17 @@ class MyfoListScreen extends StatelessWidget {
                                   // borderRadius: const BorderRadius.vertical(top: Radius.circular(8.0)),
                                   child: log.images.isNotEmpty
                                       ? Image.network(
-                                    log.images[0], // 대표 이미지
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Icon(Icons.broken_image, size: 50);
-                                    },
-                                  )
-                                      : const Icon(Icons.image_not_supported, size: 50),
+                                          log.images[0], // 대표 이미지
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return const Icon(
+                                                Icons.broken_image,
+                                                size: 50);
+                                          },
+                                        )
+                                      : const Icon(Icons.image_not_supported,
+                                          size: 50),
                                 ),
                               )
                             ],
