@@ -13,7 +13,7 @@ class ObjectLogProvider extends ChangeNotifier {
     ObjectLog(
         id: const Uuid().v4(),
         title: "니드모어 스웨터",
-        subtitle: "",
+        subtitle: "녹차맛 니드모어",
         images: ["https://marithe-official.com/web/product/big/202403/e2a7511212556cd4784cb0d4518d5393.jpg"],
         description: "이거 뜨는데 7개월이나 걸림 진짜 대박 어려움 그리고 서술형 도안임 그래도 너무너무 이쁘다. 다시 입고 싶은 이유가 뭔지 알겠다. 진짜 너무 존예 볼때마다 행복해져",
         tags: ["탑다운", "새글런", "기성복"],
@@ -36,7 +36,7 @@ class ObjectLogProvider extends ChangeNotifier {
         ),
     ObjectLog(
         id: const Uuid().v4(),
-        title: "도토리 햇",
+        title: "dotori hat",
         subtitle: "",
         images: ["https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200"],
         description: "도토리 햇",

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:myfo/components/myfo_text.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:myfo/models/object_log.dart';
+import 'package:myfo/screens/myfo_add_screen.dart';
 import 'package:myfo/screens/myfo_detail_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -105,12 +106,12 @@ class MyfoListScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add screen으로 이동 (필요 시 구현)
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => ObjectLogAddScreen(),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ObjectLogAddScreen(),
+            ),
+          );
         },
         shape: const CircleBorder(),
         backgroundColor: Colors.black,

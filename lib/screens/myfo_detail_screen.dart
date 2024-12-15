@@ -99,7 +99,7 @@ class MyfoDetailScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           const SizedBox(height: 6),
-          MyfoText("부제목인데 있을 수도 있고 없을 수도 있음 긴 문장일 수도 있음 부제목인데 있을 수도 있고 없을 수도 있음", fontSize: 16),
+          log.subtitle.isNotEmpty ? MyfoText(log.subtitle, fontSize: 16) : Container(),
         ],
       ),
     );
