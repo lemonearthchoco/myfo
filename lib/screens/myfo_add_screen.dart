@@ -387,15 +387,39 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               children: [
                 const MyfoText('작품 이미지', fontWeight: FontWeight.bold),
                 const SizedBox(height: 10),
-// 미리보기 컴포넌트 추가
-                if (_images.isNotEmpty)
-                  SizedBox(
-                    height: 100, // 정사각형 칩 높이
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _images.length,
-                      itemBuilder: (context, index) {
-                        final imageUrl = _images[index];
+                // 미리보기 컴포넌트 추가
+                SizedBox(
+                  height: 100, // 정사각형 칩 높이
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _images.length + 1, // 1은 기본 버튼을 위한 추가 항목
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        // 첫 번째 항목은 기본 버튼
+                        return Container(
+                          margin: const EdgeInsets.only(right: 8), // 간격 조정
+                          width: 100,
+                          height: 100,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // 기본 버튼 클릭 시 액션 (예: 이미지 추가하는 동작)
+                              // 예시로 이미지 추가하는 동작 넣기
+                              print("기본 버튼 클릭됨");
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Icon(Icons.add,
+                                size: 32, color: Colors.white),
+                          ),
+                        );
+                      } else {
+                        // 두 번째 항목부터는 이미지 미리보기
+                        final imageUrl =
+                            _images[index - 1]; // 이미지 목록은 index 1부터 시작
                         return Container(
                           margin: const EdgeInsets.only(right: 8), // 간격 조정
                           width: 100,
@@ -418,7 +442,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                                 child: GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      _images.removeAt(index); // 이미지 삭제
+                                      _images.removeAt(index - 1); // 이미지 삭제
                                     });
                                   },
                                   child: Container(
@@ -437,10 +461,12 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                             ],
                           ),
                         );
-                      },
-                    ),
+                      }
+                    },
                   ),
+                ),
                 const SizedBox(height: 10),
+
                 const MyfoText('작품명', fontWeight: FontWeight.bold),
                 const SizedBox(height: 10),
                 _buildTextField(
