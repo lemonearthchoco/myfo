@@ -35,6 +35,8 @@ dependencies:
   uuid: ^3.0.6 # 고유 ID 생성 패키지
   intl: ^0.18.0
   google_fonts: ^4.0.0
+  image_picker: ^1.1.2
+  http: ^0.13.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
