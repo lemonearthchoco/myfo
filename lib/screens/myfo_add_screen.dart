@@ -24,9 +24,17 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
   final TextEditingController _needlesController = TextEditingController();
   final TextEditingController _tagsController = TextEditingController();
   final TextEditingController _gaugesController = TextEditingController();
+  final TextEditingController _patternController = TextEditingController();
   DateTime? _finishedAt;
 
-  List<String> _images = []; // 업로드된 이미지 리스트
+  List<String> _images = [
+    "https://marithe-official.com/web/product/big/202403/e2a7511212556cd4784cb0d4518d5393.jpg",
+    "https://image.msscdn.net/thumbnails/images/goods_img/20241002/4480313/4480313_17338815224904_big.jpg?w=1200",
+    "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200",
+    "https://marithe-official.com/web/product/big/202403/e2a7511212556cd4784cb0d4518d5393.jpg",
+    "https://image.msscdn.net/thumbnails/images/goods_img/20241002/4480313/4480313_17338815224904_big.jpg?w=1200",
+    "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200"
+  ]; // 업로드된 이미지 리스트
   final List<String> _needlesOptions = [
     '3mm',
     '4mm',
@@ -337,6 +345,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
   }
 
   void _saveObjectLog(BuildContext context) {
+    print("save!");
     if (_formKey.currentState?.validate() ?? false) {
       final provider = Provider.of<ObjectLogProvider>(context, listen: false);
 
@@ -376,20 +385,91 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
             key: _formKey,
             child: ListView(
               children: [
+                const MyfoText('작품 이미지', fontWeight: FontWeight.bold),
+                const SizedBox(height: 10),
+// 미리보기 컴포넌트 추가
+                if (_images.isNotEmpty)
+                  SizedBox(
+                    height: 100, // 정사각형 칩 높이
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _images.length,
+                      itemBuilder: (context, index) {
+                        final imageUrl = _images[index];
+                        return Container(
+                          margin: const EdgeInsets.only(right: 8), // 간격 조정
+                          width: 100,
+                          height: 100,
+                          child: Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                // 모서리 둥글게
+                                child: Image.network(
+                                  imageUrl,
+                                  fit: BoxFit.cover,
+                                  width: 100,
+                                  height: 100,
+                                ),
+                              ),
+                              Positioned(
+                                top: 4,
+                                right: 4,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _images.removeAt(index); // 이미지 삭제
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black54,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.close,
+                                      size: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                const SizedBox(height: 10),
+                const MyfoText('작품명', fontWeight: FontWeight.bold),
+                const SizedBox(height: 10),
                 _buildTextField(
                   controller: _titleController,
-                  label: '작품명',
+                  label: 'ex) 따뜻한 겨울 스웨터',
                   validator: (value) =>
                       value?.isEmpty ?? true ? '제목을 입력해주세요.' : null,
                 ),
                 const SizedBox(height: 16),
+                const MyfoText('작품 소개', fontWeight: FontWeight.bold),
+                const SizedBox(height: 10),
                 _buildTextField(
                   controller: _subtitleController,
-                  label: '작품 소개',
+                  label: 'ex) 딸기우유맛 스웨터',
                   validator: (value) =>
                       value?.isEmpty ?? true ? '부제목을 입력해주세요.' : null,
                 ),
                 const SizedBox(height: 16),
+                const MyfoText('패턴', fontWeight: FontWeight.bold),
+                const SizedBox(height: 10),
+                _buildTextField(
+                  controller: _patternController,
+                  label: 'ex) 자작 도안',
+                  validator: (value) =>
+                      value?.isEmpty ?? true ? '부제목을 입력해주세요.' : null,
+                ),
+                const SizedBox(height: 16),
+                const MyfoText('설명', fontWeight: FontWeight.bold),
+                const SizedBox(height: 10),
                 _buildTextField(
                   controller: _descriptionController,
                   label: '이 작품에 대한 이야기를 입력해주세요.',
@@ -397,6 +477,12 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                   validator: (value) =>
                       value?.isEmpty ?? true ? '설명을 입력해주세요.' : null,
                 ),
+                const SizedBox(height: 16),
+                const MyfoText('사용 기법(선택)', fontWeight: FontWeight.bold),
+                const SizedBox(height: 10),
+                _buildTextField(
+                    controller: _tagsController,
+                    label: 'ex) 탑 다운, 원통 뜨기(쉼표로 구분)'),
                 const SizedBox(height: 16),
                 const MyfoText('사용한 실', fontWeight: FontWeight.bold),
                 const SizedBox(height: 10),
@@ -451,6 +537,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
               ],
             ),
           ),
