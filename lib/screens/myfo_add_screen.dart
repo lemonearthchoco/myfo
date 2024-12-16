@@ -1,15 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:myfo/components/myfo_cta_button.dart';
-import 'package:myfo/components/myfo_image_uploader.dart';
 import 'package:myfo/components/myfo_text.dart';
-import 'package:provider/provider.dart';
 import 'package:myfo/models/object_log.dart';
 import 'package:myfo/providers/object_log_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-
-import 'myfo_add_photo_screen.dart'; // MyfoAddPhotoScreen import
 
 class ObjectLogAddScreen extends StatefulWidget {
   const ObjectLogAddScreen({Key? key}) : super(key: key);
@@ -32,9 +27,16 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
   DateTime? _finishedAt;
 
   List<String> _images = []; // 업로드된 이미지 리스트
-  final List<String> _needlesOptions = ['3mm', '4mm', '5mm', '6mm', '7mm']; // 선택 가능한 바늘 목록
-  final List<String> _selectedNeedles = []; // 선택된 바늘
+  final List<String> _needlesOptions = [
+    '3mm',
+    '4mm',
+    '5mm',
+    '6mm',
+    '7mm'
+  ]; // 선택 가능한 바늘 목록
+
   final List<String> _yarns = []; // 추가된 실 리스트
+  final List<String> _needles = [];
 
   @override
   void dispose() {
@@ -50,10 +52,13 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
 
   void _showYarnsBottomSheet(BuildContext context) {
     final TextEditingController _yarnInputController = TextEditingController();
+    final TextEditingController _amountInputController =
+        TextEditingController();
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -76,9 +81,83 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _yarnInputController,
-                decoration: const InputDecoration(
-                  labelText: '실 이름',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  alignLabelWithHint: true,
+                  label: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: MyfoText(
+                      "실 이름",
+                      color: Colors.grey,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: const BorderSide(
+                      color: Colors.black,
+                      width: 1.2,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _amountInputController,
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  alignLabelWithHint: true,
+                  label: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: MyfoText(
+                      "실 소요량(선택) ex) 300g, 2500m, 8볼",
+                      color: Colors.grey,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: const BorderSide(
+                      color: Colors.black,
+                      width: 1.2,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -87,9 +166,157 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     final yarn = _yarnInputController.text.trim();
+                    final amount = _amountInputController.text.trim();
                     if (yarn.isNotEmpty) {
                       setState(() {
-                        _yarns.add(yarn); // 실 추가
+                        if (amount.isNotEmpty) {
+                          _yarns.add(yarn + '/' + amount);
+                        } else {
+                          _yarns.add(yarn); // 실 추가
+                        }
+                      });
+                      Navigator.pop(context); // 바텀 시트 닫기
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  ),
+                  child: const Text('추가하기'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showNeedlesBottomSheet(BuildContext context) {
+    final TextEditingController _needleInputController =
+        TextEditingController();
+    final TextEditingController _sizeInputController = TextEditingController();
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 16),
+              const MyfoText(
+                '바늘 추가하기',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _needleInputController,
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  alignLabelWithHint: true,
+                  label: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: MyfoText(
+                      "바늘 이름",
+                      color: Colors.grey,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: const BorderSide(
+                      color: Colors.black,
+                      width: 1.2,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _sizeInputController,
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  alignLabelWithHint: true,
+                  label: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: MyfoText(
+                      "바늘 사이즈(선택) ex) 4.0mm, 6호",
+                      color: Colors.grey,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                    borderSide: const BorderSide(
+                      color: Colors.black,
+                      width: 1.2,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    final needle = _needleInputController.text.trim();
+                    final size = _sizeInputController.text.trim();
+                    if (needle.isNotEmpty) {
+                      setState(() {
+                        if (size.isNotEmpty) {
+                          _needles.add(needle + '/' + size);
+                        } else {
+                          _needles.add(needle); // 실 추가
+                        }
                       });
                       Navigator.pop(context); // 바텀 시트 닫기
                     }
@@ -119,8 +346,10 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         subtitle: _subtitleController.text,
         description: _descriptionController.text,
         images: _images,
-        yarns: _yarns, // 저장된 실 리스트 추가
-        needles: _selectedNeedles, // 선택된 바늘 저장
+        yarns: _yarns,
+        // 저장된 실 리스트 추가
+        needles: _needles,
+        // 선택된 바늘 저장
         tags: _tagsController.text.split(',').map((e) => e.trim()).toList(),
         gauges: _gaugesController.text.split(',').map((e) => e.trim()).toList(),
         finishedAt: _finishedAt,
@@ -134,100 +363,100 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const MyfoText(
-          '작품 추가',
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              _buildTextField(
-                controller: _titleController,
-                label: '작품명',
-                validator: (value) =>
-                value?.isEmpty ?? true ? '제목을 입력해주세요.' : null,
-              ),
-              const SizedBox(height: 16),
-              _buildTextField(
-                controller: _subtitleController,
-                label: '작품 소개',
-                validator: (value) =>
-                value?.isEmpty ?? true ? '부제목을 입력해주세요.' : null,
-              ),
-              const SizedBox(height: 16),
-              _buildTextField(
-                controller: _descriptionController,
-                label: '이 작품에 대한 이야기를 입력해주세요.',
-                maxLines: 6,
-                validator: (value) =>
-                value?.isEmpty ?? true ? '설명을 입력해주세요.' : null,
-              ),
-              const SizedBox(height: 16),
-              const MyfoText('사용한 실', fontWeight: FontWeight.bold),
-              const SizedBox(height: 10),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: _yarns.map((yarn) {
-                  return Chip(
-                    label: Text(yarn),
-                    backgroundColor: Colors.grey[200],
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () => _showYarnsBottomSheet(context),
-                child: const MyfoText('실 추가하기'),
-              ),
-              const SizedBox(height: 10),
-              // 추가된 실 리스트 표시
-
-              const SizedBox(height: 16),
-              const MyfoText('사용한 바늘 사이즈', fontWeight: FontWeight.bold),
-              const SizedBox(height: 10),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: _needlesOptions.map((needle) {
-                  final isSelected = _selectedNeedles.contains(needle); // 선택 여부 확인
-                  return GestureDetector(
-                    // onTap: () => _toggleNeedleSelection(needle), // 카드 클릭 시 선택 상태 변경
-                    child: Container(
-                      padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                      decoration: BoxDecoration(
-                        color:
-                        isSelected ? Colors.black : Colors.white, // 선택 여부에 따라 색상 변경
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: isSelected ? Colors.black : Colors.grey, // 테두리 색상 변경
-                          width: 1.0,
-                        ),
-                      ),
-                      child: Text(
-                        needle,
-                        style: TextStyle(
-                          color: isSelected ? Colors.white : Colors.black, // 텍스트 색상 변경
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ],
+        appBar: AppBar(
+          title: const MyfoText(
+            '작품 추가',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
-      ),
-      bottomNavigationBar: MyfoCtaButton(label: '저장하기', onPressed: () => _saveObjectLog(context))
-    );
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                _buildTextField(
+                  controller: _titleController,
+                  label: '작품명',
+                  validator: (value) =>
+                      value?.isEmpty ?? true ? '제목을 입력해주세요.' : null,
+                ),
+                const SizedBox(height: 16),
+                _buildTextField(
+                  controller: _subtitleController,
+                  label: '작품 소개',
+                  validator: (value) =>
+                      value?.isEmpty ?? true ? '부제목을 입력해주세요.' : null,
+                ),
+                const SizedBox(height: 16),
+                _buildTextField(
+                  controller: _descriptionController,
+                  label: '이 작품에 대한 이야기를 입력해주세요.',
+                  maxLines: 6,
+                  validator: (value) =>
+                      value?.isEmpty ?? true ? '설명을 입력해주세요.' : null,
+                ),
+                const SizedBox(height: 16),
+                const MyfoText('사용한 실', fontWeight: FontWeight.bold),
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    ..._yarns.map((yarn) {
+                      return Chip(
+                          label: MyfoText(yarn),
+                          backgroundColor: Colors.grey[200],
+                          deleteIcon: const Icon(Icons.close,
+                              size: 16, color: Colors.black),
+                          onDeleted: () {
+                            setState(() {
+                              _yarns.remove(yarn); // 항목 삭제
+                            });
+                          });
+                    }).toList(),
+                    IconButton(
+                      onPressed: () => _showYarnsBottomSheet(context),
+                      icon: const Icon(Icons.add),
+                      color: Colors.grey,
+                      tooltip: '실 추가하기',
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                const MyfoText('사용한 바늘', fontWeight: FontWeight.bold),
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    ..._needles.map((needle) {
+                      return Chip(
+                          label: MyfoText(needle),
+                          backgroundColor: Colors.grey[200],
+                          deleteIcon: const Icon(Icons.close,
+                              size: 16, color: Colors.black),
+                          onDeleted: () {
+                            setState(() {
+                              _needles.remove(needle); // 항목 삭제
+                            });
+                          });
+                    }).toList(),
+                    IconButton(
+                      onPressed: () => _showNeedlesBottomSheet(context),
+                      icon: const Icon(Icons.add),
+                      color: Colors.grey,
+                      tooltip: '바늘 추가하기', // 접근성을 위한 툴팁
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: MyfoCtaButton(
+            label: '저장하기', onPressed: () => _saveObjectLog(context)));
   }
 
   Widget _buildTextField({
@@ -258,7 +487,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         ),
         filled: true,
         fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4.0),
           borderSide: const BorderSide(
