@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myfo/components/myfo_text.dart';
@@ -81,9 +83,9 @@ class MyfoListScreen extends StatelessWidget {
                                           fit: BoxFit.cover,
                                           errorBuilder:
                                               (context, error, stackTrace) {
-                                            return const Icon(
-                                                Icons.broken_image,
-                                                size: 50);
+                                            return Image.file(
+                                                File(log.images[0]), // 대표 이미지
+                                                fit: BoxFit.cover);
                                           },
                                         )
                                       : const Icon(Icons.image_not_supported,
