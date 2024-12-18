@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:myfo/models/object_log.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
 class ObjectLogAddScreen extends StatefulWidget {
   const ObjectLogAddScreen({Key? key}) : super(key: key);
@@ -32,26 +34,66 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
 
   final ImagePicker _picker = ImagePicker();
 
-  // 이미지 선택 메서드
-  Future<void> _pickImages() async {
-    final List<XFile>? selectedImages = await _picker.pickMultiImage();
+  List<File> _selectedImages = [];
+  List<String> _uploadedImageUrls = [];
+  bool _isUploading = false;
 
-    if (selectedImages != null) {
-      setState(() {
-        // 선택된 이미지 경로를 _images 리스트에 추가
-        _images.addAll(selectedImages.map((image) => image.path));
-      });
+  Future<void> _pickImages() async {
+    final List<XFile>? images = await _picker.pickMultiImage();
+
+    if (images != null) {
+      if (images.length > 2) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('이미지는 최대 2개까지 업로드 가능합니다.')),
+        );
+      }
+      _selectedImages = images.map((image) => File(image.path)).toList();
+      await _uploadAllImages();
     }
   }
 
-  List<String> _images = []; // 업로드된 이미지 리스트
-  final List<String> _needlesOptions = [
-    '3mm',
-    '4mm',
-    '5mm',
-    '6mm',
-    '7mm'
-  ]; // 선택 가능한 바늘 목록
+  Future<void> _uploadImage(File image) async {
+    const String apiUrl =
+        'https://89skj5wk33.execute-api.ap-northeast-2.amazonaws.com/myfo/images'; // Mock API URL
+
+    try {
+      final request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+      request.files.add(await http.MultipartFile.fromPath('image', image.path));
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        final responseData = await response.stream.bytesToString();
+        final decodedData = jsonDecode(responseData);
+        setState(() {
+          _uploadedImageUrls.add(decodedData['imageUrl']); // 서버에서 반환된 이미지 URL
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('이미지 업로드 성공')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('이미지 업로드 실패')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('업로드 중 오류 발생: $e')),
+      );
+    }
+  }
+
+  Future<void> _uploadAllImages() async {
+    setState(() {
+      _isUploading = true;
+    });
+    for (var image in _selectedImages) {
+      await _uploadImage(image);
+    }
+    setState(() {
+      _isUploading = false;
+    });
+  }
 
   final List<String> _yarns = []; // 추가된 실 리스트
   final List<String> _needles = [];
@@ -65,6 +107,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     _needlesController.dispose();
     _tagsController.dispose();
     _gaugesController.dispose();
+    _patternController.dispose();
     super.dispose();
   }
 
@@ -363,8 +406,9 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         id: const Uuid().v4(),
         title: _titleController.text,
         subtitle: _subtitleController.text,
+        pattern: _patternController.text,
         description: _descriptionController.text,
-        images: _images,
+        images: _uploadedImageUrls,
         yarns: _yarns,
         // 저장된 실 리스트 추가
         needles: _needles,
@@ -395,14 +439,19 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
             key: _formKey,
             child: ListView(
               children: [
-                const MyfoText('작품 이미지', fontWeight: FontWeight.bold),
+                const MyfoText(
+                  '작품 이미지',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
                 const SizedBox(height: 10),
                 // 미리보기 컴포넌트 추가
                 SizedBox(
                   height: 100, // 정사각형 칩 높이
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: _images.length + 1, // 1은 기본 버튼을 위한 추가 항목
+                    itemCount: _uploadedImageUrls.length + 1,
+                    // 1은 기본 버튼을 위한 추가 항목
                     itemBuilder: (context, index) {
                       if (index == 0) {
                         // 첫 번째 항목은 기본 버튼
@@ -418,14 +467,16 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            child: const Icon(Icons.add,
-                                size: 32, color: Colors.white),
+                            child: _isUploading
+                                ? CircularProgressIndicator(color: Colors.white)
+                                : const Icon(Icons.add,
+                                    size: 32, color: Colors.white),
                           ),
                         );
                       } else {
                         // 두 번째 항목부터는 이미지 미리보기
-                        final imagePath =
-                            _images[index - 1]; // 이미지 목록은 index 1부터 시작
+                        final imagePath = _uploadedImageUrls[
+                            index - 1]; // 이미지 목록은 index 1부터 시작
                         return Container(
                           margin: const EdgeInsets.only(right: 8), // 간격 조정
                           width: 100,
@@ -435,8 +486,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 // 모서리 둥글게
-                                child: Image.file(
-                                  File(imagePath),
+                                child: Image.network(
+                                  imagePath,
                                   fit: BoxFit.cover,
                                   width: 100,
                                   height: 100,
@@ -448,7 +499,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                                 child: GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      _images.removeAt(index - 1); // 이미지 삭제
+                                      _uploadedImageUrls
+                                          .removeAt(index - 1); // 이미지 삭제
                                     });
                                   },
                                   child: Container(
@@ -471,9 +523,9 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                     },
                   ),
                 ),
-                const SizedBox(height: 10),
-
-                const MyfoText('작품명', fontWeight: FontWeight.bold, fontSize: 14),
+                const SizedBox(height: 16),
+                const MyfoText('작품명',
+                    fontWeight: FontWeight.bold, fontSize: 14),
                 const SizedBox(height: 10),
                 _buildTextField(
                   controller: _titleController,
@@ -482,7 +534,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                       value?.isEmpty ?? true ? '제목을 입력해주세요.' : null,
                 ),
                 const SizedBox(height: 16),
-                const MyfoText('작품 소개', fontWeight: FontWeight.bold,  fontSize: 14),
+                const MyfoText('작품 소개',
+                    fontWeight: FontWeight.bold, fontSize: 14),
                 const SizedBox(height: 10),
                 _buildTextField(
                   controller: _subtitleController,
@@ -491,7 +544,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                       value?.isEmpty ?? true ? '부제목을 입력해주세요.' : null,
                 ),
                 const SizedBox(height: 16),
-                const MyfoText('패턴', fontWeight: FontWeight.bold,  fontSize: 14),
+                const MyfoText('패턴', fontWeight: FontWeight.bold, fontSize: 14),
                 const SizedBox(height: 10),
                 _buildTextField(
                   controller: _patternController,
@@ -500,7 +553,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                       value?.isEmpty ?? true ? '부제목을 입력해주세요.' : null,
                 ),
                 const SizedBox(height: 16),
-                const MyfoText('설명', fontWeight: FontWeight.bold,  fontSize: 14),
+                const MyfoText('설명', fontWeight: FontWeight.bold, fontSize: 14),
                 const SizedBox(height: 10),
                 _buildTextField(
                   controller: _descriptionController,
@@ -510,13 +563,15 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                       value?.isEmpty ?? true ? '설명을 입력해주세요.' : null,
                 ),
                 const SizedBox(height: 16),
-                const MyfoText('사용 기법(선택)', fontWeight: FontWeight.bold,  fontSize: 14),
+                const MyfoText('사용 기법(선택)',
+                    fontWeight: FontWeight.bold, fontSize: 14),
                 const SizedBox(height: 10),
                 _buildTextField(
                     controller: _tagsController,
                     label: 'ex) 탑 다운, 원통 뜨기(쉼표로 구분)'),
                 const SizedBox(height: 16),
-                const MyfoText('사용한 실', fontWeight: FontWeight.bold,  fontSize: 14),
+                const MyfoText('사용한 실',
+                    fontWeight: FontWeight.bold, fontSize: 14),
                 const SizedBox(height: 10),
                 Wrap(
                   spacing: 8,
@@ -543,7 +598,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                const MyfoText('사용한 바늘', fontWeight: FontWeight.bold,  fontSize: 14),
+                const MyfoText('사용한 바늘',
+                    fontWeight: FontWeight.bold, fontSize: 14),
                 const SizedBox(height: 10),
                 Wrap(
                   spacing: 8,

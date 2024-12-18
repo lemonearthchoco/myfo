@@ -4,6 +4,7 @@ class ObjectLog {
   final String id;
   final String title;
   final String subtitle;
+  final String pattern;
   final String description;
   final List<String> images;
   final List<String> yarns;
@@ -13,9 +14,10 @@ class ObjectLog {
   final DateTime? finishedAt;
 
   ObjectLog(
-      { required this.id,
-        required this.title,
+      {required this.id,
+      required this.title,
       required this.subtitle,
+      required this.pattern,
       required this.description,
       required this.images,
       required this.yarns,
@@ -30,6 +32,7 @@ class ObjectLog {
       'title': title,
       'subtitle': subtitle,
       'description': description,
+      'pattern': pattern,
       'yarns': yarns,
       'needles': needles,
       'tags': tags,
@@ -45,6 +48,7 @@ class ObjectLog {
       title: json['title'],
       subtitle: json['subtitle'],
       description: json['description'],
+      pattern: json['pattern'],
       yarns: List<String>.from(json['yarns']),
       needles: List<String>.from(json['needles']),
       tags: List<String>.from(json['tags']),

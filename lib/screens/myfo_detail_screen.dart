@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:myfo/components/myfo_divider.dart';
 import 'package:myfo/components/myfo_tag.dart';
@@ -5,12 +6,21 @@ import 'package:myfo/components/myfo_text.dart';
 import 'package:myfo/models/object_log.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class MyfoDetailScreen extends StatelessWidget {
+class MyfoDetailScreen extends StatefulWidget {
   final String objectLogId;
 
   const MyfoDetailScreen({Key? key, required this.objectLogId})
       : super(key: key);
+
+  @override
+  State<MyfoDetailScreen> createState() => _MyfoDetailScreenState();
+}
+
+class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
+  int _currentIndex = 0;
+  final CarouselSliderController _carouselController = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +30,13 @@ class MyfoDetailScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
       ),
       body: Consumer<ObjectLogProvider>(
         builder: (context, provider, child) {
           // ObjectLog 데이터를 ID로 찾기
           final ObjectLog? log =
-              provider.logs.firstWhere((log) => log.id == objectLogId);
+              provider.logs.firstWhere((log) => log.id == widget.objectLogId);
 
           if (log == null) {
             return const Center(
@@ -38,8 +49,7 @@ class MyfoDetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 이미지 섹션
-                _buildImageSection(
-                    log.images.isNotEmpty ? log.images[0] : null),
+                _buildImageSection(log.images),
                 _buildTitleSection(log),
                 const MyfoDivider(),
                 _buildTagSection(log.tags),
@@ -59,31 +69,77 @@ class MyfoDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildImageSection(String? imageUrl) {
-    return SizedBox(
-      height: 400,
-      width: double.infinity,
-      child: imageUrl != null
-          ? Image.network(
-              imageUrl,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return const Center(
-                  child: Icon(
-                    Icons.broken_image,
-                    size: 50,
-                    color: Colors.grey,
-                  ),
-                );
+  Widget _buildImageSection(List<String> imageUrls) {
+    return Stack(
+      children: [
+        SizedBox(
+          height: 400,
+          width: double.infinity,
+          child: imageUrls.isNotEmpty
+              ? CarouselSlider.builder(
+            carouselController: _carouselController,
+            options: CarouselOptions(
+              height: 400,
+              viewportFraction: 1,
+              enableInfiniteScroll: false,
+              autoPlay: false,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _currentIndex = index;
+                });
               },
-            )
-          : const Center(
-              child: Icon(
-                Icons.image_not_supported,
-                size: 50,
-                color: Colors.grey,
+            ),
+            itemCount: imageUrls.length,
+            itemBuilder: (context, index, realIndex) {
+              return SizedBox(
+                height: 400,
+                width: double.infinity,
+                child: Image.network(
+                  imageUrls[index],
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Center(
+                      child: Icon(
+                        Icons.broken_image,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          )
+              : const Center(
+            child: Icon(
+              Icons.image_not_supported,
+              size: 50,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        if (imageUrls.isNotEmpty)
+          Positioned(
+            bottom: 10,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: AnimatedSmoothIndicator(
+                activeIndex: _currentIndex,
+                count: imageUrls.length,
+                effect: ScrollingDotsEffect(
+                  dotWidth: 8.0,
+                  dotHeight: 8.0,
+                  activeDotColor: Colors.white,
+                  dotColor: Colors.grey,
+                ),
+                onDotClicked: (index) {
+                  _carouselController.animateToPage(index);
+                },
               ),
             ),
+          ),
+      ],
     );
   }
 
@@ -99,7 +155,9 @@ class MyfoDetailScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           const SizedBox(height: 6),
-          log.subtitle.isNotEmpty ? MyfoText(log.subtitle, fontSize: 16) : Container(),
+          log.subtitle.isNotEmpty
+              ? MyfoText(log.subtitle, fontSize: 16)
+              : Container(),
         ],
       ),
     );
