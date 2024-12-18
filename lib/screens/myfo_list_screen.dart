@@ -79,12 +79,12 @@ class MyfoListScreen extends StatelessWidget {
                                   // borderRadius: const BorderRadius.vertical(top: Radius.circular(8.0)),
                                   child: log.images.isNotEmpty
                                       ? Image.network(
-                                          log.images[0], // 대표 이미지
+                                          log.images[0].image, // 대표 이미지
                                           fit: BoxFit.cover,
                                           errorBuilder:
                                               (context, error, stackTrace) {
                                             return Image.file(
-                                                File(log.images[0]), // 대표 이미지
+                                                File(log.images[0].image), // 대표 이미지
                                                 fit: BoxFit.cover);
                                           },
                                         )

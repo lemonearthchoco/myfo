@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myfo/components/myfo_cta_button.dart';
 import 'package:myfo/components/myfo_text.dart';
+import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:provider/provider.dart';
@@ -53,8 +55,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
   }
 
   Future<void> _uploadImage(File image) async {
-    const String apiUrl =
-        'https://89skj5wk33.execute-api.ap-northeast-2.amazonaws.com/myfo/images'; // Mock API URL
+    String baseUrl = dotenv.get('IMAGE_SERVER_BASE_URL');
+    String apiUrl = '$baseUrl/myfo/images'; // Mock API URL
 
     try {
       final request = http.MultipartRequest('POST', Uri.parse(apiUrl));
@@ -408,7 +410,9 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         subtitle: _subtitleController.text,
         pattern: _patternController.text,
         description: _descriptionController.text,
-        images: _uploadedImageUrls,
+        images: _uploadedImageUrls
+            .map((image) => ObjectImage(id: const Uuid().v4(), image: image))
+            .toList(),
         yarns: _yarns,
         // 저장된 실 리스트 추가
         needles: _needles,

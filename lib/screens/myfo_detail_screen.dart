@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:myfo/components/myfo_divider.dart';
 import 'package:myfo/components/myfo_tag.dart';
 import 'package:myfo/components/myfo_text.dart';
+import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:provider/provider.dart';
@@ -69,13 +70,13 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
     );
   }
 
-  Widget _buildImageSection(List<String> imageUrls) {
+  Widget _buildImageSection(List<ObjectImage> images) {
     return Stack(
       children: [
         SizedBox(
           height: 400,
           width: double.infinity,
-          child: imageUrls.isNotEmpty
+          child: images.isNotEmpty
               ? CarouselSlider.builder(
             carouselController: _carouselController,
             options: CarouselOptions(
@@ -89,13 +90,13 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                 });
               },
             ),
-            itemCount: imageUrls.length,
+            itemCount: images.length,
             itemBuilder: (context, index, realIndex) {
               return SizedBox(
                 height: 400,
                 width: double.infinity,
                 child: Image.network(
-                  imageUrls[index],
+                  images[index].image,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return const Center(
@@ -118,7 +119,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
             ),
           ),
         ),
-        if (imageUrls.isNotEmpty)
+        if (images.isNotEmpty)
           Positioned(
             bottom: 10,
             left: 0,
@@ -126,7 +127,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
             child: Center(
               child: AnimatedSmoothIndicator(
                 activeIndex: _currentIndex,
-                count: imageUrls.length,
+                count: images.length,
                 effect: ScrollingDotsEffect(
                   dotWidth: 8.0,
                   dotHeight: 8.0,

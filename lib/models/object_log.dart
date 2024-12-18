@@ -1,12 +1,14 @@
+import 'package:myfo/models/object_image.dart';
+
 class ObjectLog {
   static final String name = "object_log";
 
-  final String id;
+  final String id;  // uuid
   final String title;
   final String subtitle;
   final String pattern;
   final String description;
-  final List<String> images;
+  final List<ObjectImage> images;
   final List<String> yarns;
   final List<String> needles;
   final List<String> tags;
@@ -37,7 +39,7 @@ class ObjectLog {
       'needles': needles,
       'tags': tags,
       'gauges': gauges,
-      'images': images,
+      'images': images.map((image) => image.toJson()).toList(),
     };
   }
 
@@ -53,7 +55,7 @@ class ObjectLog {
       needles: List<String>.from(json['needles']),
       tags: List<String>.from(json['tags']),
       gauges: List<String>.from(json['gauges']),
-      images: List<String>.from(json['images']),
+      images: List<ObjectImage>.from(json['images']),
     );
   }
 }
