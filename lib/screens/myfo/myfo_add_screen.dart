@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:myfo/components/myfo_cta_button.dart';
 import 'package:myfo/components/myfo_label.dart';
 import 'package:myfo/components/myfo_text.dart';
+import 'package:myfo/components/myfo_toast.dart';
 import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
 import 'package:myfo/providers/object_log_provider.dart';
@@ -29,6 +30,7 @@ class ObjectLogAddScreen extends StatefulWidget {
 
 class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
   final _formKey = GlobalKey<FormState>();
+  late FToast fToast;
 
   // 폼 필드 컨트롤러
   final TextEditingController _titleController = TextEditingController();
@@ -53,40 +55,17 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
   @override
   void initState() {
     super.initState();
-
+    fToast = FToast();
+    fToast.init(context);
     if (widget.objectLogId != null) {
       _loadExistingLog();
     }
   }
 
-  void _showToast(context, String text, String level) {
-    final fToast = FToast();
-    fToast.init(context);
-    Widget toast = SizedBox(
-      // width: 140,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
-          color: Colors.black,
-        ),
-        child: Row(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            level == 'success'
-                ? const Icon(CupertinoIcons.check_mark_circled_solid,
-                    color: Colors.lightGreenAccent)
-                : const Icon(CupertinoIcons.exclamationmark_circle,
-                    color: Colors.redAccent),
-            const SizedBox(width: 10,),
-            MyfoText(text, color: Colors.white),
-          ],
-        ),
-      ),
-    );
-
-    fToast.showToast(child: toast, toastDuration: const Duration(seconds: 1));
+  void _showToast(context, String message, MessageLevel level) {
+    fToast.showToast(
+        child: MyfoToast(message: message),
+        toastDuration: const Duration(seconds: 1));
   }
 
   Future<void> _pickImages() async {
@@ -94,7 +73,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
 
     if (images != null) {
       if (_uploadedImageUrls.length + images.length > 3) {
-        _showToast(context, "최대 5개까지 업로드 가능합니다.", "error");
+        _showToast(context, "최대 5개까지 업로드 가능합니다.", MessageLevel.ERROR);
       } else {
         _selectedImages = images.map((image) => File(image.path)).toList();
         await _uploadAllImages();
@@ -140,10 +119,10 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
           _uploadedImageUrls.add(decodedData['imageUrl']); // 서버에서 반환된 이미지 URL
         });
       } else {
-        _showToast(context, "이미지 업로드 실패", "error");
+        _showToast(context, "이미지 업로드 실패", MessageLevel.ERROR);
       }
     } catch (e) {
-      _showToast(context, "이미지 업로드 실패", "error");
+      _showToast(context, "이미지 업로드 실패", MessageLevel.ERROR);
     }
   }
 
@@ -157,7 +136,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     setState(() {
       _isUploading = false;
     });
-    _showToast(context, "이미지 업로드 완료", "success");
+    _showToast(context, "이미지 업로드 완료", MessageLevel.SUCCESS);
   }
 
   @override
@@ -445,11 +424,11 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         // 수정 모드
         provider.updateLog(widget.objectLogId!, log);
         print("수정!");
-        _showToast(context, "저장 완료", "success");
+        _showToast(context, "저장 완료", MessageLevel.SUCCESS);
       } else {
         // 추가 모드
         provider.addLog(log);
-        _showToast(context, "저장 완료", "success");
+        _showToast(context, "저장 완료", MessageLevel.SUCCESS);
       }
 
       Navigator.pop(context);

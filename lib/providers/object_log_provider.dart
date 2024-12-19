@@ -162,8 +162,8 @@ class ObjectLogProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteLog(int index) async {
-    _logs.removeAt(index);
+  Future<void> deleteLog(String id) async {
+    _logs.removeWhere((log) => log.id == id);
     await _saveLogs();
     notifyListeners();
   }

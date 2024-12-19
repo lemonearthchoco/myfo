@@ -1,9 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:myfo/components/myfo_divider.dart';
 import 'package:myfo/components/myfo_tag.dart';
 import 'package:myfo/components/myfo_text.dart';
+import 'package:myfo/components/myfo_toast.dart';
 import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
 import 'package:myfo/providers/object_log_provider.dart';
@@ -23,10 +25,46 @@ class MyfoDetailScreen extends StatefulWidget {
 
 class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
   int _currentIndex = 0;
+  bool isAvailable = true;
+  late FToast fToast;
+
   final CarouselSliderController _carouselController = CarouselSliderController();
+
+
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  void _showToast(context, String message, MessageLevel level) {
+    fToast.showToast(
+        child: MyfoToast(message: message),
+        toastDuration: const Duration(seconds: 1));
+  }
+
+  void _deleteObjectLog(BuildContext context) {
+    final provider = Provider.of<ObjectLogProvider>(context, listen: false);
+    setState(() {
+      this.isAvailable = false;
+    });
+    Navigator.pop(context);
+    provider.deleteLog(widget.objectLogId).then((_) => {
+      // TODO: 토스트 메시지
+      _showToast(context, "삭제 성공", MessageLevel.SUCCESS)
+    }); // Provider에서 삭제
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (!isAvailable) {
+      return Scaffold(
+        body: Center(
+          child: Container()
+        ),
+      );
+    }
     return Scaffold(
       extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -65,9 +103,8 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                         ),
                         CupertinoActionSheetAction(
                           onPressed: () {
-                            Navigator.pop(context); // ActionSheet 닫기
-                            // 삭제 로직 실행
-                            // _showDeleteConfirmation(context);
+                            Navigator.pop(context); // 상세 화면 닫기
+                            _deleteObjectLog(context);
                           },
                           isDestructiveAction: true, // 파괴적 작업 스타일 (빨간색)
                           child: const MyfoText(
