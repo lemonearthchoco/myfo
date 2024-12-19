@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myfo/components/myfo_cta_button.dart';
+import 'package:myfo/components/myfo_label.dart';
 import 'package:myfo/components/myfo_text.dart';
 import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
@@ -13,8 +14,11 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
+import '../components/myfo_style.dart';
+
 class ObjectLogAddScreen extends StatefulWidget {
-  const ObjectLogAddScreen({Key? key}) : super(key: key);
+  final String? objectLogId;
+  const ObjectLogAddScreen({Key? key, this.objectLogId}) : super(key: key);
 
   @override
   State<ObjectLogAddScreen> createState() => _ObjectLogAddScreenState();
@@ -40,6 +44,18 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
   List<String> _uploadedImageUrls = [];
   bool _isUploading = false;
 
+  final List<String> _yarns = []; // 추가된 실 리스트
+  final List<String> _needles = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.objectLogId != null) {
+      _loadExistingLog();
+    }
+  }
+
   Future<void> _pickImages() async {
     final List<XFile>? images = await _picker.pickMultiImage();
 
@@ -51,6 +67,27 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
       }
       _selectedImages = images.map((image) => File(image.path)).toList();
       await _uploadAllImages();
+    }
+  }
+
+  Future<void> _loadExistingLog() async {
+    final provider = Provider.of<ObjectLogProvider>(context, listen: false);
+    final existingLog = await provider.getLogById(widget.objectLogId!);
+
+    if (existingLog != null) {
+      setState(() {
+        _titleController.text = existingLog.title ?? '';
+        _subtitleController.text = existingLog.subtitle ?? '';
+        _descriptionController.text = existingLog.description ?? '';
+        _patternController.text = existingLog.pattern ?? '';
+        _uploadedImageUrls =
+            existingLog.images.map((img) => img.image).toList();
+        _yarns.addAll(existingLog.yarns);
+        _needles.addAll(existingLog.needles);
+        _tagsController.text = existingLog.tags.join(', ');
+        _gaugesController.text = existingLog.gauges.join(', ');
+        _finishedAt = existingLog.finishedAt;
+      });
     }
   }
 
@@ -97,8 +134,6 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     });
   }
 
-  final List<String> _yarns = []; // 추가된 실 리스트
-  final List<String> _needles = [];
 
   @override
   void dispose() {
@@ -112,6 +147,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     _patternController.dispose();
     super.dispose();
   }
+
 
   void _showYarnsBottomSheet(BuildContext context) {
     final TextEditingController _yarnInputController = TextEditingController();
@@ -144,84 +180,13 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _yarnInputController,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  alignLabelWithHint: true,
-                  label: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: MyfoText(
-                      "실 이름",
-                      color: Colors.grey,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 1.2,
-                    ),
-                  ),
-                ),
+                decoration: MyfoStyle.inputDecoration('실 이름'),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _amountInputController,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  alignLabelWithHint: true,
-                  label: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: MyfoText(
-                      "실 소요량(선택) ex) 300g, 2500m, 8볼",
-                      color: Colors.grey,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 1.2,
-                    ),
-                  ),
-                ),
+                // "실 소요량(선택) ex) 300g, 2500m, 8볼",
+                decoration: MyfoStyle.inputDecoration("실 소요량(선택) ex) 300g, 2500m, 8볼"),
               ),
               const SizedBox(height: 16),
               SizedBox(
@@ -287,84 +252,13 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _needleInputController,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  alignLabelWithHint: true,
-                  label: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: MyfoText(
-                      "바늘 이름",
-                      color: Colors.grey,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 1.2,
-                    ),
-                  ),
-                ),
+                decoration: MyfoStyle.inputDecoration("바늘 이름"),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _sizeInputController,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  alignLabelWithHint: true,
-                  label: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: MyfoText(
-                      "바늘 사이즈(선택) ex) 4.0mm, 6호",
-                      color: Colors.grey,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 1.2,
-                    ),
-                  ),
-                ),
+                // 바늘 사이즈(선택) ex) 4.0mm, 6호
+                decoration: MyfoStyle.inputDecoration("바늘 사이즈(선택) ex) 4.0mm, 6호"),
               ),
               const SizedBox(height: 16),
               SizedBox(
@@ -399,6 +293,108 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     );
   }
 
+  void _showDatePickerBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 16),
+              const MyfoText(
+                '완성일 선택',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              const SizedBox(height: 16),
+              CalendarDatePicker(
+                initialDate: _finishedAt ?? DateTime.now(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2100),
+                onDateChanged: (DateTime date) {
+                  setState(() {
+                    _finishedAt = date;
+                  });
+                },
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // BottomSheet 닫기
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  ),
+                  child: const Text('완료'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDateField() {
+    return InkWell(
+      onTap: () => _showDatePickerBottomSheet(context),
+      child: InputDecorator(
+        decoration: InputDecoration(
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+          alignLabelWithHint: true,
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(4.0),
+            borderSide: const BorderSide(
+              color: Colors.grey,
+              width: 1.0,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(4.0),
+            borderSide: const BorderSide(
+              color: Colors.grey,
+              width: 1.0,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(4.0),
+            borderSide: const BorderSide(
+              color: Colors.black,
+              width: 1.2,
+            ),
+          ),
+        ),
+        child: MyfoText(
+          _finishedAt != null
+              ? '${_finishedAt!.year}-${_finishedAt!.month.toString().padLeft(2, '0')}-${_finishedAt!.day.toString().padLeft(2, '0')}'
+              : '날짜를 선택해주세요',
+          color: _finishedAt != null ? Colors.black : Colors.grey,
+          fontWeight: FontWeight.normal,
+        ),
+      ),
+    );
+  }
+
+
   void _saveObjectLog(BuildContext context) {
     print("save!");
     if (_formKey.currentState?.validate() ?? false) {
@@ -431,8 +427,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const MyfoText(
-            '작품 추가',
+          title: MyfoText(
+            widget.objectLogId == null ? '작품 추가' : '작품 수정',
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -535,7 +531,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                   controller: _titleController,
                   label: 'ex) 따뜻한 겨울 스웨터',
                   validator: (value) =>
-                      value?.isEmpty ?? true ? '제목을 입력해주세요.' : null,
+                      value?.isEmpty ?? true ? '작품명을 입력해주세요.' : null,
                 ),
                 const SizedBox(height: 16),
                 const MyfoText('작품 소개',
@@ -543,32 +539,21 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                 const SizedBox(height: 10),
                 _buildTextField(
                   controller: _subtitleController,
-                  label: 'ex) 딸기우유맛 스웨터',
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? '부제목을 입력해주세요.' : null,
+                  label: 'ex) 딸기우유맛 스웨터'
                 ),
                 const SizedBox(height: 16),
-                const MyfoText('패턴', fontWeight: FontWeight.bold, fontSize: 14),
+                MyfoLabel(label: "완성일", optional: true),
+                const SizedBox(height: 10),
+                _buildDateField(),
+                const SizedBox(height: 16),
+                MyfoLabel(label: "패턴", optional: false,),
                 const SizedBox(height: 10),
                 _buildTextField(
                   controller: _patternController,
                   label: 'ex) 자작 도안',
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? '부제목을 입력해주세요.' : null,
                 ),
                 const SizedBox(height: 16),
-                const MyfoText('설명', fontWeight: FontWeight.bold, fontSize: 14),
-                const SizedBox(height: 10),
-                _buildTextField(
-                  controller: _descriptionController,
-                  label: '이 작품에 대한 이야기를 입력해주세요.',
-                  maxLines: 6,
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? '설명을 입력해주세요.' : null,
-                ),
-                const SizedBox(height: 16),
-                const MyfoText('사용 기법(선택)',
-                    fontWeight: FontWeight.bold, fontSize: 14),
+                MyfoLabel(label: "사용 기법", optional: false,),
                 const SizedBox(height: 10),
                 _buildTextField(
                     controller: _tagsController,
@@ -630,12 +615,31 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                   ],
                 ),
                 const SizedBox(height: 16),
+                const MyfoText('게이지', fontWeight: FontWeight.bold, fontSize: 14),
+                const SizedBox(height: 10),
+                _buildTextField(
+                  controller: _gaugesController,
+                  label: 'ex) 세탁전 27x31',
+                  maxLines: 2,
+                  validator: (value) =>
+                  value?.isEmpty ?? true ? '설명을 입력해주세요.' : null,
+                ),
+                const SizedBox(height: 16),
+                const MyfoText('후기', fontWeight: FontWeight.bold, fontSize: 14),
+                const SizedBox(height: 10),
+                _buildTextField(
+                  controller: _descriptionController,
+                  label: '이 작품에 대한 이야기를 입력해주세요.',
+                  maxLines: 6
+                ),
+
+                const SizedBox(height: 16),
               ],
             ),
           ),
         ),
         bottomNavigationBar: MyfoCtaButton(
-            label: '저장하기', onPressed: () => _saveObjectLog(context)));
+            label: '저장', onPressed: () => _saveObjectLog(context)));
   }
 
   Widget _buildTextField({
@@ -646,50 +650,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
   }) {
     return TextFormField(
       controller: controller,
-      style: const TextStyle(
-        fontFamily: 'Pretendard',
-        fontSize: 16.0,
-        letterSpacing: -0.4,
-        color: Colors.black,
-        fontWeight: FontWeight.normal,
-      ),
-      decoration: InputDecoration(
-        floatingLabelBehavior: FloatingLabelBehavior.never,
-        alignLabelWithHint: true,
-        label: Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: MyfoText(
-            label,
-            color: Colors.grey,
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-        filled: true,
-        fillColor: Colors.white,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(
-            color: Colors.grey,
-            width: 1.0,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(
-            color: Colors.grey,
-            width: 1.0,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(
-            color: Colors.black,
-            width: 1.2,
-          ),
-        ),
-      ),
+      style: MyfoStyle.textStyle,
+      decoration: MyfoStyle.inputDecoration(label),
       validator: validator,
       maxLines: maxLines,
     );

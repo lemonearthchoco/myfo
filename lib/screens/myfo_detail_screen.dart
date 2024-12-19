@@ -6,6 +6,7 @@ import 'package:myfo/components/myfo_text.dart';
 import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
 import 'package:myfo/providers/object_log_provider.dart';
+import 'package:myfo/screens/myfo_add_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -31,7 +32,49 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
+        actions: [PopupMenuButton<String>(
+          icon: const Icon(Icons.more_vert),
+          onSelected: (String value) {
+            if (value == 'edit') {
+              // 수정하기 선택 시 수정 페이지로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ObjectLogAddScreen(
+                    objectLogId: widget.objectLogId,
+                  ),
+                ),
+              );
+            } else if (value == 'delete') {
+              // 삭제하기 선택 시 로직 실행
+              // _showDeleteConfirmation(context);
+            }
+          },
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem(
+                value: 'edit',
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: MyfoText('수정하기'),
+                  ),
+                ),
+              ),
+              PopupMenuItem(
+                value: 'delete',
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: MyfoText('삭제하기'),
+                  ),
+                ),
+              ),
+            ];
+          },
+        ),],
       ),
       body: Consumer<ObjectLogProvider>(
         builder: (context, provider, child) {

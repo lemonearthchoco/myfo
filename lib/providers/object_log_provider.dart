@@ -104,6 +104,10 @@ class ObjectLogProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<ObjectLog?> getLogById(String id) async {
+    return logs.firstWhere((log) => log.id == id);
+  }
+
   Future<void> addLog(ObjectLog log) async {
     _logs.add(log);
     await _saveLogs();
