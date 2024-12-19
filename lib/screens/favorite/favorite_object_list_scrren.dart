@@ -5,12 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:myfo/components/myfo_text.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:myfo/models/object_log.dart';
-import 'package:myfo/screens/myfo_add_screen.dart';
-import 'package:myfo/screens/myfo_detail_screen.dart';
+import 'package:myfo/screens/myfo/myfo_add_screen.dart';
+import 'package:myfo/screens/myfo/myfo_detail_screen.dart';
 import 'package:provider/provider.dart';
 
-class MyfoListScreen extends StatelessWidget {
-  const MyfoListScreen({Key? key}) : super(key: key);
+class FavoriteObjectListScreen extends StatelessWidget {
+  const FavoriteObjectListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class MyfoListScreen extends StatelessWidget {
                     // childAspectRatio: 0.8, // 항목의 가로:세로 비율
                   ),
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) {
+                        (context, index) {
                       final ObjectLog log = logs[index];
 
                       return GestureDetector(
@@ -79,17 +79,17 @@ class MyfoListScreen extends StatelessWidget {
                                   // borderRadius: const BorderRadius.vertical(top: Radius.circular(8.0)),
                                   child: log.images.isNotEmpty
                                       ? Image.network(
-                                          log.images[0].image, // 대표 이미지
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return Image.file(
-                                                File(log.images[0].image), // 대표 이미지
-                                                fit: BoxFit.cover);
-                                          },
-                                        )
+                                    log.images[0].image, // 대표 이미지
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) {
+                                      return Image.file(
+                                          File(log.images[0].image), // 대표 이미지
+                                          fit: BoxFit.cover);
+                                    },
+                                  )
                                       : const Icon(Icons.image_not_supported,
-                                          size: 50),
+                                      size: 50),
                                 ),
                               )
                             ],
@@ -104,21 +104,6 @@ class MyfoListScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add screen으로 이동 (필요 시 구현)
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ObjectLogAddScreen(),
-            ),
-          );
-        },
-        shape: const CircleBorder(),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add),
       ),
     );
   }

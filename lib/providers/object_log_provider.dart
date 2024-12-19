@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
+import 'package:myfo/models/param/object_log_param.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -50,7 +51,7 @@ class ObjectLogProvider extends ChangeNotifier {
       needles: ["니트프로 진저 디럭스 4.0mm", "니트프로 진저 디럭스 5.0mm", "치아오구 밤부 5.0mm"],
       yarns: ["솜솜뜨개 수플레 글루미 스카이"],
       gauges: [],
-      finishedAt: DateTime.now(),
+      finishedAt: DateTime(2024, 11, 19),
     ),
     ObjectLog(
       id: const Uuid().v4(),
@@ -86,7 +87,43 @@ class ObjectLogProvider extends ChangeNotifier {
       needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
       yarns: ["솜솜뜨개 프빌 포레스트 2합"],
       gauges: [],
-      finishedAt: DateTime.now(),
+      finishedAt: DateTime(2024, 11, 10),
+    ),
+    ObjectLog(
+      id: const Uuid().v4(),
+      title: "모헤어 장갑",
+      subtitle: "",
+      pattern: '',
+      images: [
+        ObjectImage(
+            id: const Uuid().v4(),
+            image:
+            "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
+      ],
+      description: "모헤어 장갑",
+      tags: ["장갑 바늘"],
+      needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
+      yarns: ["솜솜뜨개 프빌 포레스트 2합"],
+      gauges: [],
+      finishedAt: DateTime(2024, 9, 2),
+    ),
+    ObjectLog(
+      id: const Uuid().v4(),
+      title: "모헤어 장갑",
+      subtitle: "",
+      pattern: '',
+      images: [
+        ObjectImage(
+            id: const Uuid().v4(),
+            image:
+            "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
+      ],
+      description: "모헤어 장갑",
+      tags: ["장갑 바늘"],
+      needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
+      yarns: ["솜솜뜨개 프빌 포레스트 2합"],
+      gauges: [],
+      finishedAt: DateTime(2024, 9, 2),
     ),
   ];
 
@@ -114,11 +151,24 @@ class ObjectLogProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateLog(String id, ObjectLog newLog) async {
+    int index = _logs.indexWhere((log) => log.id == id);
+    if (index >= 0) {
+      _logs[index] = newLog;
+    } else {
+      throw Exception("업데이트 중 오류가 발생했습니다.");
+    }
+    await _saveLogs();
+    notifyListeners();
+  }
+
   Future<void> deleteLog(int index) async {
     _logs.removeAt(index);
     await _saveLogs();
     notifyListeners();
   }
+
+
 
   Future<void> _saveLogs() async {
     final prefs = await SharedPreferences.getInstance();

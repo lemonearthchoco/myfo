@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myfo/components/myfo_divider.dart';
 import 'package:myfo/components/myfo_tag.dart';
@@ -6,7 +7,7 @@ import 'package:myfo/components/myfo_text.dart';
 import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
 import 'package:myfo/providers/object_log_provider.dart';
-import 'package:myfo/screens/myfo_add_screen.dart';
+import 'package:myfo/screens/myfo/myfo_add_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -28,54 +29,120 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-        actions: [PopupMenuButton<String>(
-          icon: const Icon(Icons.more_vert),
-          onSelected: (String value) {
-            if (value == 'edit') {
-              // 수정하기 선택 시 수정 페이지로 이동
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ObjectLogAddScreen(
-                    objectLogId: widget.objectLogId,
-                  ),
-                ),
-              );
-            } else if (value == 'delete') {
-              // 삭제하기 선택 시 로직 실행
-              // _showDeleteConfirmation(context);
-            }
-          },
-          itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem(
-                value: 'edit',
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: MyfoText('수정하기'),
-                  ),
-                ),
-              ),
-              PopupMenuItem(
-                value: 'delete',
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: MyfoText('삭제하기'),
-                  ),
-                ),
-              ),
-            ];
-          },
-        ),],
-      ),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconTheme: const IconThemeData(color: Colors.black),
+          leading: IconButton(
+            icon: const Icon(CupertinoIcons.back, color: Colors.black),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(CupertinoIcons.ellipsis_vertical),
+              onPressed: () {
+                // CupertinoActionSheet 표시
+                showCupertinoModalPopup(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CupertinoActionSheet(
+                      actions: [
+                        CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.pop(context); // ActionSheet 닫기
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ObjectLogAddScreen(
+                                  objectLogId: widget.objectLogId,
+                                ),
+                              ),
+                            );
+                          },
+                          child: const MyfoText(
+                            '수정하기'
+                          ),
+                        ),
+                        CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.pop(context); // ActionSheet 닫기
+                            // 삭제 로직 실행
+                            // _showDeleteConfirmation(context);
+                          },
+                          isDestructiveAction: true, // 파괴적 작업 스타일 (빨간색)
+                          child: const MyfoText(
+                            '삭제하기',
+                            color: Colors.red
+                          ),
+                        ),
+                      ],
+                      cancelButton: CupertinoActionSheetAction(
+                        onPressed: () {
+                          Navigator.pop(context); // ActionSheet 닫기
+                        },
+                        child: const MyfoText(
+                          '취소',
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   iconTheme: const IconThemeData(color: Colors.black),
+      //   leading: IconButton(
+      //     icon: Icon(CupertinoIcons.back, color: Colors.black),
+      //     onPressed: () => Navigator.of(context).pop(),
+      //   ),
+      //   actions: [PopupMenuButton<String>(
+      //     icon: const Icon(CupertinoIcons.ellipsis_vertical),
+      //     onSelected: (String value) {
+      //       if (value == 'edit') {
+      //         // 수정하기 선택 시 수정 페이지로 이동
+      //         Navigator.push(
+      //           context,
+      //           MaterialPageRoute(
+      //             builder: (context) => ObjectLogAddScreen(
+      //               objectLogId: widget.objectLogId,
+      //             ),
+      //           ),
+      //         );
+      //       } else if (value == 'delete') {
+      //         // 삭제하기 선택 시 로직 실행
+      //         // _showDeleteConfirmation(context);
+      //       }
+      //     },
+      //     itemBuilder: (BuildContext context) {
+      //       return [
+      //         PopupMenuItem(
+      //           value: 'edit',
+      //           child: Padding(
+      //             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      //             child: Align(
+      //               alignment: Alignment.centerLeft,
+      //               child: MyfoText('수정하기'),
+      //             ),
+      //           ),
+      //         ),
+      //         PopupMenuItem(
+      //           value: 'delete',
+      //           child: Padding(
+      //             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      //             child: Align(
+      //               alignment: Alignment.centerLeft,
+      //               child: MyfoText('삭제하기'),
+      //             ),
+      //           ),
+      //         ),
+      //       ];
+      //     },
+      //   ),],
+      // ),
       body: Consumer<ObjectLogProvider>(
         builder: (context, provider, child) {
           // ObjectLog 데이터를 ID로 찾기

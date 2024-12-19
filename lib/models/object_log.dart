@@ -1,4 +1,5 @@
 import 'package:myfo/models/object_image.dart';
+import 'package:myfo/models/param/object_log_param.dart';
 
 class ObjectLog {
   static final String name = "object_log";
@@ -13,7 +14,7 @@ class ObjectLog {
   final List<String> needles;
   final List<String> tags;
   final List<String> gauges;
-  final DateTime? finishedAt;
+  DateTime? finishedAt;
 
   ObjectLog(
       {required this.id,

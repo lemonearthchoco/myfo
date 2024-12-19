@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myfo/components/myfo_cta_button.dart';
 import 'package:myfo/components/myfo_label.dart';
@@ -14,10 +16,11 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
-import '../components/myfo_style.dart';
+import '../../components/myfo_style.dart';
 
 class ObjectLogAddScreen extends StatefulWidget {
   final String? objectLogId;
+
   const ObjectLogAddScreen({Key? key, this.objectLogId}) : super(key: key);
 
   @override
@@ -56,17 +59,46 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     }
   }
 
+  void _showToast(context, String text, String level) {
+    final fToast = FToast();
+    fToast.init(context);
+    Widget toast = SizedBox(
+      // width: 140,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          color: Colors.black,
+        ),
+        child: Row(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            level == 'success'
+                ? const Icon(CupertinoIcons.check_mark_circled_solid,
+                    color: Colors.lightGreenAccent)
+                : const Icon(CupertinoIcons.exclamationmark_circle,
+                    color: Colors.redAccent),
+            const SizedBox(width: 10,),
+            MyfoText(text, color: Colors.white),
+          ],
+        ),
+      ),
+    );
+
+    fToast.showToast(child: toast, toastDuration: const Duration(seconds: 1));
+  }
+
   Future<void> _pickImages() async {
     final List<XFile>? images = await _picker.pickMultiImage();
 
     if (images != null) {
-      if (images.length > 2) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('이미지는 최대 2개까지 업로드 가능합니다.')),
-        );
+      if (_uploadedImageUrls.length + images.length > 3) {
+        _showToast(context, "최대 5개까지 업로드 가능합니다.", "error");
+      } else {
+        _selectedImages = images.map((image) => File(image.path)).toList();
+        await _uploadAllImages();
       }
-      _selectedImages = images.map((image) => File(image.path)).toList();
-      await _uploadAllImages();
     }
   }
 
@@ -107,18 +139,11 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         setState(() {
           _uploadedImageUrls.add(decodedData['imageUrl']); // 서버에서 반환된 이미지 URL
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('이미지 업로드 성공')),
-        );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('이미지 업로드 실패')),
-        );
+        _showToast(context, "이미지 업로드 실패", "error");
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('업로드 중 오류 발생: $e')),
-      );
+      _showToast(context, "이미지 업로드 실패", "error");
     }
   }
 
@@ -132,8 +157,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     setState(() {
       _isUploading = false;
     });
+    _showToast(context, "이미지 업로드 완료", "success");
   }
-
 
   @override
   void dispose() {
@@ -147,7 +172,6 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     _patternController.dispose();
     super.dispose();
   }
-
 
   void _showYarnsBottomSheet(BuildContext context) {
     final TextEditingController _yarnInputController = TextEditingController();
@@ -186,7 +210,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               TextFormField(
                 controller: _amountInputController,
                 // "실 소요량(선택) ex) 300g, 2500m, 8볼",
-                decoration: MyfoStyle.inputDecoration("실 소요량(선택) ex) 300g, 2500m, 8볼"),
+                decoration:
+                    MyfoStyle.inputDecoration("실 소요량(선택) ex) 300g, 2500m, 8볼"),
               ),
               const SizedBox(height: 16),
               SizedBox(
@@ -211,7 +236,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                   ),
-                  child: const Text('추가하기'),
+                  child: const MyfoText('추가', color: Colors.white),
                 ),
               ),
             ],
@@ -258,7 +283,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               TextFormField(
                 controller: _sizeInputController,
                 // 바늘 사이즈(선택) ex) 4.0mm, 6호
-                decoration: MyfoStyle.inputDecoration("바늘 사이즈(선택) ex) 4.0mm, 6호"),
+                decoration:
+                    MyfoStyle.inputDecoration("바늘 사이즈(선택) ex) 4.0mm, 6호"),
               ),
               const SizedBox(height: 16),
               SizedBox(
@@ -360,7 +386,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(4.0),
             borderSide: const BorderSide(
@@ -394,14 +420,13 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     );
   }
 
-
   void _saveObjectLog(BuildContext context) {
     print("save!");
     if (_formKey.currentState?.validate() ?? false) {
       final provider = Provider.of<ObjectLogProvider>(context, listen: false);
 
-      final newLog = ObjectLog(
-        id: const Uuid().v4(),
+      final log = ObjectLog(
+        id: widget.objectLogId ?? const Uuid().v4(),
         title: _titleController.text,
         subtitle: _subtitleController.text,
         pattern: _patternController.text,
@@ -410,16 +435,24 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
             .map((image) => ObjectImage(id: const Uuid().v4(), image: image))
             .toList(),
         yarns: _yarns,
-        // 저장된 실 리스트 추가
         needles: _needles,
-        // 선택된 바늘 저장
         tags: _tagsController.text.split(',').map((e) => e.trim()).toList(),
         gauges: _gaugesController.text.split(',').map((e) => e.trim()).toList(),
         finishedAt: _finishedAt,
       );
-      print(newLog.toJson());
-      provider.addLog(newLog);
-      Navigator.pop(context); // 화면 닫기
+
+      if (widget.objectLogId != null) {
+        // 수정 모드
+        provider.updateLog(widget.objectLogId!, log);
+        print("수정!");
+        _showToast(context, "저장 완료", "success");
+      } else {
+        // 추가 모드
+        provider.addLog(log);
+        _showToast(context, "저장 완료", "success");
+      }
+
+      Navigator.pop(context);
     }
   }
 
@@ -431,6 +464,10 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
             widget.objectLogId == null ? '작품 추가' : '작품 수정',
             fontSize: 20,
             fontWeight: FontWeight.bold,
+          ),
+          leading: IconButton(
+            icon: Icon(CupertinoIcons.back, color: Colors.black),
+            onPressed: () => Navigator.of(context).pop(),
           ),
         ),
         body: Padding(
@@ -469,7 +506,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                             ),
                             child: _isUploading
                                 ? CircularProgressIndicator(color: Colors.white)
-                                : const Icon(Icons.add,
+                                : const Icon(CupertinoIcons.add,
                                     size: 32, color: Colors.white),
                           ),
                         );
@@ -538,22 +575,26 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                     fontWeight: FontWeight.bold, fontSize: 14),
                 const SizedBox(height: 10),
                 _buildTextField(
-                  controller: _subtitleController,
-                  label: 'ex) 딸기우유맛 스웨터'
-                ),
+                    controller: _subtitleController, label: 'ex) 딸기우유맛 스웨터'),
                 const SizedBox(height: 16),
                 MyfoLabel(label: "완성일", optional: true),
                 const SizedBox(height: 10),
                 _buildDateField(),
                 const SizedBox(height: 16),
-                MyfoLabel(label: "패턴", optional: false,),
+                MyfoLabel(
+                  label: "패턴",
+                  optional: false,
+                ),
                 const SizedBox(height: 10),
                 _buildTextField(
                   controller: _patternController,
                   label: 'ex) 자작 도안',
                 ),
                 const SizedBox(height: 16),
-                MyfoLabel(label: "사용 기법", optional: false,),
+                MyfoLabel(
+                  label: "사용 기법",
+                  optional: false,
+                ),
                 const SizedBox(height: 10),
                 _buildTextField(
                     controller: _tagsController,
@@ -580,7 +621,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                     }).toList(),
                     IconButton(
                       onPressed: () => _showYarnsBottomSheet(context),
-                      icon: const Icon(Icons.add),
+                      icon: const Icon(CupertinoIcons.add),
                       color: Colors.grey,
                       tooltip: '실 추가하기',
                     ),
@@ -608,30 +649,30 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                     }).toList(),
                     IconButton(
                       onPressed: () => _showNeedlesBottomSheet(context),
-                      icon: const Icon(Icons.add),
+                      icon: const Icon(CupertinoIcons.add),
                       color: Colors.grey,
-                      tooltip: '바늘 추가하기', // 접근성을 위한 툴팁
+                      tooltip: '바늘 추가', // 접근성을 위한 툴팁
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
-                const MyfoText('게이지', fontWeight: FontWeight.bold, fontSize: 14),
+                const MyfoText('게이지',
+                    fontWeight: FontWeight.bold, fontSize: 14),
                 const SizedBox(height: 10),
                 _buildTextField(
                   controller: _gaugesController,
                   label: 'ex) 세탁전 27x31',
                   maxLines: 2,
                   validator: (value) =>
-                  value?.isEmpty ?? true ? '설명을 입력해주세요.' : null,
+                      value?.isEmpty ?? true ? '설명을 입력해주세요.' : null,
                 ),
                 const SizedBox(height: 16),
                 const MyfoText('후기', fontWeight: FontWeight.bold, fontSize: 14),
                 const SizedBox(height: 10),
                 _buildTextField(
-                  controller: _descriptionController,
-                  label: '이 작품에 대한 이야기를 입력해주세요.',
-                  maxLines: 6
-                ),
+                    controller: _descriptionController,
+                    label: '이 작품에 대한 이야기를 입력해주세요.',
+                    maxLines: 6),
 
                 const SizedBox(height: 16),
               ],

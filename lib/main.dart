@@ -21,25 +21,23 @@ class MyApp extends StatelessWidget {
       create: (context) => ObjectLogProvider()..loadLogs(forceReset: true),
       child: MaterialApp(
         title: "myfo",
-        theme: ThemeData(
-          primaryColor: Colors.white,
-          scaffoldBackgroundColor: Colors.white,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.transparent,
-            // AppBar 투명 설정
-            surfaceTintColor: Colors.transparent,
-            elevation: 0,
-            // 그림자 제거
-            iconTheme: IconThemeData(color: Colors.black),
-            // 아이콘 색상
-            titleTextStyle: TextStyle(
-              // 제목 텍스트 스타일
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+        theme:  ThemeData(
+          // 기본 색상
+            primarySwatch: Colors.grey,
+            brightness: Brightness.light, // 밝은 테마
+            scaffoldBackgroundColor: Colors.white,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+              elevation: 0,
+              iconTheme: IconThemeData(color: Colors.black),
+              titleTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
             ),
-            systemOverlayStyle: SystemUiOverlayStyle.dark,
-          ),
         ),
         home: const MyfoMainScreen(),
       ),
