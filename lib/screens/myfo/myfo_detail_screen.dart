@@ -26,10 +26,11 @@ class MyfoDetailScreen extends StatefulWidget {
 class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
   int _currentIndex = 0;
   bool isAvailable = true;
+  bool isFavorite = false;
   late FToast fToast;
 
-  final CarouselSliderController _carouselController = CarouselSliderController();
-
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
 
   @override
   void initState() {
@@ -51,83 +52,76 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
     });
     Navigator.pop(context);
     provider.deleteLog(widget.objectLogId).then((_) => {
-      // TODO: 토스트 메시지
-      _showToast(context, "삭제 성공", MessageLevel.SUCCESS)
-    }); // Provider에서 삭제
+          // TODO: 토스트 메시지
+          _showToast(context, "삭제 성공", MessageLevel.SUCCESS)
+        }); // Provider에서 삭제
   }
 
   @override
   Widget build(BuildContext context) {
     if (!isAvailable) {
       return Scaffold(
-        body: Center(
-          child: Container()
-        ),
+        body: Center(child: Container()),
       );
     }
     return Scaffold(
       extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          iconTheme: const IconThemeData(color: Colors.black),
-          leading: IconButton(
-            icon: const Icon(CupertinoIcons.back, color: Colors.black),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(CupertinoIcons.ellipsis_vertical),
-              onPressed: () {
-                // CupertinoActionSheet 표시
-                showCupertinoModalPopup(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CupertinoActionSheet(
-                      actions: [
-                        CupertinoActionSheetAction(
-                          onPressed: () {
-                            Navigator.pop(context); // ActionSheet 닫기
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ObjectLogAddScreen(
-                                  objectLogId: widget.objectLogId,
-                                ),
-                              ),
-                            );
-                          },
-                          child: const MyfoText(
-                            '수정하기'
-                          ),
-                        ),
-                        CupertinoActionSheetAction(
-                          onPressed: () {
-                            Navigator.pop(context); // 상세 화면 닫기
-                            _deleteObjectLog(context);
-                          },
-                          isDestructiveAction: true, // 파괴적 작업 스타일 (빨간색)
-                          child: const MyfoText(
-                            '삭제하기',
-                            color: Colors.red
-                          ),
-                        ),
-                      ],
-                      cancelButton: CupertinoActionSheetAction(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+        leading: IconButton(
+          icon: const Icon(CupertinoIcons.back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(CupertinoIcons.ellipsis_vertical),
+            onPressed: () {
+              // CupertinoActionSheet 표시
+              showCupertinoModalPopup(
+                context: context,
+                builder: (BuildContext context) {
+                  return CupertinoActionSheet(
+                    actions: [
+                      CupertinoActionSheetAction(
                         onPressed: () {
                           Navigator.pop(context); // ActionSheet 닫기
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ObjectLogAddScreen(
+                                objectLogId: widget.objectLogId,
+                              ),
+                            ),
+                          );
                         },
-                        child: const MyfoText(
-                          '취소',
-                        ),
+                        child: const MyfoText('수정하기'),
                       ),
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
+                      CupertinoActionSheetAction(
+                        onPressed: () {
+                          Navigator.pop(context); // 상세 화면 닫기
+                          _deleteObjectLog(context);
+                        },
+                        isDestructiveAction: true, // 파괴적 작업 스타일 (빨간색)
+                        child: const MyfoText('삭제하기', color: Colors.red),
+                      ),
+                    ],
+                    cancelButton: CupertinoActionSheetAction(
+                      onPressed: () {
+                        Navigator.pop(context); // ActionSheet 닫기
+                      },
+                      child: const MyfoText(
+                        '취소',
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
       // appBar: AppBar(
       //   backgroundColor: Colors.transparent,
       //   elevation: 0,
@@ -209,6 +203,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                 _buildGaugeSection(log.gauges),
                 const MyfoDivider(),
                 _buildDescriptionSection(log.description),
+                const SizedBox(height: 20,)
               ],
             ),
           );
@@ -225,46 +220,46 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
           width: double.infinity,
           child: images.isNotEmpty
               ? CarouselSlider.builder(
-            carouselController: _carouselController,
-            options: CarouselOptions(
-              height: 400,
-              viewportFraction: 1,
-              enableInfiniteScroll: false,
-              autoPlay: false,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-            ),
-            itemCount: images.length,
-            itemBuilder: (context, index, realIndex) {
-              return SizedBox(
-                height: 400,
-                width: double.infinity,
-                child: Image.network(
-                  images[index].image,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(
-                      child: Icon(
-                        Icons.broken_image,
-                        size: 50,
-                        color: Colors.grey,
+                  carouselController: _carouselController,
+                  options: CarouselOptions(
+                    height: 400,
+                    viewportFraction: 1,
+                    enableInfiniteScroll: false,
+                    autoPlay: false,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                  ),
+                  itemCount: images.length,
+                  itemBuilder: (context, index, realIndex) {
+                    return SizedBox(
+                      height: 400,
+                      width: double.infinity,
+                      child: Image.network(
+                        images[index].image,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                            child: Icon(
+                              Icons.broken_image,
+                              size: 50,
+                              color: Colors.grey,
+                            ),
+                          );
+                        },
                       ),
                     );
                   },
-                ),
-              );
-            },
-          )
+                )
               : const Center(
-            child: Icon(
-              Icons.image_not_supported,
-              size: 50,
-              color: Colors.grey,
-            ),
-          ),
+                  child: Icon(
+                    Icons.image_not_supported,
+                    size: 50,
+                    color: Colors.grey,
+                  ),
+                ),
         ),
         if (images.isNotEmpty)
           Positioned(
@@ -294,18 +289,39 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
   Widget _buildTitleSection(ObjectLog log) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          MyfoText(
-            log.title,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+          // 타이틀과 서브타이틀
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                MyfoText(
+                  log.title,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                const SizedBox(height: 6),
+                if (log.subtitle.isNotEmpty)
+                  MyfoText(log.subtitle, fontSize: 14),
+              ],
+            ),
           ),
-          const SizedBox(height: 6),
-          log.subtitle.isNotEmpty
-              ? MyfoText(log.subtitle, fontSize: 16)
-              : Container(),
+          // 좋아요 버튼
+          IconButton(
+            icon: Icon(
+              isFavorite ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+              color: isFavorite ? Colors.red : Colors.grey,
+            ),
+            onPressed: () {
+              // 좋아요 상태 토글
+              setState(() {
+                isFavorite = !isFavorite;
+              });
+            },
+          ),
         ],
       ),
     );
@@ -317,13 +333,11 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          const MyfoText(
             "태그",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-              fontSize: 12,
-            ),
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+            fontSize: 12,
           ),
           const SizedBox(height: 10),
           Wrap(
@@ -358,13 +372,11 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          const MyfoText(
             "설명",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-              fontSize: 12,
-            ),
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+            fontSize: 12,
           ),
           const SizedBox(height: 10),
           Text(

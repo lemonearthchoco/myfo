@@ -14,7 +14,19 @@ class ObjectLog {
   final List<String> needles;
   final List<String> tags;
   final List<String> gauges;
+  bool _isFavorite = false;
   DateTime? finishedAt;
+
+  bool get isFavorite => _isFavorite;
+  set isFavorite(bool isFavorite) => _isFavorite = isFavorite;
+
+  void like() {
+    this._isFavorite = true;
+  }
+
+  void unlike() {
+    this._isFavorite = false;
+  }
 
   ObjectLog(
       {required this.id,
@@ -27,7 +39,7 @@ class ObjectLog {
       required this.needles,
       required this.tags,
       required this.gauges,
-      this.finishedAt});
+      this.finishedAt, bool isFavorite = false}): _isFavorite = isFavorite;
 
   // JSON 직렬화
   Map<String, dynamic> toJson() {
@@ -40,7 +52,9 @@ class ObjectLog {
       'needles': needles,
       'tags': tags,
       'gauges': gauges,
+      'isFavorite': isFavorite,
       'images': images.map((image) => image.toJson()).toList(),
+      'finishedAt': finishedAt?.toIso8601String(),
     };
   }
 
@@ -57,6 +71,10 @@ class ObjectLog {
       tags: List<String>.from(json['tags']),
       gauges: List<String>.from(json['gauges']),
       images: List<ObjectImage>.from(json['images']),
+      finishedAt: json['finishedAt'] != null
+          ? DateTime.parse(json['finishedAt'])
+          : null,
+      isFavorite: json['isFavorite'] ?? false, // 기본값 처리
     );
   }
 }

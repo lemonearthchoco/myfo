@@ -162,6 +162,25 @@ class ObjectLogProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> likeLog(String id) async {
+    int index = _logs.indexWhere((log) => log.id == id);
+    if (index >= 0) {
+      _logs[index].like();
+    }
+    await _saveLogs();
+    notifyListeners();
+  }
+
+  Future<void> unlikeLog(String id) async {
+    int index = _logs.indexWhere((log) => log.id == id);
+    if (index >= 0) {
+      _logs[index].like();
+    }
+    await _saveLogs();
+    notifyListeners();
+  }
+
+
   Future<void> deleteLog(String id) async {
     _logs.removeWhere((log) => log.id == id);
     await _saveLogs();
