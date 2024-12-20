@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myfo/components/myfo_text.dart';
@@ -35,15 +36,23 @@ class FavoriteObjectListScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             sliver: Consumer<ObjectLogProvider>(
               builder: (context, provider, child) {
-                final logs = provider.logs;
+                final logs = provider.favoriteLogs; // 좋아요 누른 objects
 
                 if (logs.isEmpty) {
-                  return const SliverToBoxAdapter(
+                  return const SliverFillRemaining(
+                    hasScrollBody: false,
                     child: Center(
-                      child: MyfoText(
-                        "새로운 작품을 등록해보세요!",
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(CupertinoIcons.heart, size: 36, color: Colors.grey),
+                          SizedBox(height: 10,),
+                          MyfoText(
+                            "좋아하는 작품을 모아보세요!",
+                            // fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                          ),
+                        ],
                       ),
                     ),
                   );

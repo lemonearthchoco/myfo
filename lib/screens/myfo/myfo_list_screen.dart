@@ -41,12 +41,20 @@ class MyfoListScreen extends StatelessWidget {
                 final logs = provider.logs;
 
                 if (logs.isEmpty) {
-                  return const SliverToBoxAdapter(
+                  return const SliverFillRemaining(
+                    hasScrollBody: false,
                     child: Center(
-                      child: MyfoText(
-                        "새로운 작품을 등록해보세요!",
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(CupertinoIcons.folder_badge_plus, size: 36, color: Colors.grey),
+                          SizedBox(height: 10,),
+                          MyfoText(
+                            "내 작품을 등록해보세요!",
+                            // fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                          ),
+                        ],
                       ),
                     ),
                   );
@@ -69,7 +77,8 @@ class MyfoListScreen extends StatelessWidget {
                                 vertical: 10.0, horizontal: 16.0),
                             child: Text(groupKey, // 예: "2024-12"
                                 style: GoogleFonts.jost(
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
+                                  // fontWeight: FontWeight.bold,
                                   fontSize: 18,
                                   color: Colors.black,
                                 )),
@@ -130,12 +139,22 @@ class MyfoListScreen extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    Positioned(  // 좋아요 기능 나중에 추가
+                                    Positioned(
+                                      // 좋아요 기능 나중에 추가
                                       bottom: 8,
                                       right: 8,
                                       child: IconButton(
-                                        onPressed: () => {print("좋아요!")},
-                                        icon: Icon(CupertinoIcons.heart, color: Colors.grey[200]),
+                                        onPressed: () => {
+                                          if (log.isFavorite)
+                                            {provider.unlikeLog(log.id)}
+                                          else
+                                            {provider.likeLog(log.id)}
+                                        },
+                                        icon: log.isFavorite
+                                            ? Icon(CupertinoIcons.heart_fill,
+                                                color: Colors.red)
+                                            : Icon(CupertinoIcons.heart,
+                                                color: Colors.grey[200]),
                                         iconSize: 28,
                                         padding: const EdgeInsets.all(0),
                                         constraints: const BoxConstraints(),
@@ -184,7 +203,8 @@ class MyfoListScreen extends StatelessWidget {
       if (log.finishedAt == null) {
         yearMonth = "unknown";
       } else {
-        yearMonth = '${log.finishedAt!.year}-${log.finishedAt!.month.toString().padLeft(2, '0')}';
+        yearMonth =
+            '${log.finishedAt!.year}-${log.finishedAt!.month.toString().padLeft(2, '0')}';
       }
 
       if (!groupedLogs.containsKey(yearMonth)) {

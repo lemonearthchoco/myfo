@@ -1,15 +1,30 @@
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
-import 'package:myfo/models/param/object_log_param.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class ObjectLogProvider extends ChangeNotifier {
   List<ObjectLog> _logs = [];
 
-  List<ObjectLog> get logs => _logs;
+  List<ObjectLog> get logs => List.from(_logs)
+    ..sort((a, b) {
+      if (a.finishedAt == null && b.finishedAt == null) return 0;
+      if (a.finishedAt == null) return 1; // null 값을 뒤로 보냄
+      if (b.finishedAt == null) return -1; // null 값을 뒤로 보냄
+      return b.finishedAt!.compareTo(a.finishedAt!); // 내림차순
+    });
+
+  List<ObjectLog> get favoriteLogs =>
+      List.from(_logs.where((log) => log.isFavorite))
+        ..sort((a, b) {
+          if (a.likedAt == null && b.likedAt == null) return 0;
+          if (a.likedAt == null) return 1; // null 값을 뒤로 보냄
+          if (b.likedAt == null) return -1; // null 값을 뒤로 보냄
+          return b.likedAt!.compareTo(a.likedAt!); // 내림차순
+        });
 
   final List<ObjectLog> initialLogs = [
     ObjectLog(
@@ -98,7 +113,7 @@ class ObjectLogProvider extends ChangeNotifier {
         ObjectImage(
             id: const Uuid().v4(),
             image:
-            "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
+                "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
       ],
       description: "모헤어 장갑",
       tags: ["장갑 바늘"],
@@ -116,7 +131,7 @@ class ObjectLogProvider extends ChangeNotifier {
         ObjectImage(
             id: const Uuid().v4(),
             image:
-            "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
+                "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
       ],
       description: "모헤어 장갑",
       tags: ["장갑 바늘"],
@@ -174,20 +189,17 @@ class ObjectLogProvider extends ChangeNotifier {
   Future<void> unlikeLog(String id) async {
     int index = _logs.indexWhere((log) => log.id == id);
     if (index >= 0) {
-      _logs[index].like();
+      _logs[index].unlike();
     }
     await _saveLogs();
     notifyListeners();
   }
-
 
   Future<void> deleteLog(String id) async {
     _logs.removeWhere((log) => log.id == id);
     await _saveLogs();
     notifyListeners();
   }
-
-
 
   Future<void> _saveLogs() async {
     final prefs = await SharedPreferences.getInstance();

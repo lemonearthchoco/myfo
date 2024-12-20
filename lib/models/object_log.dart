@@ -4,7 +4,7 @@ import 'package:myfo/models/param/object_log_param.dart';
 class ObjectLog {
   static final String name = "object_log";
 
-  final String id;  // uuid
+  final String id; // uuid
   final String title;
   final String subtitle;
   final String pattern;
@@ -15,17 +15,22 @@ class ObjectLog {
   final List<String> tags;
   final List<String> gauges;
   bool _isFavorite = false;
+  DateTime createdAt;
   DateTime? finishedAt;
+  DateTime? likedAt;
 
   bool get isFavorite => _isFavorite;
+
   set isFavorite(bool isFavorite) => _isFavorite = isFavorite;
 
   void like() {
     this._isFavorite = true;
+    this.likedAt = DateTime.now();
   }
 
   void unlike() {
     this._isFavorite = false;
+    this.likedAt = null;
   }
 
   ObjectLog(
@@ -39,7 +44,11 @@ class ObjectLog {
       required this.needles,
       required this.tags,
       required this.gauges,
-      this.finishedAt, bool isFavorite = false}): _isFavorite = isFavorite;
+      this.finishedAt,
+      this.likedAt,
+      bool isFavorite = false})
+      : _isFavorite = isFavorite,
+        createdAt = DateTime.now();
 
   // JSON 직렬화
   Map<String, dynamic> toJson() {
@@ -55,6 +64,8 @@ class ObjectLog {
       'isFavorite': isFavorite,
       'images': images.map((image) => image.toJson()).toList(),
       'finishedAt': finishedAt?.toIso8601String(),
+      'createdAt': createdAt.toIso8601String(),
+      'likedAt': likedAt?.toIso8601String()
     };
   }
 
@@ -75,6 +86,9 @@ class ObjectLog {
           ? DateTime.parse(json['finishedAt'])
           : null,
       isFavorite: json['isFavorite'] ?? false, // 기본값 처리
+      likedAt: json['likedAt'] != null
+          ? DateTime.parse(json['likedAt'])
+          : null,
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:myfo/components/myfo_divider.dart';
 import 'package:myfo/components/myfo_tag.dart';
 import 'package:myfo/components/myfo_text.dart';
@@ -122,58 +123,6 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
           ),
         ],
       ),
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   iconTheme: const IconThemeData(color: Colors.black),
-      //   leading: IconButton(
-      //     icon: Icon(CupertinoIcons.back, color: Colors.black),
-      //     onPressed: () => Navigator.of(context).pop(),
-      //   ),
-      //   actions: [PopupMenuButton<String>(
-      //     icon: const Icon(CupertinoIcons.ellipsis_vertical),
-      //     onSelected: (String value) {
-      //       if (value == 'edit') {
-      //         // 수정하기 선택 시 수정 페이지로 이동
-      //         Navigator.push(
-      //           context,
-      //           MaterialPageRoute(
-      //             builder: (context) => ObjectLogAddScreen(
-      //               objectLogId: widget.objectLogId,
-      //             ),
-      //           ),
-      //         );
-      //       } else if (value == 'delete') {
-      //         // 삭제하기 선택 시 로직 실행
-      //         // _showDeleteConfirmation(context);
-      //       }
-      //     },
-      //     itemBuilder: (BuildContext context) {
-      //       return [
-      //         PopupMenuItem(
-      //           value: 'edit',
-      //           child: Padding(
-      //             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      //             child: Align(
-      //               alignment: Alignment.centerLeft,
-      //               child: MyfoText('수정하기'),
-      //             ),
-      //           ),
-      //         ),
-      //         PopupMenuItem(
-      //           value: 'delete',
-      //           child: Padding(
-      //             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      //             child: Align(
-      //               alignment: Alignment.centerLeft,
-      //               child: MyfoText('삭제하기'),
-      //             ),
-      //           ),
-      //         ),
-      //       ];
-      //     },
-      //   ),],
-      // ),
       body: Consumer<ObjectLogProvider>(
         builder: (context, provider, child) {
           // ObjectLog 데이터를 ID로 찾기
@@ -194,6 +143,8 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                 _buildImageSection(log.images),
                 _buildTitleSection(log),
                 const MyfoDivider(),
+                _buildFoSection(log.finishedAt),
+                const MyfoDivider(),
                 _buildTagSection(log.tags),
                 const MyfoDivider(),
                 _buildYarnSection(log.yarns),
@@ -203,7 +154,9 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                 _buildGaugeSection(log.gauges),
                 const MyfoDivider(),
                 _buildDescriptionSection(log.description),
-                const SizedBox(height: 20,)
+                const SizedBox(
+                  height: 20,
+                )
               ],
             ),
           );
@@ -310,16 +263,24 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
             ),
           ),
           // 좋아요 버튼
-          IconButton(
-            icon: Icon(
-              isFavorite ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-              color: isFavorite ? Colors.red : Colors.grey,
-            ),
-            onPressed: () {
-              // 좋아요 상태 토글
-              setState(() {
-                isFavorite = !isFavorite;
-              });
+          Consumer<ObjectLogProvider>(
+            builder: (context, provider, child) {
+              final isFavorite = log.isFavorite;
+              return IconButton(
+                icon: Icon(
+                  isFavorite ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+                  color: isFavorite ? Colors.red : Colors.grey,
+                ),
+                onPressed: () {
+                  if (isFavorite) {
+                    provider.unlikeLog(log.id); // 좋아요 취소
+                    // _showToast(context, "좋아요를 취소했습니다.", MessageLevel.SUCCESS);
+                  } else {
+                    provider.likeLog(log.id); // 좋아요 설정
+                    // _showToast(context, "좋아요를 추가했습니다.", MessageLevel.SUCCESS);
+                  }
+                },
+              );
             },
           ),
         ],
@@ -352,6 +313,13 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
         ],
       ),
     );
+  }
+
+  Widget _buildFoSection(DateTime? finishedAt) {
+    if (finishedAt != null) {
+      return _buildListSection("FO", [DateFormat('yyyy-MM-dd').format(finishedAt)]);
+    }
+    return _buildListSection("FO", ["2024-12-20"]);
   }
 
   Widget _buildNeedleSection(List<String> needles) {
@@ -393,29 +361,33 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
 
   Widget _buildListSection(String title, List<String> items) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          MyfoText(title,
-              fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey),
-          const SizedBox(height: 10),
-          ...items.map(
-            (item) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2.75),
-              child: MyfoText(item),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDivider() {
-    return const Divider(
-      height: 1.0,
-      thickness: 3.5,
-      color: Color.fromARGB(232, 232, 232, 232),
-    );
+        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyfoText(title,
+                fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey),
+            const SizedBox(height: 10),
+            if (items.isNotEmpty)
+              ...items.map(
+                (item) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2.75),
+                  child: MyfoText(
+                    item,
+                    fontSize: 14,
+                  ),
+                ),
+              )
+            else
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10),
+                child: MyfoText('-',
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),
+              )
+          ],
+        ));
   }
 }

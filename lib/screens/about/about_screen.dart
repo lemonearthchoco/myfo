@@ -2,15 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myfo/components/myfo_text.dart';
+import 'package:myfo/screens/about/theme_setting_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({Key? key}) : super(key: key);
-
-  Future<String> _getAppVersion() async {
-    final packageInfo = await PackageInfo.fromPlatform();
-    return '${packageInfo.version} (Build ${packageInfo.buildNumber})';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,35 +23,68 @@ class AboutScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            FutureBuilder<String>(
-              future: _getAppVersion(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Row(
-                      children: [Text('현재 버전'), Text('Loading...')]);
-                } else if (snapshot.hasError) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 16.0),
-                    child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          MyfoText(
-                            '현재 버전',
-                            fontWeight: FontWeight.bold,
-                          ),
-                          MyfoText('1.0.0', color: Colors.black54)
-                        ]),
-                  );
-                }
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 16.0),
-                  child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [MyfoText('현재 버전'), MyfoText('Loading...')]),
-                );
-              },
+            // FutureBuilder<String>(
+            //   future: _getAppVersion(),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.connectionState == ConnectionState.waiting) {
+            //       return Padding(
+            //         padding: const EdgeInsets.symmetric(
+            //             horizontal: 20.0, vertical: 16.0),
+            //         child: const Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               MyfoText(
+            //                 '현재 버전',
+            //                 fontWeight: FontWeight.bold,
+            //               ),
+            //               MyfoText('1.0.0', color: Colors.black54)
+            //             ]),
+            //       );;
+            //     } else if (snapshot.hasError) {
+            //       return Padding(
+            //         padding: const EdgeInsets.symmetric(
+            //             horizontal: 20.0, vertical: 16.0),
+            //         child: const Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               MyfoText(
+            //                 '현재 버전',
+            //                 fontWeight: FontWeight.bold,
+            //               ),
+            //               MyfoText('1.0.0', color: Colors.black54)
+            //             ]),
+            //       );
+            //     }
+            //     return Padding(
+            //       padding: const EdgeInsets.symmetric(
+            //           horizontal: 20.0, vertical: 16.0),
+            //       child:Padding(
+            //     padding: const EdgeInsets.symmetric(
+            //     horizontal: 20.0, vertical: 16.0),
+            //     child: const Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //     MyfoText(
+            //     '현재 버전',
+            //     fontWeight: FontWeight.bold,
+            //     ),
+            //     MyfoText('1.0.0', color: Colors.black54)
+            //     ]),
+            //     );
+            //   },
+            // ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+              child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MyfoText(
+                      '현재 버전',
+                      fontWeight: FontWeight.bold,
+                    ),
+                    MyfoText('1.0.0', color: Colors.black54)
+                  ]),
             ),
             Padding(
               padding:
@@ -78,14 +107,18 @@ class AboutScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const MyfoText(
-                        '앱 리뷰 남기기',
+                        '테마 설정',
                         fontWeight: FontWeight.bold,
                       ),
-                      Icon(CupertinoIcons.forward, color: Colors.black54),
-                      // IconButton(
-                      //     padding: EdgeInsets.zero,
-                      //     onPressed: () => {print("App Review")},
-                      //     icon: Icon(Icons.navigate_next)),
+                      GestureDetector(
+                        child:
+                            Icon(CupertinoIcons.forward, color: Colors.black54),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ThemeSettingScreen(),
+                            )),
+                      )
                     ]),
               ),
             ),

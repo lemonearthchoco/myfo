@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:myfo/components/myfo_text.dart';
 
 class MyfoTag extends StatelessWidget {
   final String tag;
@@ -15,14 +16,11 @@ class MyfoTag extends StatelessWidget {
         borderRadius: BorderRadius.circular(20), // 둥근 모서리
         border: Border.all(color: Color.fromARGB(230, 230, 230, 230)), // 테두리
       ),
-      child: Text(
+      child: MyfoText(
         tag,
-        style: TextStyle(
-          fontFamily: "Pretendard",
-          fontWeight: FontWeight.bold,
-          fontSize: 12,
-          color: Color.fromARGB(255, 46, 46, 46), // 텍스트 색상
-        ),
+        fontWeight: FontWeight.bold,
+        fontSize: 12,
+        color: Color.fromARGB(255, 46, 46, 46)
       ),
     );
   }
