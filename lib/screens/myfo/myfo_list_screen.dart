@@ -24,7 +24,7 @@ class MyfoListScreen extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
               title: Text(
-                "my finished objects",
+                "myfo",
                 style: GoogleFonts.jost(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

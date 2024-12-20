@@ -52,7 +52,7 @@ class _MyfoMainScreen extends State<MyfoMainScreen>
           ),
           controller: _tabController,
           tabs: const [
-            Tab(icon: Icon(CupertinoIcons.archivebox)),
+            Tab(icon: Icon(CupertinoIcons.folder_open)),
             Tab(icon: Icon(CupertinoIcons.heart)),
             Tab(icon: Icon(CupertinoIcons.info)),
           ],

@@ -24,7 +24,7 @@ class FavoriteObjectListScreen extends StatelessWidget {
             pinned: true, // 스크롤 시 AppBar를 고정
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
-              title: Text("my favorite objects",
+              title: Text("myfo",
                   style: GoogleFonts.jost(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

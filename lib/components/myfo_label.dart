@@ -13,7 +13,7 @@ class MyfoLabel extends StatelessWidget {
       return Row(
         children: [
           MyfoText(label, fontWeight: FontWeight.bold, fontSize: 14),
-          MyfoText("(선택)", fontSize: 14)
+          // MyfoText("(선택)", fontSize: 14)
         ],
       );
     }

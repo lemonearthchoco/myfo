@@ -48,4 +48,40 @@ class MyfoStyle {
       ),
     );
   }
+
+  static InputDecoration inputDecoration_underline(String label) {
+    return InputDecoration(
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      alignLabelWithHint: true,
+      label: MyfoText(
+        label,
+        color: Colors.grey,
+        fontWeight: FontWeight.normal,
+      ),
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      border: UnderlineInputBorder(
+        borderRadius: BorderRadius.circular(4.0),
+        borderSide: const BorderSide(
+          color: Colors.grey,
+          width: 1.0,
+        ),
+      ),
+      enabledBorder: UnderlineInputBorder(
+        borderRadius: BorderRadius.circular(4.0),
+        borderSide: const BorderSide(
+          color: Colors.grey,
+          width: 1.0,
+        ),
+      ),
+      focusedBorder: UnderlineInputBorder(
+        borderRadius: BorderRadius.circular(4.0),
+        borderSide: const BorderSide(
+          color: Colors.black,
+          width: 1.2,
+        ),
+      ),
+    );
+  }
 }

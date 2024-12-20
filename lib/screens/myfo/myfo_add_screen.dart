@@ -326,7 +326,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               CalendarDatePicker(
                 initialDate: _finishedAt ?? DateTime.now(),
                 firstDate: DateTime(2000),
-                lastDate: DateTime(2100),
+                lastDate: DateTime(2030),
                 onDateChanged: (DateTime date) {
                   setState(() {
                     _finishedAt = date;
@@ -365,7 +365,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-              const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(4.0),
             borderSide: const BorderSide(
@@ -441,7 +441,6 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         appBar: AppBar(
           title: MyfoText(
             widget.objectLogId == null ? '작품 추가' : '작품 수정',
-            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
           leading: IconButton(
