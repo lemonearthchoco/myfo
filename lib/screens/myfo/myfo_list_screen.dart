@@ -9,6 +9,8 @@ import 'package:myfo/screens/myfo/myfo_add_screen.dart';
 import 'package:myfo/screens/myfo/myfo_detail_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../../themes/myfo_colors.dart';
+
 class MyfoListScreen extends StatelessWidget {
   const MyfoListScreen({Key? key}) : super(key: key);
 
@@ -24,11 +26,12 @@ class MyfoListScreen extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
               title: Text(
-                "myfo",
-                style: GoogleFonts.jost(
-                  fontSize: 20,
+                "FINISHED",
+                style: TextStyle(
+                  fontFamily: "Paperlogy",
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Theme.of(context).primaryColor
                 ),
               ),
             ),
@@ -76,11 +79,10 @@ class MyfoListScreen extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 16.0),
                             child: Text(groupKey, // 예: "2024-12"
-                                style: GoogleFonts.jost(
+                                style: TextStyle(
+                                  fontFamily: 'Paperlogy',
                                   fontWeight: FontWeight.w600,
-                                  // fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Colors.black,
+                                  fontSize: 16
                                 )),
                           ),
                           GridView.builder(
@@ -187,8 +189,8 @@ class MyfoListScreen extends StatelessWidget {
           );
         },
         shape: const CircleBorder(),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        backgroundColor: MyfoColors.primary,
+        foregroundColor: MyfoColors.secondary,
         child: const Icon(CupertinoIcons.add),
       ),
     );
@@ -203,8 +205,10 @@ class MyfoListScreen extends StatelessWidget {
       if (log.finishedAt == null) {
         yearMonth = "unknown";
       } else {
+        // yearMonth =
+        //     '${log.finishedAt!.year}-${log.finishedAt!.month.toString().padLeft(2, '0')}';
         yearMonth =
-            '${log.finishedAt!.year}-${log.finishedAt!.month.toString().padLeft(2, '0')}';
+        '${log.finishedAt!.year}';
       }
 
       if (!groupedLogs.containsKey(yearMonth)) {

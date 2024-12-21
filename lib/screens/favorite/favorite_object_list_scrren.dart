@@ -23,13 +23,17 @@ class FavoriteObjectListScreen extends StatelessWidget {
             expandedHeight: 20.0, // AppBar의 확장 높이
             pinned: true, // 스크롤 시 AppBar를 고정
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
-              title: Text("myfo",
-                  style: GoogleFonts.jost(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black)),
-            ),
+                titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
+                title: Text("FAVORITE",
+                    // style: GoogleFonts.jost(
+                    //   fontSize: 20,
+                    //   fontWeight: FontWeight.bold,
+                    // )),
+                    style: TextStyle(
+                        fontFamily: 'Paperlogy',
+                        fontSize: 16,
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold))),
           ),
           // GridView를 SliverList로 대체
           SliverPadding(
@@ -39,19 +43,23 @@ class FavoriteObjectListScreen extends StatelessWidget {
                 final logs = provider.favoriteLogs; // 좋아요 누른 objects
 
                 if (logs.isEmpty) {
-                  return const SliverFillRemaining(
+                  return SliverFillRemaining(
                     hasScrollBody: false,
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(CupertinoIcons.heart, size: 36, color: Colors.grey),
-                          SizedBox(height: 10,),
-                          MyfoText(
-                            "좋아하는 작품을 모아보세요!",
-                            // fontWeight: FontWeight.bold,
-                            color: Colors.grey,
+                          Icon(CupertinoIcons.heart,
+                              size: 36,
+                              color: Theme.of(context).primaryColorLight),
+                          const SizedBox(
+                            height: 10,
                           ),
+                          Text("좋아하는 작품을 모아보세요!",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)
+                              // fontWeight: FontWeight.bold,
+                              ),
                         ],
                       ),
                     ),
@@ -66,7 +74,7 @@ class FavoriteObjectListScreen extends StatelessWidget {
                     // childAspectRatio: 0.8, // 항목의 가로:세로 비율
                   ),
                   delegate: SliverChildBuilderDelegate(
-                        (context, index) {
+                    (context, index) {
                       final ObjectLog log = logs[index];
 
                       return GestureDetector(
@@ -88,17 +96,18 @@ class FavoriteObjectListScreen extends StatelessWidget {
                                   // borderRadius: const BorderRadius.vertical(top: Radius.circular(8.0)),
                                   child: log.images.isNotEmpty
                                       ? Image.network(
-                                    log.images[0].image, // 대표 이미지
-                                    fit: BoxFit.cover,
-                                    errorBuilder:
-                                        (context, error, stackTrace) {
-                                      return Image.file(
-                                          File(log.images[0].image), // 대표 이미지
-                                          fit: BoxFit.cover);
-                                    },
-                                  )
+                                          log.images[0].image, // 대표 이미지
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Image.file(
+                                                File(log
+                                                    .images[0].image), // 대표 이미지
+                                                fit: BoxFit.cover);
+                                          },
+                                        )
                                       : const Icon(Icons.image_not_supported,
-                                      size: 50),
+                                          size: 50),
                                 ),
                               )
                             ],

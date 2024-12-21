@@ -210,11 +210,11 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                       Navigator.pop(context); // 바텀 시트 닫기
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  ),
+                  // style: ElevatedButton.styleFrom(
+                  //   backgroundColor: Colors.black,
+                  //   foregroundColor: Colors.white,
+                  //   padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  // ),
                   child: const MyfoText('추가', color: Colors.white),
                 ),
               ),
@@ -365,7 +365,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(4.0),
             borderSide: const BorderSide(
@@ -439,9 +439,9 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: MyfoText(
+          title: Text(
             widget.objectLogId == null ? '작품 추가' : '작품 수정',
-            fontWeight: FontWeight.bold,
+            // fontWeight: FontWeight.bold,
           ),
           leading: IconButton(
             icon: Icon(CupertinoIcons.back, color: Colors.black),
@@ -539,8 +539,9 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const MyfoText('작품명',
-                    fontWeight: FontWeight.bold, fontSize: 14),
+                const Text('작품명',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                 const SizedBox(height: 10),
                 _buildTextField(
                   controller: _titleController,
@@ -549,8 +550,9 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                       value?.isEmpty ?? true ? '작품명을 입력해주세요.' : null,
                 ),
                 const SizedBox(height: 16),
-                const MyfoText('작품 소개',
-                    fontWeight: FontWeight.bold, fontSize: 14),
+                const Text('작품소개',
+                    style:
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                 const SizedBox(height: 10),
                 _buildTextField(
                     controller: _subtitleController, label: 'ex) 딸기우유맛 스웨터'),
@@ -578,8 +580,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                     controller: _tagsController,
                     label: 'ex) 탑 다운, 원통 뜨기(쉼표로 구분)'),
                 const SizedBox(height: 16),
-                const MyfoText('사용한 실',
-                    fontWeight: FontWeight.bold, fontSize: 14),
+                MyfoLabel(label: '사용한 실'),
                 const SizedBox(height: 10),
                 Wrap(
                   spacing: 8,
@@ -606,8 +607,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                const MyfoText('사용한 바늘',
-                    fontWeight: FontWeight.bold, fontSize: 14),
+                MyfoLabel(label: '사용한 바늘'),
                 const SizedBox(height: 10),
                 Wrap(
                   spacing: 8,
@@ -670,7 +670,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     return TextFormField(
       controller: controller,
       style: MyfoStyle.textStyle,
-      decoration: MyfoStyle.inputDecoration(label),
+      decoration: InputDecoration(labelText: label),
       validator: validator,
       maxLines: maxLines,
     );

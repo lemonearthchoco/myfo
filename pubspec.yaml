@@ -73,26 +73,24 @@ flutter:
   assets:
     - .env
   fonts:
-    - family: SCDream
+    - family: Paperlogy
       fonts:
-        - asset: assets/fonts/SCDream1.otf
+        - asset: assets/fonts/Paperlogy-1Thin.ttf
           weight: 100
-        - asset: assets/fonts/SCDream2.otf
+        - asset: assets/fonts/Paperlogy-2ExtraLight.ttf
           weight: 200
-        - asset: assets/fonts/SCDream3.otf
+        - asset: assets/fonts/Paperlogy-3Light.ttf
           weight: 300
-        - asset: assets/fonts/SCDream4.otf
+        - asset: assets/fonts/Paperlogy-4Regular.ttf
           weight: 400
-        - asset: assets/fonts/SCDream5.otf
+        - asset: assets/fonts/Paperlogy-5Medium.ttf
           weight: 500
-        - asset: assets/fonts/SCDream6.otf
+        - asset: assets/fonts/Paperlogy-6SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/SCDream7.otf
+        - asset: assets/fonts/Paperlogy-7Bold.ttf
           weight: 700
-        - asset: assets/fonts/SCDream8.otf
+        - asset: assets/fonts/Paperlogy-8ExtraBold.ttf
           weight: 800
-        - asset: assets/fonts/SCDream9.otf
-          weight: 900
     - family: Pretendard
       fonts:
         - asset: assets/fonts/Pretendard-ExtraLight.otf

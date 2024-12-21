@@ -17,12 +17,7 @@ class MyfoCtaButton extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-          ),
-          child: MyfoText(label, color: Colors.white),
+          child: Text(label),
         ),
       ),
     );

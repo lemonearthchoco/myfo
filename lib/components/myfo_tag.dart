@@ -16,11 +16,12 @@ class MyfoTag extends StatelessWidget {
         borderRadius: BorderRadius.circular(20), // 둥근 모서리
         border: Border.all(color: Color.fromARGB(230, 230, 230, 230)), // 테두리
       ),
-      child: MyfoText(
+      child: Text(
         tag,
-        fontWeight: FontWeight.bold,
-        fontSize: 12,
-        color: Color.fromARGB(255, 46, 46, 46)
+        style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 12
+        )
       ),
     );
   }

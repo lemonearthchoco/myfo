@@ -97,7 +97,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                             ),
                           );
                         },
-                        child: const MyfoText('수정하기'),
+                        child: const Text('수정하기'),
                       ),
                       CupertinoActionSheetAction(
                         onPressed: () {
@@ -105,14 +105,14 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                           _deleteObjectLog(context);
                         },
                         isDestructiveAction: true, // 파괴적 작업 스타일 (빨간색)
-                        child: const MyfoText('삭제하기', color: Colors.red),
+                        child: const Text('삭제하기'),
                       ),
                     ],
                     cancelButton: CupertinoActionSheetAction(
                       onPressed: () {
                         Navigator.pop(context); // ActionSheet 닫기
                       },
-                      child: const MyfoText(
+                      child: const Text(
                         '취소',
                       ),
                     ),
@@ -145,12 +145,12 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                 const MyfoDivider(),
                 _buildFoSection(log.finishedAt),
                 const MyfoDivider(),
+                _buildPatternSection(log.pattern),
+                const MyfoDivider(),
                 _buildTagSection(log.tags),
                 const MyfoDivider(),
                 _buildYarnSection(log.yarns),
-                const MyfoDivider(),
                 _buildNeedleSection(log.needles),
-                const MyfoDivider(),
                 _buildGaugeSection(log.gauges),
                 const MyfoDivider(),
                 _buildDescriptionSection(log.description),
@@ -251,14 +251,18 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MyfoText(
+                Text(
                   log.title,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  )
                 ),
                 const SizedBox(height: 6),
                 if (log.subtitle.isNotEmpty)
-                  MyfoText(log.subtitle, fontSize: 14),
+                  Text(log.subtitle, style: TextStyle(
+                    fontSize: 14
+                  )),
               ],
             ),
           ),
@@ -294,11 +298,12 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const MyfoText(
+          const Text(
             "태그",
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
-            fontSize: 12,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            )
           ),
           const SizedBox(height: 10),
           Wrap(
@@ -322,6 +327,9 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
     return _buildListSection("FO", ["2024-12-20"]);
   }
 
+  Widget _buildPatternSection(String pattern) {
+    return _buildListSection("패턴", pattern.isNotEmpty ? [pattern] : []);
+  }
   Widget _buildNeedleSection(List<String> needles) {
     return _buildListSection("사용 바늘", needles);
   }
@@ -340,11 +348,8 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const MyfoText(
-            "설명",
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
-            fontSize: 12,
+          const Text(
+            "설명"
           ),
           const SizedBox(height: 10),
           Text(
@@ -365,16 +370,14 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MyfoText(title,
-                fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey),
+            Text(title, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
             const SizedBox(height: 10),
             if (items.isNotEmpty)
               ...items.map(
                 (item) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2.75),
-                  child: MyfoText(
+                  child: Text(
                     item,
-                    fontSize: 14,
                   ),
                 ),
               )
@@ -382,10 +385,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10),
-                child: MyfoText('-',
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey),
+                child: Text('-'),
               )
           ],
         ));

@@ -41,10 +41,10 @@ class _MyfoMainScreen extends State<MyfoMainScreen>
       bottomNavigationBar: Container(
         padding: const EdgeInsets.only(bottom: 24.0), // 하단 여백 추가
         child: TabBar(
-          dividerColor: Colors.transparent,
-          indicatorColor: Colors.transparent,
-          labelColor: Colors.black,
-          unselectedLabelColor: Colors.grey,
+          // dividerColor: Colors.transparent,
+          // indicatorColor: Colors.transparent,
+          // labelColor: ThemeData(con),
+          // unselectedLabelColor: Colors.grey,
           overlayColor: WidgetStateProperty.resolveWith<Color?>(
             (Set<WidgetState> states) {
               return states.contains(WidgetState.focused) ? null : Colors.transparent;

@@ -12,11 +12,11 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("about",
-            style: GoogleFonts.jost(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black)),
+        title: Text("ABOUT")
+            // style: GoogleFonts.jost(
+            //   fontSize: 20,
+            //   fontWeight: FontWeight.bold,
+            // )),
       ),
       body: SingleChildScrollView(
         // padding: const EdgeInsets.all(16.0),
@@ -33,11 +33,11 @@ class AboutScreen extends StatelessWidget {
             //         child: const Row(
             //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             //             children: [
-            //               MyfoText(
+            //               Text(
             //                 '현재 버전',
             //                 fontWeight: FontWeight.bold,
             //               ),
-            //               MyfoText('1.0.0', color: Colors.black54)
+            //               Text('1.0.0', color: Colors.black54)
             //             ]),
             //       );;
             //     } else if (snapshot.hasError) {
@@ -47,11 +47,11 @@ class AboutScreen extends StatelessWidget {
             //         child: const Row(
             //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             //             children: [
-            //               MyfoText(
+            //               Text(
             //                 '현재 버전',
             //                 fontWeight: FontWeight.bold,
             //               ),
-            //               MyfoText('1.0.0', color: Colors.black54)
+            //               Text('1.0.0', color: Colors.black54)
             //             ]),
             //       );
             //     }
@@ -64,11 +64,11 @@ class AboutScreen extends StatelessWidget {
             //     child: const Row(
             //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
             //     children: [
-            //     MyfoText(
+            //     Text(
             //     '현재 버전',
             //     fontWeight: FontWeight.bold,
             //     ),
-            //     MyfoText('1.0.0', color: Colors.black54)
+            //     Text('1.0.0', color: Colors.black54)
             //     ]),
             //     );
             //   },
@@ -79,11 +79,9 @@ class AboutScreen extends StatelessWidget {
               child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    MyfoText(
-                      '현재 버전',
-                      fontWeight: FontWeight.bold,
-                    ),
-                    MyfoText('1.0.0', color: Colors.black54)
+                    Text('현재 버전',
+                        style: TextStyle(fontWeight: FontWeight.w600)),
+                    Text('1.0.0')
                   ]),
             ),
             Padding(
@@ -92,11 +90,8 @@ class AboutScreen extends StatelessWidget {
               child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    MyfoText(
-                      '피드백',
-                      fontWeight: FontWeight.bold,
-                    ),
-                    MyfoText('gkscodus11@gmail.com', color: Colors.black54)
+                    Text('피드백', style: TextStyle(fontWeight: FontWeight.w600)),
+                    Text('gkscodus11@gmail.com')
                   ]),
             ),
             Container(
@@ -106,10 +101,8 @@ class AboutScreen extends StatelessWidget {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const MyfoText(
-                        '테마 설정',
-                        fontWeight: FontWeight.bold,
-                      ),
+                      const Text('테마 설정',
+                          style: TextStyle(fontWeight: FontWeight.w600)),
                       GestureDetector(
                         child:
                             Icon(CupertinoIcons.forward, color: Colors.black54),
