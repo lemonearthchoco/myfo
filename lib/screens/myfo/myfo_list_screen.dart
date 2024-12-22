@@ -196,26 +196,25 @@ class MyfoListScreen extends StatelessWidget {
     );
   }
 
-  // Helper function: Logs를 {year}-{month}로 그룹화
   Map<String, List<ObjectLog>> _groupLogsByMonth(List<ObjectLog> logs) {
     final Map<String, List<ObjectLog>> groupedLogs = {};
 
     for (final log in logs) {
-      String yearMonth = "";
+      String year = "";
       if (log.finishedAt == null) {
-        yearMonth = "unknown";
+        year = "unknown";
       } else {
         // yearMonth =
         //     '${log.finishedAt!.year}-${log.finishedAt!.month.toString().padLeft(2, '0')}';
-        yearMonth =
+        year =
         '${log.finishedAt!.year}';
       }
 
-      if (!groupedLogs.containsKey(yearMonth)) {
-        groupedLogs[yearMonth] = [];
+      if (!groupedLogs.containsKey(year)) {
+        groupedLogs[year] = [];
       }
 
-      groupedLogs[yearMonth]!.add(log);
+      groupedLogs[year]!.add(log);
     }
 
     return groupedLogs;
