@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myfo/components/myfo_text.dart';
 
+import '../themes/myfo_colors.dart';
+
 enum MessageLevel { SUCCESS, WARNING, ERROR }
 
 class MyfoToast extends StatelessWidget {
@@ -14,7 +16,7 @@ class MyfoToast extends StatelessWidget {
     switch (level) {
       case MessageLevel.SUCCESS:
         return Icon(CupertinoIcons.check_mark_circled_solid,
-            color: Colors.lightGreenAccent);
+            color: MyfoColors.primaryLight);
       case MessageLevel.WARNING:
         return Icon(CupertinoIcons.check_mark_circled_solid,
             color: Colors.lightGreenAccent);
@@ -42,7 +44,7 @@ class MyfoToast extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            MyfoText(message, color: Colors.white),
+            Text(message, style: const TextStyle(color: Colors.white)),
           ],
         ),
       ),

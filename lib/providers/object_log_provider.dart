@@ -6,6 +6,8 @@ import 'package:myfo/models/object_log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
+import '../models/object_pattern.dart';
+
 class ObjectLogProvider extends ChangeNotifier {
   List<ObjectLog> _logs = [];
 
@@ -31,7 +33,8 @@ class ObjectLogProvider extends ChangeNotifier {
       id: const Uuid().v4(),
       title: "니드모어 스웨터",
       subtitle: "녹차맛 니드모어",
-      pattern: '',
+      pattern: ObjectPattern(
+          type: 'url', content: 'https://www.youtube.com/watch?v=2MB077qFgM4'),
       images: [
         ObjectImage(
             id: const Uuid().v4(),
@@ -50,7 +53,7 @@ class ObjectLogProvider extends ChangeNotifier {
       id: const Uuid().v4(),
       title: "블랙베리 아란 스웨터",
       subtitle: "",
-      pattern: '',
+      pattern: ObjectPattern(type: 'text', content: '김대리의 데일리 뜨개'),
       images: [
         ObjectImage(
             id: const Uuid().v4(),
@@ -72,7 +75,8 @@ class ObjectLogProvider extends ChangeNotifier {
       id: const Uuid().v4(),
       title: "dotori hat",
       subtitle: "",
-      pattern: '',
+      pattern: ObjectPattern(
+          type: 'url', content: 'https://www.youtube.com/watch?v=2MB077qFgM4'),
       images: [
         ObjectImage(
             id: const Uuid().v4(),
@@ -90,25 +94,8 @@ class ObjectLogProvider extends ChangeNotifier {
       id: const Uuid().v4(),
       title: "모헤어 장갑",
       subtitle: "",
-      pattern: '',
-      images: [
-        ObjectImage(
-            id: const Uuid().v4(),
-            image:
-                "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
-      ],
-      description: "모헤어 장갑",
-      tags: ["장갑 바늘"],
-      needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
-      yarns: ["솜솜뜨개 프빌 포레스트 2합"],
-      gauges: [],
-      finishedAt: DateTime(2024, 11, 10),
-    ),
-    ObjectLog(
-      id: const Uuid().v4(),
-      title: "모헤어 장갑",
-      subtitle: "",
-      pattern: '',
+      pattern: ObjectPattern(
+          type: 'url', content: 'https://www.youtube.com/watch?v=2MB077qFgM4'),
       images: [
         ObjectImage(
             id: const Uuid().v4(),
@@ -126,7 +113,8 @@ class ObjectLogProvider extends ChangeNotifier {
       id: const Uuid().v4(),
       title: "모헤어 장갑",
       subtitle: "",
-      pattern: '',
+      pattern: ObjectPattern(
+          type: 'url', content: 'https://www.youtube.com/watch?v=2MB077qFgM4'),
       images: [
         ObjectImage(
             id: const Uuid().v4(),
@@ -144,12 +132,13 @@ class ObjectLogProvider extends ChangeNotifier {
       id: const Uuid().v4(),
       title: "모헤어 장갑",
       subtitle: "",
-      pattern: '',
+      pattern: ObjectPattern(
+          type: 'url', content: 'https://www.youtube.com/watch?v=2MB077qFgM4'),
       images: [
         ObjectImage(
             id: const Uuid().v4(),
             image:
-            "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
+                "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
       ],
       description: "모헤어 장갑",
       tags: ["장갑 바늘"],
@@ -162,12 +151,13 @@ class ObjectLogProvider extends ChangeNotifier {
       id: const Uuid().v4(),
       title: "모헤어 장갑",
       subtitle: "",
-      pattern: '',
+      pattern: ObjectPattern(
+          type: 'url', content: 'https://www.youtube.com/watch?v=2MB077qFgM4'),
       images: [
         ObjectImage(
             id: const Uuid().v4(),
             image:
-            "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
+                "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
       ],
       description: "모헤어 장갑",
       tags: ["장갑 바늘"],
@@ -180,12 +170,13 @@ class ObjectLogProvider extends ChangeNotifier {
       id: const Uuid().v4(),
       title: "모헤어 장갑",
       subtitle: "",
-      pattern: '',
+      pattern: ObjectPattern(
+          type: 'url', content: 'https://www.youtube.com/watch?v=2MB077qFgM4'),
       images: [
         ObjectImage(
             id: const Uuid().v4(),
             image:
-            "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
+                "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
       ],
       description: "모헤어 장갑",
       tags: ["장갑 바늘"],
@@ -194,78 +185,6 @@ class ObjectLogProvider extends ChangeNotifier {
       gauges: [],
       finishedAt: DateTime(2024, 9, 2),
     ),
-    ObjectLog(
-      id: const Uuid().v4(),
-      title: "모헤어 장갑",
-      subtitle: "",
-      pattern: '',
-      images: [
-        ObjectImage(
-            id: const Uuid().v4(),
-            image:
-            "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
-      ],
-      description: "모헤어 장갑",
-      tags: ["장갑 바늘"],
-      needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
-      yarns: ["솜솜뜨개 프빌 포레스트 2합"],
-      gauges: [],
-      finishedAt: DateTime(2024, 9, 2),
-    ),ObjectLog(
-      id: const Uuid().v4(),
-      title: "모헤어 장갑",
-      subtitle: "",
-      pattern: '',
-      images: [
-        ObjectImage(
-            id: const Uuid().v4(),
-            image:
-            "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
-      ],
-      description: "모헤어 장갑",
-      tags: ["장갑 바늘"],
-      needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
-      yarns: ["솜솜뜨개 프빌 포레스트 2합"],
-      gauges: [],
-      finishedAt: DateTime(2024, 9, 2),
-    ),
-    ObjectLog(
-      id: const Uuid().v4(),
-      title: "모헤어 장갑",
-      subtitle: "",
-      pattern: '',
-      images: [
-        ObjectImage(
-            id: const Uuid().v4(),
-            image:
-            "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
-      ],
-      description: "모헤어 장갑",
-      tags: ["장갑 바늘"],
-      needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
-      yarns: ["솜솜뜨개 프빌 포레스트 2합"],
-      gauges: [],
-      finishedAt: DateTime(2024, 9, 2),
-    ),
-    ObjectLog(
-      id: const Uuid().v4(),
-      title: "모헤어 장갑",
-      subtitle: "",
-      pattern: '',
-      images: [
-        ObjectImage(
-            id: const Uuid().v4(),
-            image:
-            "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
-      ],
-      description: "모헤어 장갑",
-      tags: ["장갑 바늘"],
-      needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
-      yarns: ["솜솜뜨개 프빌 포레스트 2합"],
-      gauges: [],
-      finishedAt: DateTime(2024, 9, 2),
-    ),
-
   ];
 
   Future<void> loadLogs({bool forceReset = false}) async {

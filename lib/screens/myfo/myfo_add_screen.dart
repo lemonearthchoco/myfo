@@ -12,12 +12,14 @@ import 'package:myfo/components/myfo_text.dart';
 import 'package:myfo/components/myfo_toast.dart';
 import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
+import 'package:myfo/models/object_pattern.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
 import '../../components/myfo_style.dart';
+import '../../themes/myfo_colors.dart';
 
 class ObjectLogAddScreen extends StatefulWidget {
   final String? objectLogId;
@@ -90,7 +92,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         _titleController.text = existingLog.title ?? '';
         _subtitleController.text = existingLog.subtitle ?? '';
         _descriptionController.text = existingLog.description ?? '';
-        _patternController.text = existingLog.pattern ?? '';
+        _patternController.text = existingLog.pattern.content ?? '';
         _uploadedImageUrls =
             existingLog.images.map((img) => img.image).toList();
         _yarns.addAll(existingLog.yarns);
@@ -302,7 +304,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: MyfoColors.secondary,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -317,11 +319,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 16),
-              const MyfoText(
-                '완성일 선택',
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
+              const Text('완성일',
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
               const SizedBox(height: 16),
               CalendarDatePicker(
                 initialDate: _finishedAt ?? DateTime.now(),
@@ -363,7 +362,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
           floatingLabelBehavior: FloatingLabelBehavior.never,
           alignLabelWithHint: true,
           filled: true,
-          fillColor: Colors.white,
+          fillColor: MyfoColors.secondary,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           border: OutlineInputBorder(
@@ -388,12 +387,12 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
             ),
           ),
         ),
-        child: MyfoText(
+        child: Text(
           _finishedAt != null
               ? '${_finishedAt!.year}-${_finishedAt!.month.toString().padLeft(2, '0')}-${_finishedAt!.day.toString().padLeft(2, '0')}'
-              : '날짜를 선택해주세요',
-          color: _finishedAt != null ? Colors.black : Colors.grey,
-          fontWeight: FontWeight.normal,
+              : '작품 완성일을 선택해주세요',
+          style: TextStyle(
+              fontSize: 16, fontWeight: FontWeight.normal, color: Colors.grey),
         ),
       ),
     );
@@ -408,7 +407,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         id: widget.objectLogId ?? const Uuid().v4(),
         title: _titleController.text,
         subtitle: _subtitleController.text,
-        pattern: _patternController.text,
+        pattern: ObjectPattern(type: 'url', content: _patternController.text),
         description: _descriptionController.text,
         images: _uploadedImageUrls
             .map((image) => ObjectImage(id: const Uuid().v4(), image: image))
@@ -416,7 +415,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         yarns: _yarns,
         needles: _needles,
         tags: _tagsController.text.split(',').map((e) => e.trim()).toList(),
-        gauges: _gaugesController.text.split(',').map((e) => e.trim()).toList(),
+        gauges: [_gaugesController.text.trim()],
         finishedAt: _finishedAt,
       );
 
@@ -552,7 +551,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                 const SizedBox(height: 16),
                 const Text('작품소개',
                     style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                 const SizedBox(height: 10),
                 _buildTextField(
                     controller: _subtitleController, label: 'ex) 딸기우유맛 스웨터'),

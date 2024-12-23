@@ -9,6 +9,7 @@ import 'package:myfo/components/myfo_text.dart';
 import 'package:myfo/components/myfo_toast.dart';
 import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
+import 'package:myfo/models/object_pattern.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:myfo/screens/myfo/myfo_add_screen.dart';
 import 'package:provider/provider.dart';
@@ -251,18 +252,14 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  log.title,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  )
-                ),
+                Text(log.title,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    )),
                 const SizedBox(height: 6),
                 if (log.subtitle.isNotEmpty)
-                  Text(log.subtitle, style: TextStyle(
-                    fontSize: 14
-                  )),
+                  Text(log.subtitle, style: TextStyle(fontSize: 14)),
               ],
             ),
           ),
@@ -298,13 +295,11 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "태그",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            )
-          ),
+          const Text("태그",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              )),
           const SizedBox(height: 10),
           Wrap(
             spacing: 8.0,
@@ -322,14 +317,12 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
 
   Widget _buildFoSection(DateTime? finishedAt) {
     if (finishedAt != null) {
-      return _buildListSection("FO", [DateFormat('yyyy-MM-dd').format(finishedAt)]);
+      return _buildListSection(
+          "FO", [DateFormat('yyyy-MM-dd').format(finishedAt)]);
     }
     return _buildListSection("FO", ["2024-12-20"]);
   }
 
-  Widget _buildPatternSection(String pattern) {
-    return _buildListSection("패턴", pattern.isNotEmpty ? [pattern] : []);
-  }
   Widget _buildNeedleSection(List<String> needles) {
     return _buildListSection("사용 바늘", needles);
   }
@@ -348,9 +341,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "설명"
-          ),
+          const Text("설명"),
           const SizedBox(height: 10),
           Text(
             description,
@@ -364,13 +355,39 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
     );
   }
 
+  Widget _buildPatternSection(ObjectPattern pattern) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('패턴',
+                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.75),
+              child: Text(
+                pattern.content
+              ),
+            ),
+            // else
+            //   Padding(
+            //     padding:
+            //     const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10),
+            //     child: Text('-'),
+            //   )
+          ],
+        ));
+  }
+
   Widget _buildListSection(String title, List<String> items) {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+            Text(title,
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
             const SizedBox(height: 10),
             if (items.isNotEmpty)
               ...items.map(

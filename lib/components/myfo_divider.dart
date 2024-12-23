@@ -12,20 +12,23 @@ class MyfoDivider extends StatelessWidget {
     Key? key,
     this.height = 10.0, // 충분한 높이를 설정
     this.dashWidth = 8.0,
-    this.dashHeight = 2.0,
-    this.color = MyfoColors.darkDefaultLight, // 명시적인 색상 설정
+    this.dashHeight = 1.0,
+    this.color = MyfoColors.secondaryDark, // 명시적인 색상 설정
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height, // 디바이더 높이
-      width: double.infinity, // 전체 가로 길이
-      child: CustomPaint(
-        painter: _DottedLinePainter(
-          dashWidth: dashWidth,
-          dashHeight: dashHeight,
-          color: color,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
+      child: SizedBox(
+        height: height, // 디바이더 높이
+        width: double.infinity, // 전체 가로 길이
+        child: CustomPaint(
+          painter: _DottedLinePainter(
+            dashWidth: dashWidth,
+            dashHeight: dashHeight,
+            color: color,
+          ),
         ),
       ),
     );

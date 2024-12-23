@@ -1,13 +1,15 @@
 import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/param/object_log_param.dart';
 
+import 'object_pattern.dart';
+
 class ObjectLog {
   static final String name = "object_log";
 
   final String id; // uuid
   final String title;
   final String subtitle;
-  final String pattern;
+  final ObjectPattern pattern;
   final String description;
   final List<ObjectImage> images;
   final List<String> yarns;
@@ -56,7 +58,7 @@ class ObjectLog {
       'title': title,
       'subtitle': subtitle,
       'description': description,
-      'pattern': pattern,
+      'pattern': {'type': pattern.type, 'content': pattern.content},
       'yarns': yarns,
       'needles': needles,
       'tags': tags,
@@ -76,7 +78,8 @@ class ObjectLog {
       title: json['title'],
       subtitle: json['subtitle'],
       description: json['description'],
-      pattern: json['pattern'],
+      pattern: ObjectPattern(
+          type: json['pattern']['type'], content: json['pattern']['content']),
       yarns: List<String>.from(json['yarns']),
       needles: List<String>.from(json['needles']),
       tags: List<String>.from(json['tags']),
@@ -85,10 +88,9 @@ class ObjectLog {
       finishedAt: json['finishedAt'] != null
           ? DateTime.parse(json['finishedAt'])
           : null,
-      isFavorite: json['isFavorite'] ?? false, // 기본값 처리
-      likedAt: json['likedAt'] != null
-          ? DateTime.parse(json['likedAt'])
-          : null,
+      isFavorite: json['isFavorite'] ?? false,
+      // 기본값 처리
+      likedAt: json['likedAt'] != null ? DateTime.parse(json['likedAt']) : null,
     );
   }
 }

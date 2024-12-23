@@ -11,7 +11,7 @@ class MyfoColors {
   // Secondary Palette
   static const Color secondary = Color(0xFFFFFDF9);
   static const Color secondaryLight =  Color(0xFFFFFDF9);
-  static const Color secondaryDark =  Color(0xFFFFFDF9);
+  static const Color secondaryDark =  Color(0xB39e988d);
 
   // Neutral Colors
   static const Color white = Colors.white;
