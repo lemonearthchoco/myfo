@@ -54,7 +54,7 @@ class _MyfoMainScreen extends State<MyfoMainScreen>
           tabs: const [
             Tab(icon: Icon(CupertinoIcons.folder_open)),
             Tab(icon: Icon(CupertinoIcons.heart)),
-            Tab(icon: Icon(CupertinoIcons.info)),
+            Tab(icon: Icon(CupertinoIcons.person)),
           ],
         ),
       ),

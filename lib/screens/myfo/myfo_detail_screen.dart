@@ -295,9 +295,9 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("태그",
+          const Text("사용 기법",
               style: TextStyle(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 fontSize: 12,
               )),
           const SizedBox(height: 10),
@@ -341,7 +341,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("설명"),
+          const Text("후기", style: const TextStyle(fontWeight: FontWeight.w600)),
           const SizedBox(height: 10),
           Text(
             description,

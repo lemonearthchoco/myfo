@@ -12,7 +12,7 @@ class MyfoLabel extends StatelessWidget {
     if (optional) {
       return Row(
         children: [
-          Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
           // MyfoText("(선택)", fontSize: 14)
         ],
       );

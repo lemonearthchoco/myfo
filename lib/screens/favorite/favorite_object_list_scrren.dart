@@ -30,7 +30,6 @@ class FavoriteObjectListScreen extends StatelessWidget {
                     //   fontWeight: FontWeight.bold,
                     // )),
                     style: TextStyle(
-                        fontFamily: 'Paperlogy',
                         fontSize: 16,
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold))),

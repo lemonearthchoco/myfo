@@ -27,7 +27,7 @@ class MyfoDivider extends StatelessWidget {
           painter: _DottedLinePainter(
             dashWidth: dashWidth,
             dashHeight: dashHeight,
-            color: color,
+            color: Theme.of(context).dividerColor,
           ),
         ),
       ),

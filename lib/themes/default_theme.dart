@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:myfo/themes/myfo_custom_colors.dart';
+import 'package:myfo/themes/myfo_tag_decoration.dart';
 
 import 'myfo_colors.dart';
 
@@ -15,8 +17,18 @@ class MyfoDefaultTheme {
     primaryColor: MyfoColors.primary,
     primaryColorLight: MyfoColors.primaryLight,
     primaryColorDark: MyfoColors.primaryLight,
+    dividerColor: MyfoColors.secondaryDark,
 
-    // 올리브색 (primary)
+    extensions: <ThemeExtension<dynamic>>[
+      MyfoCustomColors(),
+      MyfoTagDecoration(
+          defaultBoxDecoration: BoxDecoration(
+        color: MyfoColors.beigeLight,
+        borderRadius: BorderRadius.circular(20), // 둥근 모서리
+        border: Border.all(color: MyfoColors.beigeLight), // 테두리
+      )),
+    ],
+
     fontFamily: 'Paperlogy',
     inputDecorationTheme: InputDecorationTheme(
       floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -54,7 +66,30 @@ class MyfoDefaultTheme {
     ),
     secondaryHeaderColor: const Color(0xFFD3D3D3),
     // 연한 회색 (secondary)
-
+    chipTheme: ChipThemeData(
+        backgroundColor: MyfoColors.beigeLight,
+        selectedColor: MyfoColors.beigeLight,
+        deleteIconColor: MyfoColors.darkDefault,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide.none,
+        ),
+        secondarySelectedColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        labelStyle: TextStyle(
+            color: MyfoColors.darkDefault,
+            fontFamily: "Paperlogy",
+            fontSize: 14)
+        // color:  WidgetStateProperty.resolveWith((states) {
+        //   if (states.isNotEmpty) {
+        //     return MyfoColors.darkDefault;
+        //   } else {
+        //     return Colors.transparent;
+        //   }
+        //    // 기본 텍스트
+        // }),
+        // color: MyfoColors.darkDefault,
+        ),
     // 배경색
     scaffoldBackgroundColor: MyfoColors.secondary,
 

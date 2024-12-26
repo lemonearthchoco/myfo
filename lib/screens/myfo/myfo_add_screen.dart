@@ -270,28 +270,22 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    final needle = _needleInputController.text.trim();
-                    final size = _sizeInputController.text.trim();
-                    if (needle.isNotEmpty) {
-                      setState(() {
-                        if (size.isNotEmpty) {
-                          _needles.add(needle + '/' + size);
-                        } else {
-                          _needles.add(needle); // 실 추가
-                        }
-                      });
-                      Navigator.pop(context); // 바텀 시트 닫기
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  ),
-                  child: const Text('추가하기'),
-                ),
+                child: MyfoCtaButton(
+                    onPressed: () {
+                      final needle = _needleInputController.text.trim();
+                      final size = _sizeInputController.text.trim();
+                      if (needle.isNotEmpty) {
+                        setState(() {
+                          if (size.isNotEmpty) {
+                            _needles.add(needle + '/' + size);
+                          } else {
+                            _needles.add(needle);
+                          }
+                        });
+                        Navigator.pop(context); // 바텀 시트 닫기
+                      }
+                    },
+                    label: '추가'),
               ),
             ],
           ),
@@ -320,7 +314,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
             children: [
               const SizedBox(height: 16),
               const Text('완성일',
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18)),
               const SizedBox(height: 16),
               CalendarDatePicker(
                 initialDate: _finishedAt ?? DateTime.now(),
@@ -335,16 +330,17 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
+                child: MyfoCtaButton(
+                  label: '선택 완료',
                   onPressed: () {
                     Navigator.pop(context); // BottomSheet 닫기
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  ),
-                  child: const Text('완료'),
+                  // style: ElevatedButton.styleFrom(
+                  //   backgroundColor: Colors.black,
+                  //   foregroundColor: Colors.white,
+                  //   padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  // ),
+                  // child: const Text('완료'),
                 ),
               ),
             ],
@@ -449,210 +445,208 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                const MyfoText(
-                  '작품 이미지',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-                const SizedBox(height: 10),
-                // 미리보기 컴포넌트 추가
-                SizedBox(
-                  height: 100, // 정사각형 칩 높이
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _uploadedImageUrls.length + 1,
-                    // 1은 기본 버튼을 위한 추가 항목
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        // 첫 번째 항목은 기본 버튼
-                        return Container(
-                          margin: const EdgeInsets.only(right: 8), // 간격 조정
-                          width: 100,
-                          height: 100,
-                          child: ElevatedButton(
-                            onPressed: _pickImages,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: _isUploading
-                                ? CircularProgressIndicator(color: Colors.white)
-                                : const Icon(CupertinoIcons.add,
-                                    size: 32, color: Colors.white),
-                          ),
-                        );
-                      } else {
-                        // 두 번째 항목부터는 이미지 미리보기
-                        final imagePath = _uploadedImageUrls[
-                            index - 1]; // 이미지 목록은 index 1부터 시작
-                        return Container(
-                          margin: const EdgeInsets.only(right: 8), // 간격 조정
-                          width: 100,
-                          height: 100,
-                          child: Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                // 모서리 둥글게
-                                child: Image.network(
-                                  imagePath,
-                                  fit: BoxFit.cover,
-                                  width: 100,
-                                  height: 100,
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus(); // 키보드 닫기
+            },
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  const MyfoText(
+                    '작품 이미지',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                  const SizedBox(height: 10),
+                  // 미리보기 컴포넌트 추가
+                  SizedBox(
+                    height: 100, // 정사각형 칩 높이
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _uploadedImageUrls.length + 1,
+                      // 1은 기본 버튼을 위한 추가 항목
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          // 첫 번째 항목은 기본 버튼
+                          return Container(
+                            margin: const EdgeInsets.only(right: 8), // 간격 조정
+                            width: 100,
+                            height: 100,
+                            child: ElevatedButton(
+                              onPressed: _pickImages,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: MyfoColors.beigeDark,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
+                                shadowColor: Colors.transparent
                               ),
-                              Positioned(
-                                top: 4,
-                                right: 4,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _uploadedImageUrls
-                                          .removeAt(index - 1); // 이미지 삭제
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.black54,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.close,
-                                      size: 16,
-                                      color: Colors.white,
+                              child: _isUploading
+                                  ? CircularProgressIndicator(color: Colors.white)
+                                  : const Icon(CupertinoIcons.add,
+                                      size: 32, color: Colors.white),
+                            ),
+                          );
+                        } else {
+                          // 두 번째 항목부터는 이미지 미리보기
+                          final imagePath = _uploadedImageUrls[
+                              index - 1]; // 이미지 목록은 index 1부터 시작
+                          return Container(
+                            margin: const EdgeInsets.only(right: 8), // 간격 조정
+                            width: 100,
+                            height: 100,
+                            child: Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  // 모서리 둥글게
+                                  child: Image.network(
+                                    imagePath,
+                                    fit: BoxFit.cover,
+                                    width: 100,
+                                    height: 100,
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 4,
+                                  right: 4,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _uploadedImageUrls
+                                            .removeAt(index - 1); // 이미지 삭제
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.black54,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.close,
+                                        size: 16,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    },
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                const Text('작품명',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                const SizedBox(height: 10),
-                _buildTextField(
-                  controller: _titleController,
-                  label: 'ex) 따뜻한 겨울 스웨터',
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? '작품명을 입력해주세요.' : null,
-                ),
-                const SizedBox(height: 16),
-                const Text('작품소개',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                const SizedBox(height: 10),
-                _buildTextField(
-                    controller: _subtitleController, label: 'ex) 딸기우유맛 스웨터'),
-                const SizedBox(height: 16),
-                MyfoLabel(label: "완성일", optional: true),
-                const SizedBox(height: 10),
-                _buildDateField(),
-                const SizedBox(height: 16),
-                MyfoLabel(
-                  label: "패턴",
-                  optional: false,
-                ),
-                const SizedBox(height: 10),
-                _buildTextField(
-                  controller: _patternController,
-                  label: 'ex) 자작 도안',
-                ),
-                const SizedBox(height: 16),
-                MyfoLabel(
-                  label: "사용 기법",
-                  optional: false,
-                ),
-                const SizedBox(height: 10),
-                _buildTextField(
-                    controller: _tagsController,
-                    label: 'ex) 탑 다운, 원통 뜨기(쉼표로 구분)'),
-                const SizedBox(height: 16),
-                MyfoLabel(label: '사용한 실'),
-                const SizedBox(height: 10),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    ..._yarns.map((yarn) {
-                      return Chip(
-                          label: MyfoText(yarn),
-                          backgroundColor: Colors.grey[200],
-                          deleteIcon: const Icon(Icons.close,
-                              size: 16, color: Colors.black),
-                          onDeleted: () {
-                            setState(() {
-                              _yarns.remove(yarn); // 항목 삭제
+                  const SizedBox(height: 16),
+                  const Text('작품명',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                  const SizedBox(height: 10),
+                  _buildTextField(
+                    controller: _titleController,
+                    label: 'ex) 따뜻한 겨울 스웨터',
+                    validator: (value) =>
+                        value?.isEmpty ?? true ? '작품명을 입력해주세요.' : null,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('작품소개',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                  const SizedBox(height: 10),
+                  _buildTextField(
+                      controller: _subtitleController, label: 'ex) 딸기우유맛 스웨터'),
+                  const SizedBox(height: 16),
+                  MyfoLabel(label: "완성일", optional: true),
+                  const SizedBox(height: 10),
+                  _buildDateField(),
+                  const SizedBox(height: 16),
+                  MyfoLabel(
+                    label: "패턴",
+                    optional: false,
+                  ),
+                  const SizedBox(height: 10),
+                  _buildTextField(
+                    controller: _patternController,
+                    label: 'ex) 자작 도안',
+                  ),
+                  const SizedBox(height: 16),
+                  MyfoLabel(
+                    label: "사용 기법",
+                    optional: false,
+                  ),
+                  const SizedBox(height: 10),
+                  _buildTextField(
+                      controller: _tagsController,
+                      label: 'ex) 탑 다운, 원통 뜨기(쉼표로 구분)'),
+                  const SizedBox(height: 16),
+                  MyfoLabel(label: '사용한 실'),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      ..._yarns.map((yarn) {
+                        return Chip(
+                            label: Text(yarn),
+                            // backgroundColor: Colors.grey[200],
+                            deleteIcon: const Icon(Icons.close, size: 16),
+                            onDeleted: () {
+                              setState(() {
+                                _yarns.remove(yarn); // 항목 삭제
+                              });
                             });
-                          });
-                    }).toList(),
-                    IconButton(
-                      onPressed: () => _showYarnsBottomSheet(context),
-                      icon: const Icon(CupertinoIcons.add),
-                      color: Colors.grey,
-                      tooltip: '실 추가하기',
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                MyfoLabel(label: '사용한 바늘'),
-                const SizedBox(height: 10),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    ..._needles.map((needle) {
-                      return Chip(
-                          label: MyfoText(needle),
-                          backgroundColor: Colors.grey[200],
-                          deleteIcon: const Icon(Icons.close,
-                              size: 16, color: Colors.black),
-                          onDeleted: () {
-                            setState(() {
-                              _needles.remove(needle); // 항목 삭제
+                      }).toList(),
+                      IconButton(
+                        onPressed: () => _showYarnsBottomSheet(context),
+                        icon: const Icon(CupertinoIcons.add),
+                        tooltip: '실 추가하기',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  MyfoLabel(label: '사용한 바늘'),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      ..._needles.map((needle) {
+                        return Chip(
+                            label: Text(needle),
+                            deleteIcon: const Icon(Icons.close, size: 16),
+                            onDeleted: () {
+                              setState(() {
+                                _needles.remove(needle); // 항목 삭제
+                              });
                             });
-                          });
-                    }).toList(),
-                    IconButton(
-                      onPressed: () => _showNeedlesBottomSheet(context),
-                      icon: const Icon(CupertinoIcons.add),
-                      color: Colors.grey,
-                      tooltip: '바늘 추가', // 접근성을 위한 툴팁
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                const MyfoText('게이지',
-                    fontWeight: FontWeight.bold, fontSize: 14),
-                const SizedBox(height: 10),
-                _buildTextField(
-                  controller: _gaugesController,
-                  label: 'ex) 세탁전 27x31',
-                  maxLines: 2,
-                  validator: (value) =>
-                      value?.isEmpty ?? true ? '설명을 입력해주세요.' : null,
-                ),
-                const SizedBox(height: 16),
-                const MyfoText('후기', fontWeight: FontWeight.bold, fontSize: 14),
-                const SizedBox(height: 10),
-                _buildTextField(
-                    controller: _descriptionController,
-                    label: '이 작품에 대한 이야기를 입력해주세요.',
-                    maxLines: 6),
+                      }).toList(),
+                      IconButton(
+                        onPressed: () => _showNeedlesBottomSheet(context),
+                        icon: const Icon(CupertinoIcons.add),
+                        tooltip: '바늘 추가', // 접근성을 위한 툴팁
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  MyfoLabel(label: '게이지'),
+                  const SizedBox(height: 10),
+                  _buildTextField(
+                    controller: _gaugesController,
+                    label: 'ex) 세탁전 27x31',
+                    maxLines: 2,
+                  ),
+                  const SizedBox(height: 16),
+                  MyfoLabel(label: '후기'),
+                  const SizedBox(height: 10),
+                  _buildTextField(
+                      controller: _descriptionController,
+                      label: '이 작품에 대한 이야기를 입력해주세요.',
+                      maxLines: 6),
 
-                const SizedBox(height: 16),
-              ],
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
           ),
         ),
@@ -667,11 +661,10 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     int maxLines = 1,
   }) {
     return TextFormField(
-      controller: controller,
-      style: MyfoStyle.textStyle,
-      decoration: InputDecoration(labelText: label),
-      validator: validator,
-      maxLines: maxLines,
+        controller: controller,
+        decoration: InputDecoration(labelText: label),
+        validator: validator,
+        maxLines: maxLines
     );
   }
 }

@@ -28,11 +28,10 @@ class MyfoListScreen extends StatelessWidget {
               title: Text(
                 "FINISHED",
                 style: TextStyle(
-                  fontFamily: "Paperlogy",
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor
-                ),
+                    fontFamily: "Paperlogy",
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor),
               ),
             ),
           ),
@@ -44,19 +43,21 @@ class MyfoListScreen extends StatelessWidget {
                 final logs = provider.logs;
 
                 if (logs.isEmpty) {
-                  return const SliverFillRemaining(
+                  return SliverFillRemaining(
                     hasScrollBody: false,
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(CupertinoIcons.folder_badge_plus, size: 36, color: Colors.grey),
-                          SizedBox(height: 10,),
-                          MyfoText(
-                            "내 작품을 등록해보세요!",
-                            // fontWeight: FontWeight.bold,
-                            color: Colors.grey,
+                          Icon(CupertinoIcons.folder_badge_plus,
+                              size: 36,
+                              color: Theme.of(context).primaryColorLight),
+                          SizedBox(
+                            height: 10,
                           ),
+                          Text("내 작품을 등록해보세요!",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight)),
                         ],
                       ),
                     ),
@@ -80,10 +81,10 @@ class MyfoListScreen extends StatelessWidget {
                                 vertical: 10.0, horizontal: 16.0),
                             child: Text(groupKey, // 예: "2024-12"
                                 style: TextStyle(
-                                  fontFamily: 'Paperlogy',
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16
-                                )),
+                                    fontFamily: 'Paperlogy',
+                                    fontWeight: FontWeight.w600,
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 16)),
                           ),
                           GridView.builder(
                             shrinkWrap: true,
@@ -206,8 +207,7 @@ class MyfoListScreen extends StatelessWidget {
       } else {
         // yearMonth =
         //     '${log.finishedAt!.year}-${log.finishedAt!.month.toString().padLeft(2, '0')}';
-        year =
-        '${log.finishedAt!.year}';
+        year = '${log.finishedAt!.year}';
       }
 
       if (!groupedLogs.containsKey(year)) {

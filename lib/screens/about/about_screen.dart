@@ -12,11 +12,7 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ABOUT")
-            // style: GoogleFonts.jost(
-            //   fontSize: 20,
-            //   fontWeight: FontWeight.bold,
-            // )),
+        title: Text("MY")
       ),
       body: SingleChildScrollView(
         // padding: const EdgeInsets.all(16.0),
@@ -94,27 +90,27 @@ class AboutScreen extends StatelessWidget {
                     Text('gkscodus11@gmail.com')
                   ]),
             ),
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 16.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('테마 설정',
-                          style: TextStyle(fontWeight: FontWeight.w600)),
-                      GestureDetector(
-                        child:
-                            Icon(CupertinoIcons.forward, color: Colors.black54),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ThemeSettingScreen(),
-                            )),
-                      )
-                    ]),
-              ),
-            ),
+            // Container(
+            //   child: Padding(
+            //     padding: const EdgeInsets.symmetric(
+            //         horizontal: 20.0, vertical: 16.0),
+            //     child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //         children: [
+            //           const Text('테마 설정',
+            //               style: TextStyle(fontWeight: FontWeight.w600)),
+            //           GestureDetector(
+            //             child:
+            //                 Icon(CupertinoIcons.forward, color: Colors.black54),
+            //             onTap: () => Navigator.push(
+            //                 context,
+            //                 MaterialPageRoute(
+            //                   builder: (context) => ThemeSettingScreen(),
+            //                 )),
+            //           )
+            //         ]),
+            //   ),
+            // ),
           ],
         ),
       ),
