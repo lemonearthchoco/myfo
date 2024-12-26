@@ -17,7 +17,7 @@ class MyfoCtaButton extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           onPressed: onPressed,
-          child: Text(label),
+          child: Text(label, style: Theme.of(context).textTheme.labelLarge),
         ),
       ),
     );

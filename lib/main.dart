@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ObjectLogProvider()..loadLogs(forceReset: true),
+      create: (context) => ObjectLogProvider()..loadLogs(forceReset: false),
       child: MaterialApp(
         title: "myfo",
         theme: MyfoDefaultTheme.defaultTheme,

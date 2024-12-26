@@ -65,43 +65,50 @@ class MyfoDefaultTheme {
       ),
     ),
     secondaryHeaderColor: const Color(0xFFD3D3D3),
-    // 연한 회색 (secondary)
+    popupMenuTheme: PopupMenuThemeData(
+      position: PopupMenuPosition.under,
+      color: MyfoColors.secondary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      iconColor: MyfoColors.darkDefault
+    ),
     chipTheme: ChipThemeData(
         backgroundColor: MyfoColors.beigeLight,
         selectedColor: MyfoColors.beigeLight,
         deleteIconColor: MyfoColors.darkDefault,
+        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide.none,
         ),
-        secondarySelectedColor: Colors.transparent,
-        shadowColor: Colors.transparent,
+        showCheckmark: false,
         labelStyle: TextStyle(
             color: MyfoColors.darkDefault,
             fontFamily: "Paperlogy",
-            fontSize: 14)
-        // color:  WidgetStateProperty.resolveWith((states) {
-        //   if (states.isNotEmpty) {
-        //     return MyfoColors.darkDefault;
-        //   } else {
-        //     return Colors.transparent;
-        //   }
-        //    // 기본 텍스트
-        // }),
-        // color: MyfoColors.darkDefault,
-        ),
+            fontSize: 14)),
     // 배경색
+    dialogTheme: DialogTheme(
+      titleTextStyle: TextStyle(fontSize: 16, color: MyfoColors.darkDefault),
+      backgroundColor: MyfoColors.secondary,
+    ),
     scaffoldBackgroundColor: MyfoColors.secondary,
 
     // 텍스트 스타일
     textTheme: const TextTheme(
       bodyLarge: TextStyle(color: MyfoColors.darkDefault, fontSize: 16),
       bodyMedium: TextStyle(color: MyfoColors.darkDefault, fontSize: 14),
+      labelLarge:  TextStyle(color: MyfoColors.secondary, fontSize: 14),
       titleLarge: TextStyle(
         color: MyfoColors.darkDefault,
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
+      titleMedium: TextStyle(
+        color: MyfoColors.primary,
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      )
     ),
 
     // AppBar 테마
@@ -109,7 +116,7 @@ class MyfoDefaultTheme {
       backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
-      iconTheme: IconThemeData(color: Colors.black),
+      iconTheme: IconThemeData(color: MyfoColors.darkDefault),
       titleTextStyle: TextStyle(
         fontFamily: "Paperlogy",
         color: MyfoColors.primary,
@@ -127,7 +134,8 @@ class MyfoDefaultTheme {
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         // 버튼 텍스트 색상
         textStyle: const TextStyle(
-            fontWeight: FontWeight.bold, color: MyfoColors.secondary),
+          color: Colors.white,
+            fontFamily: 'Paperlogy', fontWeight: FontWeight.w600),
       ),
     ),
 
@@ -190,12 +198,7 @@ class MyfoDefaultTheme {
       // 선택된 탭의 색상
       unselectedLabelColor: MyfoColors.primaryLight,
       // 선택되지 않은 탭의 색상
-      indicatorColor: Colors.transparent,
-      indicator: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: MyfoColors.primary, width: 2), // 올리브색 밑줄
-        ),
-      ),
+      indicatorColor: Colors.transparent
     ),
 
     // Divider 테마

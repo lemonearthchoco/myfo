@@ -49,7 +49,7 @@ class MyfoListScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(CupertinoIcons.folder_badge_plus,
+                          Icon(CupertinoIcons.square_on_square,
                               size: 36,
                               color: Theme.of(context).primaryColorLight),
                           SizedBox(

@@ -19,6 +19,9 @@ class _MyfoMainScreen extends State<MyfoMainScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this); // 탭 개수 설정
+    _tabController.addListener(() {
+      setState(() {}); // 탭 변경 시 UI 업데이트
+    });
   }
 
   @override
@@ -41,20 +44,18 @@ class _MyfoMainScreen extends State<MyfoMainScreen>
       bottomNavigationBar: Container(
         padding: const EdgeInsets.only(bottom: 24.0), // 하단 여백 추가
         child: TabBar(
-          // dividerColor: Colors.transparent,
-          // indicatorColor: Colors.transparent,
-          // labelColor: ThemeData(con),
-          // unselectedLabelColor: Colors.grey,
           overlayColor: WidgetStateProperty.resolveWith<Color?>(
             (Set<WidgetState> states) {
-              return states.contains(WidgetState.focused) ? null : Colors.transparent;
+              return states.contains(WidgetState.focused)
+                  ? null
+                  : Colors.transparent;
             },
           ),
           controller: _tabController,
-          tabs: const [
-            Tab(icon: Icon(CupertinoIcons.folder_open)),
-            Tab(icon: Icon(CupertinoIcons.heart)),
-            Tab(icon: Icon(CupertinoIcons.person)),
+          tabs: [
+            Tab(icon: _tabController.index == 0 ?  Icon(CupertinoIcons.square_fill_on_square_fill) : Icon(CupertinoIcons.square_on_square)),
+            Tab(icon: _tabController.index == 1 ?  Icon(CupertinoIcons.heart_fill) : Icon(CupertinoIcons.heart)),
+            Tab(icon: _tabController.index == 2 ?  Icon(CupertinoIcons.person_fill) : Icon(CupertinoIcons.person)),
           ],
         ),
       ),

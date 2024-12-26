@@ -5,15 +5,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:myfo/components/myfo_divider.dart';
 import 'package:myfo/components/myfo_tag.dart';
-import 'package:myfo/components/myfo_text.dart';
 import 'package:myfo/components/myfo_toast.dart';
 import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
 import 'package:myfo/models/object_pattern.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:myfo/screens/myfo/myfo_add_screen.dart';
+import 'package:myfo/themes/myfo_colors.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../../components/myfo_label.dart';
 
 class MyfoDetailScreen extends StatefulWidget {
   final String objectLogId;
@@ -77,51 +79,42 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
-          IconButton(
+          PopupMenuButton<String>(
+            color: MyfoColors.secondary,
             icon: const Icon(CupertinoIcons.ellipsis_vertical),
-            onPressed: () {
-              // CupertinoActionSheet 표시
-              showCupertinoModalPopup(
-                context: context,
-                builder: (BuildContext context) {
-                  return CupertinoActionSheet(
-                    actions: [
-                      CupertinoActionSheetAction(
-                        onPressed: () {
-                          Navigator.pop(context); // ActionSheet 닫기
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ObjectLogAddScreen(
-                                objectLogId: widget.objectLogId,
-                              ),
-                            ),
-                          );
-                        },
-                        child: const Text('수정하기'),
-                      ),
-                      CupertinoActionSheetAction(
-                        onPressed: () {
-                          Navigator.pop(context); // 상세 화면 닫기
-                          _deleteObjectLog(context);
-                        },
-                        isDestructiveAction: true, // 파괴적 작업 스타일 (빨간색)
-                        child: const Text('삭제하기'),
-                      ),
-                    ],
-                    cancelButton: CupertinoActionSheetAction(
-                      onPressed: () {
-                        Navigator.pop(context); // ActionSheet 닫기
-                      },
-                      child: const Text(
-                        '취소',
-                      ),
+            padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
+            onSelected: (String result) {
+              if (result == 'edit') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ObjectLogAddScreen(
+                      objectLogId: widget.objectLogId,
                     ),
-                  );
-                },
-              );
+                  ),
+                );
+              } else if (result == 'delete') {
+                _deleteObjectLog(context);
+              }
             },
-          ),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'edit',
+                padding: EdgeInsets.zero,
+                child: Center(child: Text('수정하기'))
+              ),
+              const PopupMenuDivider(),
+              const PopupMenuItem<String>(
+                value: 'delete',
+                padding: EdgeInsets.zero,
+                child: Center(
+                  child:  Text('삭제하기')
+                ),
+              ),
+            ],
+          )
+
+
         ],
       ),
       body: Consumer<ObjectLogProvider>(
@@ -148,11 +141,11 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                 const MyfoDivider(),
                 _buildPatternSection(log.pattern),
                 const MyfoDivider(),
-                _buildTagSection(log.tags),
-                const MyfoDivider(),
                 _buildYarnSection(log.yarns),
                 _buildNeedleSection(log.needles),
                 _buildGaugeSection(log.gauges),
+                const MyfoDivider(),
+                _buildTagSection(log.tags),
                 const MyfoDivider(),
                 _buildDescriptionSection(log.description),
                 const SizedBox(
@@ -274,10 +267,10 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                 ),
                 onPressed: () {
                   if (isFavorite) {
-                    provider.unlikeLog(log.id); // 좋아요 취소
+                    provider.unlikeLog(log.id);
                     // _showToast(context, "좋아요를 취소했습니다.", MessageLevel.SUCCESS);
                   } else {
-                    provider.likeLog(log.id); // 좋아요 설정
+                    provider.likeLog(log.id);
                     // _showToast(context, "좋아요를 추가했습니다.", MessageLevel.SUCCESS);
                   }
                 },
@@ -301,15 +294,21 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                 fontSize: 12,
               )),
           const SizedBox(height: 10),
-          Wrap(
-            spacing: 8.0,
-            runSpacing: 4.0,
-            children: tags
-                .map(
-                  (tag) => MyfoTag(tag),
+          tags.isNotEmpty
+              ? Wrap(
+                  spacing: 8.0,
+                  runSpacing: 4.0,
+                  children: tags
+                      .map(
+                        (tag) => MyfoTag(tag),
+                      )
+                      .toList(),
                 )
-                .toList(),
-          ),
+              : Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10),
+                  child: Text('-'),
+                ),
         ],
       ),
     );
@@ -341,7 +340,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("후기", style: const TextStyle(fontWeight: FontWeight.w600)),
+          MyfoLabel(label: "후기"),
           const SizedBox(height: 10),
           Text(
             description,
@@ -362,13 +361,12 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('패턴',
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.75),
-              child: Text(
-                pattern.content
-              ),
+              child: Text(pattern.content),
             ),
             // else
             //   Padding(

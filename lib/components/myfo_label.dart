@@ -17,6 +17,6 @@ class MyfoLabel extends StatelessWidget {
         ],
       );
     }
-    return Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14));
+    return Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14));
   }
 }
