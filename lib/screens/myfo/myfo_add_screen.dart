@@ -5,10 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:myfo/components/myfo_cta_button.dart';
 import 'package:myfo/components/myfo_label.dart';
-import 'package:myfo/components/myfo_text.dart';
 import 'package:myfo/components/myfo_toast.dart';
 import 'package:myfo/models/exceptions/image_upload_fail_exception.dart';
 import 'package:myfo/models/object_image.dart';
@@ -17,9 +17,7 @@ import 'package:myfo/models/object_pattern.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-import 'package:http/http.dart' as http;
 
-import '../../components/myfo_style.dart';
 import '../../themes/myfo_colors.dart';
 
 class ObjectLogAddScreen extends StatefulWidget {

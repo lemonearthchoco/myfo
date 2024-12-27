@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myfo/components/myfo_text.dart';
-import 'package:myfo/themes/myfo_colors.dart';
 import 'package:myfo/themes/myfo_tag_decoration.dart';
 
 class MyfoTag extends StatelessWidget {

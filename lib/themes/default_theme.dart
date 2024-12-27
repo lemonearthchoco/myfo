@@ -76,7 +76,7 @@ class MyfoDefaultTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      iconColor: MyfoColors.darkDefault
+      iconColor: MyfoColors.darkDefault,
     ),
     chipTheme: ChipThemeData(
         backgroundColor: MyfoColors.beigeLight,
@@ -229,8 +229,8 @@ class MyfoDefaultTheme {
     brightness: Brightness.light,
 
     // 기타 색상
-    focusColor: const Color(0xFFD3D3D3),
+    focusColor: MyfoColors.beigeDark,
     // 포커스 색상
-    hoverColor: const Color(0xFFD3D3D3), // 호버 색상
+    hoverColor: MyfoColors.beigeLight, // 호버 색상
   );
 }

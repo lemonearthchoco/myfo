@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:myfo/components/myfo_text.dart';
 
 class MyfoLabel extends StatelessWidget {
   final String label;

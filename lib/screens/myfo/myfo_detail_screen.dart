@@ -142,7 +142,6 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                   value: 'edit',
                   padding: EdgeInsets.zero,
                   child: Center(child: Text('수정하기'))),
-              const PopupMenuDivider(),
               const PopupMenuItem<String>(
                 value: 'delete',
                 padding: EdgeInsets.zero,

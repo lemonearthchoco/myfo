@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myfo/components/myfo_text.dart';
 
 import '../themes/myfo_colors.dart';
 
@@ -37,7 +36,6 @@ class MyfoToast extends StatelessWidget {
           color: Colors.black,
         ),
         child: Row(
-          // mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             _getToastIcon(),
