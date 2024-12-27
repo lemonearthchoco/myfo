@@ -65,14 +65,14 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "#ffffff" # 배경색
-  image: assets/images/splash_test.jpeg # 스플래시 이미지 경로
+  image: assets/images/myfo_splash_screen.png # 스플래시 이미지 경로
   android: true
   ios: true
 
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icons/myfo_icon_4.png"
+  image_path: "assets/icons/myfo_icon@3x.png"
 # The following section is specific to Flutter packages.
 flutter:
   # generate: true

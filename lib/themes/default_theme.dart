@@ -134,7 +134,7 @@ class MyfoDefaultTheme {
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         // 버튼 텍스트 색상
         textStyle: const TextStyle(
-          color: Colors.white,
+          color: MyfoColors.secondary,
             fontFamily: 'Paperlogy', fontWeight: FontWeight.w600),
       ),
     ),
@@ -147,12 +147,9 @@ class MyfoDefaultTheme {
     // DatePicker 테마
     datePickerTheme: DatePickerThemeData(
       backgroundColor: MyfoColors.secondary,
-      // DatePicker 배경색
       surfaceTintColor: MyfoColors.secondary,
       headerBackgroundColor: MyfoColors.secondary,
-      // 헤더 배경 (올리브색)
       headerForegroundColor: Colors.white,
-      // 헤더 텍스트 색상
       dayForegroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return MyfoColors.secondary; // 선택된 날짜 텍스트
@@ -163,17 +160,16 @@ class MyfoDefaultTheme {
       }),
       dayBackgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return MyfoColors.primary; // 선택된 날짜 배경색 (올리브색)
+          return MyfoColors.primary;
         }
-        return Colors.transparent; // 기본 배경 투명
+        return Colors.transparent;
       }),
       todayForegroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return Colors.white;
+          return MyfoColors.secondary;
         } else {
           return MyfoColors.darkDefault;
         }
-        return Colors.black;
       }),
       todayBorder: BorderSide(color: Colors.transparent),
       todayBackgroundColor: WidgetStateProperty.resolveWith((states) {

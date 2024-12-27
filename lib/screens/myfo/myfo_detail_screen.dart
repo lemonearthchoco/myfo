@@ -11,6 +11,7 @@ import 'package:myfo/models/object_log.dart';
 import 'package:myfo/models/object_pattern.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:myfo/screens/myfo/myfo_add_screen.dart';
+import 'package:myfo/screens/myfo/myfo_image_edit_screen.dart';
 import 'package:myfo/themes/myfo_colors.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -79,6 +80,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
+
           PopupMenuButton<String>(
             color: MyfoColors.secondary,
             icon: const Icon(CupertinoIcons.ellipsis_vertical),
@@ -260,20 +262,44 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
           Consumer<ObjectLogProvider>(
             builder: (context, provider, child) {
               final isFavorite = log.isFavorite;
-              return IconButton(
-                icon: Icon(
-                  isFavorite ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
-                  color: isFavorite ? Colors.red : Colors.grey,
-                ),
-                onPressed: () {
-                  if (isFavorite) {
-                    provider.unlikeLog(log.id);
-                    // _showToast(context, "좋아요를 취소했습니다.", MessageLevel.SUCCESS);
-                  } else {
-                    provider.likeLog(log.id);
-                    // _showToast(context, "좋아요를 추가했습니다.", MessageLevel.SUCCESS);
-                  }
-                },
+              return Row(
+                children: [
+                  // IconButton(
+                  //   icon: const Icon(Icons.share),
+                  //   onPressed: () {
+                  //     final images = log.images ?? [];
+                  //     if (images.isNotEmpty) {
+                  //       // 첫 번째 이미지를 꾸미기 화면으로 전달
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => MyfoImageEditScreen(
+                  //             imageUrl: images[0].image, // 첫 번째 이미지 URL
+                  //             title: log?.title ?? 'Untitled', // 타이틀
+                  //           ),
+                  //         ),
+                  //       );
+                  //     } else {
+                  //       _showToast(context, "이미지가 없습니다.", MessageLevel.ERROR);
+                  //     }
+                  //   },
+                  // ),
+                  IconButton(
+                    icon: Icon(
+                      isFavorite ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+                      color: isFavorite ? Colors.red : Colors.grey,
+                    ),
+                    onPressed: () {
+                      if (isFavorite) {
+                        provider.unlikeLog(log.id);
+                        // _showToast(context, "좋아요를 취소했습니다.", MessageLevel.SUCCESS);
+                      } else {
+                        provider.likeLog(log.id);
+                        // _showToast(context, "좋아요를 추가했습니다.", MessageLevel.SUCCESS);
+                      }
+                    },
+                  ),
+                ],
               );
             },
           ),

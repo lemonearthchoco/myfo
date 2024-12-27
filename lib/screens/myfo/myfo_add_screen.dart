@@ -186,7 +186,6 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               TextFormField(
                 controller: _yarnInputController,
                 decoration: const InputDecoration(labelText: '실 이름'),
-                // decoration: MyfoStyle.inputDecoration('실 이름'),
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -209,15 +208,9 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                           _yarns.add(yarn); // 실 추가
                         }
                       });
-                      Navigator.pop(context); // 바텀 시트 닫기
+                      Navigator.pop(context);
                     }
                   },
-                  // style: ElevatedButton.styleFrom(
-                  //   backgroundColor: Theme.of(context).primaryColorLight,
-                  //   textStyle: TextStyle(color: Theme.of(context).primaryColor),
-                  //   foregroundColor: Colors.white,
-                  //   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  // ),
                   child: Text('추가'),
                 ),
               ),
