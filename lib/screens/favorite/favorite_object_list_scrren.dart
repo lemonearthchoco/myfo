@@ -1,14 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:myfo/components/myfo_text.dart';
-import 'package:myfo/providers/object_log_provider.dart';
 import 'package:myfo/models/object_log.dart';
-import 'package:myfo/screens/myfo/myfo_add_screen.dart';
+import 'package:myfo/providers/object_log_provider.dart';
 import 'package:myfo/screens/myfo/myfo_detail_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../../themes/myfo_colors.dart';
 
 class FavoriteObjectListScreen extends StatelessWidget {
   const FavoriteObjectListScreen({Key? key}) : super(key: key);
@@ -92,17 +89,19 @@ class FavoriteObjectListScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: ClipRRect(
-                                  // borderRadius: const BorderRadius.vertical(top: Radius.circular(8.0)),
                                   child: log.images.isNotEmpty
                                       ? Image.network(
                                           log.images[0].image, // 대표 이미지
                                           fit: BoxFit.cover,
                                           errorBuilder:
                                               (context, error, stackTrace) {
-                                            return Image.file(
-                                                File(log
-                                                    .images[0].image), // 대표 이미지
-                                                fit: BoxFit.cover);
+                                            return Container(
+                                                color: MyfoColors.beigeLight,
+                                                child: Icon(
+                                                    CupertinoIcons.wifi_slash,
+                                                    size: 36,
+                                                    color: MyfoColors
+                                                        .primaryLight));
                                           },
                                         )
                                       : const Icon(Icons.image_not_supported,

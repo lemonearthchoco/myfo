@@ -10,6 +10,7 @@ import 'package:myfo/components/myfo_cta_button.dart';
 import 'package:myfo/components/myfo_label.dart';
 import 'package:myfo/components/myfo_text.dart';
 import 'package:myfo/components/myfo_toast.dart';
+import 'package:myfo/models/exceptions/image_upload_fail_exception.dart';
 import 'package:myfo/models/object_image.dart';
 import 'package:myfo/models/object_log.dart';
 import 'package:myfo/models/object_pattern.dart';
@@ -66,7 +67,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
 
   void _showToast(context, String message, MessageLevel level) {
     fToast.showToast(
-        child: MyfoToast(message: message),
+        child: MyfoToast(message: message, level: level),
         toastDuration: const Duration(seconds: 1));
   }
 
@@ -74,7 +75,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     final List<XFile>? images = await _picker.pickMultiImage();
 
     if (images != null) {
-      if (_uploadedImageUrls.length + images.length > 3) {
+      if (_uploadedImageUrls.length + images.length > 5) {
         _showToast(context, "최대 5개까지 업로드 가능합니다.", MessageLevel.ERROR);
       } else {
         _selectedImages = images.map((image) => File(image.path)).toList();
@@ -121,10 +122,10 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
           _uploadedImageUrls.add(decodedData['imageUrl']); // 서버에서 반환된 이미지 URL
         });
       } else {
-        _showToast(context, "이미지 업로드 실패", MessageLevel.ERROR);
+        throw ImageUploadFailException("이미지 업로드 실패!");
       }
     } catch (e) {
-      _showToast(context, "이미지 업로드 실패", MessageLevel.ERROR);
+      rethrow;
     }
   }
 
@@ -132,13 +133,18 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     setState(() {
       _isUploading = true;
     });
-    for (var image in _selectedImages) {
-      await _uploadImage(image);
+    try {
+      for (var image in _selectedImages) {
+        await _uploadImage(image);
+      }
+      _showToast(context, "이미지 업로드 완료", MessageLevel.SUCCESS);
+    } catch(e) {
+      _showToast(context, "이미지 업로드 실패", MessageLevel.ERROR);
     }
+
     setState(() {
       _isUploading = false;
     });
-    _showToast(context, "이미지 업로드 완료", MessageLevel.SUCCESS);
   }
 
   @override

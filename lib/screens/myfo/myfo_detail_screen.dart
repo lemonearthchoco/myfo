@@ -50,16 +50,55 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
         toastDuration: const Duration(seconds: 1));
   }
 
+  void _confirmDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: MyfoColors.secondary,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          actionsAlignment: MainAxisAlignment.spaceEvenly,
+          contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 0),
+          actionsPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("정말로 작품을 삭제할까요?"),
+              SizedBox(height: 20),
+              MyfoDivider(
+                height: 2,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+              },
+              child: const Text("아니요"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+                _deleteObjectLog(context); // 삭제 로직 호출
+              },
+              child: const Text("네"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _deleteObjectLog(BuildContext context) {
     final provider = Provider.of<ObjectLogProvider>(context, listen: false);
     setState(() {
       this.isAvailable = false;
     });
     Navigator.pop(context);
-    provider.deleteLog(widget.objectLogId).then((_) => {
-          // TODO: 토스트 메시지
-          _showToast(context, "삭제 성공", MessageLevel.SUCCESS)
-        }); // Provider에서 삭제
+    provider.deleteLog(widget.objectLogId).then((_) =>
+        {_showToast(context, "삭제 완료", MessageLevel.SUCCESS)}); // Provider에서 삭제
   }
 
   @override
@@ -80,7 +119,6 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
-
           PopupMenuButton<String>(
             color: MyfoColors.secondary,
             icon: const Icon(CupertinoIcons.ellipsis_vertical),
@@ -96,27 +134,22 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                   ),
                 );
               } else if (result == 'delete') {
-                _deleteObjectLog(context);
+                _confirmDelete(context);
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               const PopupMenuItem<String>(
-                value: 'edit',
-                padding: EdgeInsets.zero,
-                child: Center(child: Text('수정하기'))
-              ),
+                  value: 'edit',
+                  padding: EdgeInsets.zero,
+                  child: Center(child: Text('수정하기'))),
               const PopupMenuDivider(),
               const PopupMenuItem<String>(
                 value: 'delete',
                 padding: EdgeInsets.zero,
-                child: Center(
-                  child:  Text('삭제하기')
-                ),
+                child: Center(child: Text('삭제하기')),
               ),
             ],
           )
-
-
         ],
       ),
       body: Consumer<ObjectLogProvider>(
@@ -189,13 +222,11 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                       child: Image.network(
                         images[index].image,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Center(
-                            child: Icon(
-                              Icons.broken_image,
-                              size: 50,
-                              color: Colors.grey,
-                            ),
+                        errorBuilder: (context,
+                            error, stackTrace) {
+                          return Container(
+                              color: MyfoColors.beigeLight,
+                              child: Icon(CupertinoIcons.wifi_slash, size: 50, color: MyfoColors.primaryLight)
                           );
                         },
                       ),
@@ -242,7 +273,6 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // 타이틀과 서브타이틀
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,16 +316,16 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                   // ),
                   IconButton(
                     icon: Icon(
-                      isFavorite ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+                      isFavorite
+                          ? CupertinoIcons.heart_fill
+                          : CupertinoIcons.heart,
                       color: isFavorite ? Colors.red : Colors.grey,
                     ),
                     onPressed: () {
                       if (isFavorite) {
                         provider.unlikeLog(log.id);
-                        // _showToast(context, "좋아요를 취소했습니다.", MessageLevel.SUCCESS);
                       } else {
                         provider.likeLog(log.id);
-                        // _showToast(context, "좋아요를 추가했습니다.", MessageLevel.SUCCESS);
                       }
                     },
                   ),
@@ -353,7 +383,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
   }
 
   Widget _buildYarnSection(List<String> yarns) {
-    return _buildListSection("실", yarns);
+    return _buildListSection("사용 실", yarns);
   }
 
   Widget _buildGaugeSection(List<String> gauges) {

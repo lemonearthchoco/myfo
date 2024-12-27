@@ -30,6 +30,11 @@ class MyfoDefaultTheme {
     ],
 
     fontFamily: 'Paperlogy',
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: MyfoColors.darkDefaultLight, // 커서 색상
+      selectionColor: MyfoColors.beigeLight, // 드래그 선택 영역 색상
+      selectionHandleColor: MyfoColors.beigeLight, // 선택 핸들 색상
+    ),
     inputDecorationTheme: InputDecorationTheme(
       floatingLabelBehavior: FloatingLabelBehavior.never,
       alignLabelWithHint: true,
@@ -197,6 +202,25 @@ class MyfoDefaultTheme {
       indicatorColor: Colors.transparent
     ),
 
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        textStyle: WidgetStateProperty.resolveWith((states) {
+          return TextStyle(
+              color: MyfoColors.darkDefault,
+              fontFamily: 'Paperlogy', fontWeight: FontWeight.w600
+          );
+        }),
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          return MyfoColors.darkDefault; // 기본 텍스트 색상
+        }),
+        overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
+          // 클릭 시 잔상 색상
+          return states.contains(WidgetState.pressed)
+              ? MyfoColors.beigeLight
+              : null;
+        }),
+      )
+    ),
     // Divider 테마
     // dividerColor: const Color(0xFFD3D3D3),
     // 연한 회색 구분선

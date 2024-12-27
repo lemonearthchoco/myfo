@@ -49,6 +49,8 @@ dependencies:
   package_info_plus: ^8.1.2
   fluttertoast: ^8.0.9
   flutter_native_splash: ^2.4.3
+  connectivity_plus: ^6.1.1
+  shimmer: ^3.0.0
 
 
 dev_dependencies:

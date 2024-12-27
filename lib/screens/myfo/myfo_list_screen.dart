@@ -1,13 +1,13 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:myfo/components/myfo_text.dart';
-import 'package:myfo/providers/object_log_provider.dart';
 import 'package:myfo/models/object_log.dart';
+import 'package:myfo/providers/object_log_provider.dart';
 import 'package:myfo/screens/myfo/myfo_add_screen.dart';
 import 'package:myfo/screens/myfo/myfo_detail_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../themes/myfo_colors.dart';
 
@@ -125,13 +125,31 @@ class MyfoListScreen extends StatelessWidget {
                                                       log.images[0]
                                                           .image, // 대표 이미지
                                                       fit: BoxFit.cover,
+                                                      loadingBuilder: (context,
+                                                          child,
+                                                          loadingProgress) {
+                                                        if (loadingProgress ==
+                                                            null) {
+                                                          return child; // 이미지 로드 완료
+                                                        }
+                                                        return Shimmer
+                                                            .fromColors(
+                                                          baseColor:
+                                                          MyfoColors.beigeLight,
+                                                          highlightColor:
+                                                          MyfoColors.beigeDark,
+                                                          child: Container(
+                                                            height: 200,
+                                                            color: MyfoColors.beigeLight,
+                                                          ),
+                                                        );
+                                                      },
                                                       errorBuilder: (context,
                                                           error, stackTrace) {
-                                                        return Image.file(
-                                                            File(log.images[0]
-                                                                .image),
-                                                            // 대표 이미지
-                                                            fit: BoxFit.cover);
+                                                         return Container(
+                                                           color: MyfoColors.beigeLight,
+                                                           child: Icon(CupertinoIcons.wifi_slash, size: 36, color: MyfoColors.primaryLight)
+                                                         );
                                                       },
                                                     )
                                                   : const Icon(
@@ -193,6 +211,26 @@ class MyfoListScreen extends StatelessWidget {
         backgroundColor: MyfoColors.primary,
         foregroundColor: MyfoColors.secondary,
         child: const Icon(CupertinoIcons.add),
+      ),
+    );
+  }
+
+  Widget _buildSkeleton() {
+    return Shimmer.fromColors(
+      baseColor: MyfoColors.beigeLight,
+      highlightColor: MyfoColors.beigeLight!,
+      child: ListView.builder(
+        itemCount: 5,
+        itemBuilder: (context, index) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          child: Container(
+            height: 80,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+          ),
+        ),
       ),
     );
   }
