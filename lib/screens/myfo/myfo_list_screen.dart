@@ -134,27 +134,35 @@ class MyfoListScreen extends StatelessWidget {
                                                         }
                                                         return Shimmer
                                                             .fromColors(
-                                                          baseColor:
-                                                          MyfoColors.beigeLight,
+                                                          baseColor: MyfoColors
+                                                              .beigeLight,
                                                           highlightColor:
-                                                          MyfoColors.beigeDark,
+                                                              MyfoColors
+                                                                  .beigeDark,
                                                           child: Container(
                                                             height: 200,
-                                                            color: MyfoColors.beigeLight,
+                                                            color: MyfoColors
+                                                                .beigeLight,
                                                           ),
                                                         );
                                                       },
                                                       errorBuilder: (context,
                                                           error, stackTrace) {
-                                                         return Container(
-                                                           color: MyfoColors.beigeLight,
-                                                           child: Icon(CupertinoIcons.wifi_slash, size: 36, color: MyfoColors.primaryLight)
-                                                         );
+                                                        return Container(
+                                                            color: MyfoColors
+                                                                .beigeLight,
+                                                            child: Icon(
+                                                                CupertinoIcons
+                                                                    .wifi_slash,
+                                                                size: 36,
+                                                                color: MyfoColors
+                                                                    .primaryLight));
                                                       },
                                                     )
-                                                  : const Icon(
-                                                      Icons.image_not_supported,
-                                                      size: 50),
+                                                  : Image.asset(
+                                                      'assets/images/image_placeholder.png', // 대표 이미지
+                                                      fit: BoxFit.cover,
+                                                    ),
                                             ),
                                           )
                                         ],

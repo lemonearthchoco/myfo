@@ -221,23 +221,19 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                       child: Image.network(
                         images[index].image,
                         fit: BoxFit.cover,
-                        errorBuilder: (context,
-                            error, stackTrace) {
+                        errorBuilder: (context, error, stackTrace) {
                           return Container(
                               color: MyfoColors.beigeLight,
-                              child: Icon(CupertinoIcons.wifi_slash, size: 50, color: MyfoColors.primaryLight)
-                          );
+                              child: Icon(CupertinoIcons.wifi_slash,
+                                  size: 50, color: MyfoColors.primaryLight));
                         },
                       ),
                     );
                   },
                 )
-              : const Center(
-                  child: Icon(
-                    Icons.image_not_supported,
-                    size: 50,
-                    color: Colors.grey,
-                  ),
+              : Image.asset(
+                  'assets/images/image_placeholder.png', // 대표 이미지
+                  fit: BoxFit.cover,
                 ),
         ),
         if (images.isNotEmpty)
@@ -374,7 +370,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       return _buildListSection(
           "FO", [DateFormat('yyyy-MM-dd').format(finishedAt)]);
     }
-    return _buildListSection("FO", ["2024-12-20"]);
+    return _buildListSection("FO", ["-"]);
   }
 
   Widget _buildNeedleSection(List<String> needles) {
@@ -397,13 +393,19 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
         children: [
           MyfoLabel(label: "후기"),
           const SizedBox(height: 10),
-          Text(
-            description,
-            style: const TextStyle(
-              fontSize: 14,
-              height: 1.5,
-            ),
-          ),
+          if (description.isNotEmpty)
+            Text(
+              description,
+              style: const TextStyle(
+                fontSize: 14,
+                height: 1.5,
+              ),
+            )
+          else
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 10),
+              child: Text('-'),
+            )
         ],
       ),
     );
@@ -419,16 +421,17 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
                 style:
                     const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
             const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2.75),
-              child: Text(pattern.content),
-            ),
-            // else
-            //   Padding(
-            //     padding:
-            //     const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10),
-            //     child: Text('-'),
-            //   )
+            if (pattern.content.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.75),
+                child: Text(pattern.content),
+              )
+            else
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10),
+                child: Text('-'),
+              )
           ],
         ));
   }

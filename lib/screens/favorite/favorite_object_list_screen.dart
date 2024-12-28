@@ -104,8 +104,11 @@ class FavoriteObjectListScreen extends StatelessWidget {
                                                         .primaryLight));
                                           },
                                         )
-                                      : const Icon(Icons.image_not_supported,
-                                          size: 50),
+                                      : Image.asset(
+                                          'assets/images/image_placeholder.png',
+                                          // 대표 이미지
+                                          fit: BoxFit.cover,
+                                        ),
                                 ),
                               )
                             ],

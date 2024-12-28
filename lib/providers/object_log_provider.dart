@@ -31,15 +31,17 @@ class ObjectLogProvider extends ChangeNotifier {
   final List<ObjectLog> initialLogs = [
     ObjectLog(
       id: const Uuid().v4(),
-      title: "니드모어 스웨터",
-      subtitle: "녹차맛 니드모어",
+      title: "니트 가방",
+      subtitle: "라벤더향 가방",
       pattern: ObjectPattern(
-          type: 'url', content: 'https://www.youtube.com/watch?v=2MB077qFgM4'),
+          type: 'url',
+          content:
+              'https://lemonearthchoco.s3.ap-northeast-2.amazonaws.com/myfo/2024/12/IMG_8658.HEIC'),
       images: [
         ObjectImage(
             id: const Uuid().v4(),
             image:
-                "https://marithe-official.com/web/product/big/202403/e2a7511212556cd4784cb0d4518d5393.jpg")
+                "https://lemonearthchoco.s3.ap-northeast-2.amazonaws.com/myfo/2024/12/IMG_8658.HEIC")
       ],
       description:
           "이거 뜨는데 7개월이나 걸림 진짜 대박 어려움 그리고 서술형 도안임 그래도 너무너무 이쁘다. 다시 입고 싶은 이유가 뭔지 알겠다. 진짜 너무 존예 볼때마다 행복해져",
@@ -47,18 +49,18 @@ class ObjectLogProvider extends ChangeNotifier {
       needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
       yarns: ["솜솜뜨개 프빌 포레스트 2합"],
       gauges: ["21코 37단"],
-      finishedAt: DateTime.now(),
+      finishedAt: DateTime(2024, 9, 1),
     ),
     ObjectLog(
       id: const Uuid().v4(),
-      title: "블랙베리 아란 스웨터",
-      subtitle: "",
+      title: "니드모어 스웨터",
+      subtitle: "포레스트 니트",
       pattern: ObjectPattern(type: 'text', content: '김대리의 데일리 뜨개'),
       images: [
         ObjectImage(
             id: const Uuid().v4(),
             image:
-                "https://lemonearthchoco.s3.ap-northeast-2.amazonaws.com/myfo/2024/12/%E1%84%91%E1%85%A1%E1%84%85%E1%85%A1%E1%86%BC%E1%84%86%E1%85%A9%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B3%E1%84%85%E1%85%A9%E1%84%86%E1%85%B5%E1%86%BA.png_d9816909-277f-4609-af61-149143e23d1a"),
+                "https://lemonearthchoco.s3.ap-northeast-2.amazonaws.com/myfo/2024/12/IMG_5667.HEIC"),
         ObjectImage(
             id: const Uuid().v4(),
             image:
@@ -69,11 +71,11 @@ class ObjectLogProvider extends ChangeNotifier {
       needles: ["니트프로 진저 디럭스 4.0mm", "니트프로 진저 디럭스 5.0mm", "치아오구 밤부 5.0mm"],
       yarns: ["솜솜뜨개 수플레 글루미 스카이"],
       gauges: [],
-      finishedAt: DateTime(2024, 11, 19),
+      finishedAt: DateTime(2024, 12, 20),
     ),
     ObjectLog(
       id: const Uuid().v4(),
-      title: "dotori hat",
+      title: "카멜리아 그물백",
       subtitle: "",
       pattern: ObjectPattern(
           type: 'url', content: 'https://www.youtube.com/watch?v=2MB077qFgM4'),
@@ -81,18 +83,18 @@ class ObjectLogProvider extends ChangeNotifier {
         ObjectImage(
             id: const Uuid().v4(),
             image:
-                "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
+                "https://lemonearthchoco.s3.ap-northeast-2.amazonaws.com/myfo/2024/12/IMG_5688.HEIC")
       ],
       description: "도토리 햇",
       tags: [],
       needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
       yarns: ["솜솜뜨개 프빌 포레스트 2합"],
       gauges: [],
-      finishedAt: DateTime.now(),
+      finishedAt: DateTime(2024, 12, 28),
     ),
     ObjectLog(
       id: const Uuid().v4(),
-      title: "모헤어 장갑",
+      title: "블랙베리 아란 스웨터",
       subtitle: "",
       pattern: ObjectPattern(
           type: 'url', content: 'https://www.youtube.com/watch?v=2MB077qFgM4'),
@@ -100,14 +102,53 @@ class ObjectLogProvider extends ChangeNotifier {
         ObjectImage(
             id: const Uuid().v4(),
             image:
-                "https://image.msscdn.net/thumbnails/images/goods_img/20241029/4571422/4571422_17303584312487_big.jpg?w=1200")
+                "https://lemonearthchoco.s3.ap-northeast-2.amazonaws.com/myfo/2024/12/IMG_5683.HEIC")
       ],
       description: "모헤어 장갑",
       tags: ["장갑 바늘"],
       needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
       yarns: ["솜솜뜨개 프빌 포레스트 2합"],
       gauges: [],
-      finishedAt: DateTime(2024, 9, 2),
+      finishedAt: DateTime(2024, 9, 1),
+    ),
+
+    ObjectLog(
+      id: const Uuid().v4(),
+      title: "dotori hat",
+      subtitle: "도토리 모자",
+      pattern: ObjectPattern(
+          type: 'url', content: 'https://www.youtube.com/watch?v=2MB077qFgM4'),
+      images: [
+        ObjectImage(
+            id: const Uuid().v4(),
+            image:
+            "https://lemonearthchoco.s3.ap-northeast-2.amazonaws.com/myfo/2024/12/IMG_5674.HEIC")
+      ],
+      description: "도토리 모자",
+      tags: ["장갑 바늘"],
+      needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
+      yarns: ["솜솜뜨개 프빌 포레스트 2합"],
+      gauges: [],
+      finishedAt: DateTime(2024, 12, 29),
+    ),
+    ObjectLog(
+      id: const Uuid().v4(),
+      title: "홈스펀 숏비니",
+      subtitle: "",
+      pattern: ObjectPattern(
+          type: 'url', content: 'https://www.youtube.com/watch?v=2MB077qFgM4'),
+      images: [
+        ObjectImage(
+            id: const Uuid().v4(),
+            image:
+            "https://lemonearthchoco.s3.ap-northeast-2.amazonaws.com/myfo/2024/12/IMG_5657.HEIC")
+      ],
+      description: "모헤어 장갑1",
+      tags: ["장갑 바늘"],
+      needles: ["니트프로 진저 스페셜 3.0mm", "니트프로 진저 스페셜 4.0mm", "니트프로 진저 디럭스 4.0mm"],
+      yarns: ["솜솜뜨개 프빌 포레스트 2합"],
+      gauges: [],
+      finishedAt: DateTime(2024, 10, 15),
     ),
   ];
 

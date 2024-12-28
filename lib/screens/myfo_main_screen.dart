@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myfo/screens/about/about_screen.dart';
-import 'package:myfo/screens/favorite/favorite_object_list_scrren.dart';
+import 'package:myfo/screens/favorite/favorite_object_list_screen.dart';
 import 'package:myfo/screens/myfo/myfo_list_screen.dart';
 
 class MyfoMainScreen extends StatefulWidget {

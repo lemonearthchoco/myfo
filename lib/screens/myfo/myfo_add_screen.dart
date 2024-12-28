@@ -225,129 +225,73 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     );
   }
 
-  // void _showNeedlesBottomSheet(BuildContext context) {
-  //   final TextEditingController _needleInputController =
-  //       TextEditingController();
-  //   final TextEditingController _sizeInputController = TextEditingController();
-  //
-  //   showModalBottomSheet(
-  //     context: context,
-  //     isScrollControlled: true,
-  //     backgroundColor: Colors.white,
-  //     shape: const RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-  //     ),
-  //     builder: (BuildContext context) {
-  //       return Padding(
-  //         padding: EdgeInsets.only(
-  //           left: 16,
-  //           right: 16,
-  //           bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-  //         ),
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             const SizedBox(height: 16),
-  //             const MyfoText(
-  //               '바늘 추가하기',
-  //               fontWeight: FontWeight.bold,
-  //               fontSize: 18,
-  //             ),
-  //             const SizedBox(height: 16),
-  //             TextFormField(
-  //               controller: _needleInputController,
-  //               decoration: MyfoStyle.inputDecoration("바늘 이름"),
-  //             ),
-  //             const SizedBox(height: 16),
-  //             TextFormField(
-  //               controller: _sizeInputController,
-  //               // 바늘 사이즈(선택) ex) 4.0mm, 6호
-  //               decoration:
-  //                   MyfoStyle.inputDecoration("바늘 사이즈(선택) ex) 4.0mm, 6호"),
-  //             ),
-  //             const SizedBox(height: 16),
-  //             SizedBox(
-  //               width: double.infinity,
-  //               child: MyfoCtaButton(
-  //                   onPressed: () {
-  //                     final needle = _needleInputController.text.trim();
-  //                     final size = _sizeInputController.text.trim();
-  //                     if (needle.isNotEmpty) {
-  //                       setState(() {
-  //                         if (size.isNotEmpty) {
-  //                           _needles.add(needle + '/' + size);
-  //                         } else {
-  //                           _needles.add(needle);
-  //                         }
-  //                       });
-  //                       Navigator.pop(context); // 바텀 시트 닫기
-  //                     }
-  //                   },
-  //                   label: '추가'),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-  void _showNeedlesModal(BuildContext context) {
-    final TextEditingController _needleInputController = TextEditingController();
+  void _showNeedlesBottomSheet(BuildContext context) {
+    final TextEditingController _needleInputController =
+        TextEditingController();
     final TextEditingController _sizeInputController = TextEditingController();
 
-    showDialog(
+    showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      backgroundColor: MyfoColors.secondary,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('바늘 추가하기'),
-          content: Column(
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const SizedBox(height: 16),
+              const Text(
+                '바늘 추가하기',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                )
+              ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _needleInputController,
-                decoration: const InputDecoration(
-                  labelText: '바늘 이름',
-                ),
+                decoration: const InputDecoration(labelText: "바늘 이름"),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _sizeInputController,
-                decoration: const InputDecoration(
-                  labelText: '바늘 사이즈 (선택) ex) 4.0mm, 6호',
-                ),
+                // 바늘 사이즈(선택) ex) 4.0mm, 6호
+                decoration: const InputDecoration(labelText: "바늘 사이즈(선택) ex) 4.0mm, 6호"),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: MyfoCtaButton(
+                    onPressed: () {
+                      final needle = _needleInputController.text.trim();
+                      final size = _sizeInputController.text.trim();
+                      if (needle.isNotEmpty) {
+                        setState(() {
+                          if (size.isNotEmpty) {
+                            _needles.add(needle + '/' + size);
+                          } else {
+                            _needles.add(needle);
+                          }
+                        });
+                        Navigator.pop(context); // 바텀 시트 닫기
+                      }
+                    },
+                    label: '추가'),
               ),
             ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // 모달 닫기
-              },
-              child: const Text('취소'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final needle = _needleInputController.text.trim();
-                final size = _sizeInputController.text.trim();
-                if (needle.isNotEmpty) {
-                  setState(() {
-                    if (size.isNotEmpty) {
-                      _needles.add('$needle / $size');
-                    } else {
-                      _needles.add(needle);
-                    }
-                  });
-                  Navigator.pop(context); // 모달 닫기
-                }
-              },
-              child: const Text('추가'),
-            ),
-          ],
         );
       },
     );
   }
-
 
   void _showDatePickerBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -675,7 +619,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                           style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 14)),
                       InkWell(
-                        onTap: () => _showNeedlesModal(context),
+                        onTap: () => _showNeedlesBottomSheet(context),
                         borderRadius: BorderRadius.circular(20), // 클릭 영역 모양
                         child: Padding(
                           padding: const EdgeInsets.all(6), // 원하는 만큼 패딩
