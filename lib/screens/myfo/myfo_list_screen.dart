@@ -55,7 +55,7 @@ class MyfoListScreen extends StatelessWidget {
                           SizedBox(
                             height: 10,
                           ),
-                          Text("내 작품을 등록해보세요!",
+                          Text("내 작품을 기록해보세요!",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),
                         ],
