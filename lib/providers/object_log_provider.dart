@@ -160,7 +160,7 @@ class ObjectLogProvider extends ChangeNotifier {
       final List<dynamic> jsonList = json.decode(logsJson);
       _logs = jsonList.map((json) => ObjectLog.fromJson(json)).toList();
     } else {
-      _logs = initialLogs;
+      // _logs = initialLogs;
       await _saveLogs();
     }
     notifyListeners();

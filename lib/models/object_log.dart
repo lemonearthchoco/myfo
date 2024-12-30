@@ -55,6 +55,7 @@ class ObjectLog {
   // JSON 직렬화
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'title': title,
       'subtitle': subtitle,
       'description': description,
@@ -84,7 +85,9 @@ class ObjectLog {
       needles: List<String>.from(json['needles']),
       tags: List<String>.from(json['tags']),
       gauges: List<String>.from(json['gauges']),
-      images: List<ObjectImage>.from(json['images']),
+      images: (json['images'] as List<dynamic>)
+          .map((imageJson) => ObjectImage.fromJson(imageJson))
+          .toList(),
       finishedAt: json['finishedAt'] != null
           ? DateTime.parse(json['finishedAt'])
           : null,

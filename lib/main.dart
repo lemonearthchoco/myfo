@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:myfo/providers/my_info_provider.dart';
-import 'package:myfo/screens/myfo_main_screen.dart';
 import 'package:myfo/providers/object_log_provider.dart';
+import 'package:myfo/screens/myfo_main_screen.dart';
 import 'package:myfo/themes/default_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -22,11 +21,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ObjectLogProvider()..loadLogs(forceReset: true)),
+        ChangeNotifierProvider(create: (context) => ObjectLogProvider()..loadLogs(forceReset: false)),
         ChangeNotifierProvider(create: (context) => MyInfoProvider()..loadMyInfo())
       ],
       child: MaterialApp(
         title: "myfo",
+        debugShowCheckedModeBanner: false,
         theme: MyfoDefaultTheme.defaultTheme,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,

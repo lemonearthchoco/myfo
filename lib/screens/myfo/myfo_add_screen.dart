@@ -397,7 +397,6 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
   }
 
   void _saveObjectLog(BuildContext context) {
-    print("save!");
     if (_formKey.currentState?.validate() ?? false) {
       final provider = Provider.of<ObjectLogProvider>(context, listen: false);
 
@@ -424,7 +423,6 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
       if (widget.objectLogId != null) {
         // 수정 모드
         provider.updateLog(widget.objectLogId!, log);
-        print("수정!");
         _showToast(context, "저장 완료", MessageLevel.SUCCESS);
       } else {
         // 추가 모드
