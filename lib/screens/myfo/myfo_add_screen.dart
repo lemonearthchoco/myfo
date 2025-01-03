@@ -135,7 +135,9 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
       for (var image in _selectedImages) {
         await _uploadImage(image);
       }
-      _showToast(context, "이미지 업로드 완료", MessageLevel.SUCCESS);
+      if (_selectedImages.isNotEmpty) {
+        _showToast(context, "이미지 업로드 완료", MessageLevel.SUCCESS);
+      }
     } catch(e) {
       _showToast(context, "이미지 업로드 실패", MessageLevel.ERROR);
     }
