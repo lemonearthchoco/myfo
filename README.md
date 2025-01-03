@@ -1,12 +1,16 @@
 # myfo
 
-[]('./attachments/MYFO로고3x.png')
+![](./attachments/myfo preview - 1.png)
+![](./attachments/myfo preview - 2.png)
+![](./attachments/myfo preview - 3.png)
+![](./attachments/myfo preview - 4.png)
 
-나만의 뜨개 기록 앱 myfo
 
-FO는 Finished Object로 뜨개인 사이에서 완성한 뜨개 작품을 의미해요.
+##### 나만의 뜨개 기록 앱 myfo
 
-여기에 Favorite Object라는 의미를 더해 myfo 라는 이름을 지었습니다.
+FO는 Finished Object로 뜨개인 사이에서 **완성한 뜨개 작품**을 의미해요.
+
+여기에 **Favorite Object라는 의미를 더해 myfo** 라는 이름을 지었습니다.
 
 ## 서비스 소개
 ```
@@ -22,10 +26,12 @@ FO는 Finished Object로 뜨개인 사이에서 완성한 뜨개 작품을 의�
 ### Frontend
 <img src="https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white">
 
-| chatGPT의 도움을 많이 받았습니다.
+>  chatGPT의 도움을 많이 받았습니다.
 
 ### Backend
 <img src="https://img.shields.io/badge/Amazon%20S3-FF9900?style=for-the-badge&logo=amazons3&logoColor=white"><img src="https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white">
+
+## 아키텍쳐
 
 ## 기능
 
