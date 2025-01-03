@@ -1,16 +1,8 @@
----
-attachments: [MYFO로고3x.png]
-tags: [myfo]
-title: myfo
-created: '2025-01-03T06:15:53.338Z'
-modified: '2025-01-03T06:47:52.169Z'
----
 # myfo
 
 []('./attachments/MYFO로고3x.png')
 
 나만의 뜨개 기록 앱 myfo
-![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
 
 FO는 Finished Object로 뜨개인 사이에서 완성한 뜨개 작품을 의미해요.
 
@@ -27,10 +19,16 @@ FO는 Finished Object로 뜨개인 사이에서 완성한 뜨개 작품을 의�
 **아무도 안만들었길래 제가 만들었어요.**
 
 ## 사용기술
-- Flutter
-- Lambda + S3(이미지 서버)
+### Frontend
+<img src="https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white">
+
+| chatGPT의 도움을 많이 받았습니다.
+
+### Backend
+<img src="https://img.shields.io/badge/Amazon%20S3-FF9900?style=for-the-badge&logo=amazons3&logoColor=white"><img src="https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white">
 
 ## 기능
+
 1. 작품 기록 저장
    완성한 작품에 대한 정보를 기록할 수 있어요.
 2. 작품 리스트
