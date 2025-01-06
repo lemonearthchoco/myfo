@@ -12,11 +12,13 @@ FO는 **Finished Object**로 뜨개인 사이에서 **완성한 뜨개 작품**�
 <span color="color:grey">적게는 하루, 길면 일년 이상 시간을 들여 완성한 작품을 기록해서 완성의 기쁨을 간직해봐요 🧶</span>
 
 ### Download
-👩‍💻 [myfo - 나만의 뜨개 기록 앱]()
+👩‍💻 [myfo - 나만의 뜨개 기록 앱](https://apps.apple.com/us/app/myfo/id6739989671)
 </center>  
 
 
-## 사용기술
+## Architecture
+
+
 ### Frontend
 <img src="https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white">
 
@@ -24,3 +26,11 @@ FO는 **Finished Object**로 뜨개인 사이에서 **완성한 뜨개 작품**�
 
 ### Backend
 <img src="https://img.shields.io/badge/Amazon%20S3-FF9900?style=for-the-badge&logo=amazons3&logoColor=white"><img src="https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white">
+
+![Architecture.png](https://lemonearthchoco.s3.ap-northeast-2.amazonaws.com/myfo/introduce/Architecture.png)
+
+> Lambda + S3 로 이미지 업로드 서버를 구현하였습니다.
+
+## Info
+- 개발자 정보: Chaeyeon Han
+- 개발자 연락처: gkscodus11@gmail.com

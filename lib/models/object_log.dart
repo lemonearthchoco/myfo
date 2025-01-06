@@ -1,5 +1,4 @@
 import 'package:myfo/models/object_image.dart';
-import 'package:myfo/models/param/object_log_param.dart';
 
 import 'object_pattern.dart';
 
