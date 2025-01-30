@@ -72,7 +72,7 @@ class AboutScreen extends StatelessWidget {
                       GestureDetector(
                         child: Row(
                           children: [
-                            Text(my.themeName == 'Default' ? AppLocalizations.of(context)!.about_theme : 'Default'),
+                            Text(my.themeName == 'Default' ? AppLocalizations.of(context)!.about_theme_default : 'Default'),
                             // const Icon(CupertinoIcons.forward),
                           ],
                         ),

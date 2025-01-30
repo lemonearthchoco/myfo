@@ -17,6 +17,7 @@ import 'package:myfo/models/object_pattern.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../themes/myfo_colors.dart';
 
@@ -136,10 +137,16 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         await _uploadImage(image);
       }
       if (_selectedImages.isNotEmpty) {
-        _showToast(context, "이미지 업로드 완료", MessageLevel.SUCCESS);
+        _showToast(
+            context,
+            AppLocalizations.of(context)!.myfo_image_upload_success_message,
+            MessageLevel.SUCCESS);
       }
-    } catch(e) {
-      _showToast(context, "이미지 업로드 실패", MessageLevel.ERROR);
+    } catch (e) {
+      _showToast(
+          context,
+          AppLocalizations.of(context)!.myfo_image_upload_fail_message,
+          MessageLevel.ERROR);
     }
 
     setState(() {
@@ -183,7 +190,9 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 16),
-              const Text('실 추가하기',
+              Text(
+                  AppLocalizations.of(context)!
+                      .myfo_yarn_input_bottom_sheet_title,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
@@ -191,12 +200,16 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _yarnInputController,
-                decoration: const InputDecoration(labelText: '실 이름'),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!
+                        .myfo_yarn_name_input_placeholder),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _amountInputController,
-                decoration: const InputDecoration(labelText: '실 소요량(선택) ex) 300g, 2500m, 8볼'),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!
+                        .myfo_yarn_amount_input_placeholder),
                 // "실 소요량(선택) ex) 300g, 2500m, 8볼",
               ),
               const SizedBox(height: 16),
@@ -217,7 +230,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                       Navigator.pop(context);
                     }
                   },
-                  child: Text('추가'),
+                  child: Text(
+                      AppLocalizations.of(context)!.common_add_button_label),
                 ),
               ),
             ],
@@ -250,28 +264,27 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 16),
-              const Text(
-                '바늘 추가하기',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                )
-              ),
+              Text(AppLocalizations.of(context)!.myfo_needle_input_bottom_sheet_title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  )),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _needleInputController,
-                decoration: const InputDecoration(labelText: "바늘 이름"),
+                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.myfo_needle_name_input_placeholder),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _sizeInputController,
                 // 바늘 사이즈(선택) ex) 4.0mm, 6호
-                decoration: const InputDecoration(labelText: "바늘 사이즈(선택) ex) 4.0mm, 6호"),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.myfo_needle_size_input_placeholder),
               ),
               const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
-                child: MyfoCtaButton(
+                child: ElevatedButton(
                     onPressed: () {
                       final needle = _needleInputController.text.trim();
                       final size = _sizeInputController.text.trim();
@@ -286,7 +299,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                         Navigator.pop(context); // 바텀 시트 닫기
                       }
                     },
-                    label: '추가'),
+                    child: Text(
+                        AppLocalizations.of(context)!.common_add_button_label)),
               ),
             ],
           ),
@@ -387,7 +401,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
         child: Text(
           _finishedAt != null
               ? '${_finishedAt!.year}-${_finishedAt!.month.toString().padLeft(2, '0')}-${_finishedAt!.day.toString().padLeft(2, '0')}'
-              : '작품 완성일을 선택해주세요',
+              : AppLocalizations.of(context)!
+                  .myfo_finished_at_input_placeholder,
           style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.normal,
@@ -418,7 +433,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
             .map((e) => e.trim())
             .where((t) => t.isNotEmpty)
             .toList(),
-        gauges: [_gaugesController.text.trim()].where((t) => t.isNotEmpty).toList(),
+        gauges:
+            [_gaugesController.text.trim()].where((t) => t.isNotEmpty).toList(),
         finishedAt: _finishedAt,
       );
 
@@ -441,7 +457,9 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            widget.objectLogId == null ? '작품 추가' : '작품 수정',
+            widget.objectLogId == null
+                ? AppLocalizations.of(context)!.myfo_add_title
+                : AppLocalizations.of(context)!.myfo_edit_title,
             // fontWeight: FontWeight.bold,
           ),
           leading: IconButton(
@@ -459,7 +477,9 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               key: _formKey,
               child: ListView(
                 children: [
-                  MyfoLabel(label: '작품 이미지 (${_uploadedImageUrls.length}/5)'),
+                  MyfoLabel(
+                      label:
+                          '${AppLocalizations.of(context)!.myfo_image_input_label} (${_uploadedImageUrls.length}/5)'),
                   const SizedBox(height: 10),
                   // 미리보기 컴포넌트 추가
                   SizedBox(
@@ -541,46 +561,60 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  MyfoLabel(label: '작품명'),
+                  MyfoLabel(
+                      label:
+                          AppLocalizations.of(context)!.myfo_title_input_label),
                   const SizedBox(height: 10),
                   _buildTextField(
                     controller: _titleController,
-                    label: 'ex) 따뜻한 겨울 스웨터',
+                    label: AppLocalizations.of(context)!
+                        .myfo_title_input_placeholder,
                     validator: (value) =>
                         value?.isEmpty ?? true ? '작품명을 입력해주세요.' : null,
                   ),
                   const SizedBox(height: 16),
-                  MyfoLabel(label: '작품소개'),
+                  MyfoLabel(
+                      label: AppLocalizations.of(context)!
+                          .myfo_description_input_label),
                   const SizedBox(height: 10),
                   _buildTextField(
-                      controller: _subtitleController, label: 'ex) 딸기우유맛 스웨터'),
+                      controller: _subtitleController,
+                      label: AppLocalizations.of(context)!
+                          .myfo_description_input_placeholder),
                   const SizedBox(height: 16),
-                  MyfoLabel(label: "완성일", optional: true),
+                  MyfoLabel(
+                      label: AppLocalizations.of(context)!
+                          .myfo_finished_at_input_label,
+                      optional: true),
                   const SizedBox(height: 10),
                   _buildDateField(),
                   const SizedBox(height: 16),
                   MyfoLabel(
-                    label: "패턴",
+                    label:
+                        AppLocalizations.of(context)!.myfo_pattern_input_label,
                     optional: false,
                   ),
                   const SizedBox(height: 10),
                   _buildTextField(
                     controller: _patternController,
-                    label: 'ex) 자작 도안',
+                    label: AppLocalizations.of(context)!
+                        .myfo_pattern_input_placeholder,
                   ),
                   const SizedBox(height: 16),
                   MyfoLabel(
-                    label: "사용 기법",
+                    label: AppLocalizations.of(context)!
+                        .myfo_techniques_input_label,
                     optional: false,
                   ),
                   const SizedBox(height: 10),
                   _buildTextField(
                       controller: _tagsController,
-                      label: 'ex) 탑 다운, 원통 뜨기(쉼표로 구분)'),
+                      label: AppLocalizations.of(context)!
+                          .myfo_techniques_input_placeholder),
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Text("사용한 실",
+                      Text(AppLocalizations.of(context)!.myfo_yarn_input_title,
                           style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 14)),
                       InkWell(
@@ -615,7 +649,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Text("사용한 바늘",
+                      Text(
+                          AppLocalizations.of(context)!.myfo_needle_input_title,
                           style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 14)),
                       InkWell(
@@ -647,19 +682,25 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  MyfoLabel(label: '게이지'),
+                  MyfoLabel(
+                      label:
+                          AppLocalizations.of(context)!.myfo_gauge_input_title),
                   const SizedBox(height: 10),
                   _buildTextField(
                     controller: _gaugesController,
-                    label: 'ex) 세탁전 27x31',
+                    label: AppLocalizations.of(context)!
+                        .myfo_gauge_input_placeholder,
                     maxLines: 2,
                   ),
                   const SizedBox(height: 16),
-                  MyfoLabel(label: '후기'),
+                  MyfoLabel(
+                      label: AppLocalizations.of(context)!
+                          .myfo_review_input_title),
                   const SizedBox(height: 10),
                   _buildTextField(
                       controller: _descriptionController,
-                      label: '이 작품에 대한 이야기를 입력해주세요.',
+                      label: AppLocalizations.of(context)!
+                          .myfo_review_input_placeholder,
                       maxLines: 6),
 
                   const SizedBox(height: 16),
@@ -669,7 +710,8 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
           ),
         ),
         bottomNavigationBar: MyfoCtaButton(
-            label: '저장', onPressed: () => _saveObjectLog(context)));
+            label: AppLocalizations.of(context)!.myfo_save_button_label,
+            onPressed: () => _saveObjectLog(context)));
   }
 
   Widget _buildTextField({
