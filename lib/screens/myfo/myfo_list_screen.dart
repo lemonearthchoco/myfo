@@ -8,6 +8,7 @@ import 'package:myfo/screens/myfo/myfo_add_screen.dart';
 import 'package:myfo/screens/myfo/myfo_detail_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../themes/myfo_colors.dart';
 
@@ -26,7 +27,7 @@ class MyfoListScreen extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
               title: Text(
-                "FINISHED",
+                AppLocalizations.of(context)!.finished_list_title,
                 style: TextStyle(
                     fontFamily: "Paperlogy",
                     fontSize: 16,
@@ -55,7 +56,7 @@ class MyfoListScreen extends StatelessWidget {
                           SizedBox(
                             height: 10,
                           ),
-                          Text("내 작품을 기록해보세요!",
+                          Text(AppLocalizations.of(context)!.finished_list_placeholder,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)),
                         ],

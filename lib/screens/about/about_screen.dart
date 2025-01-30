@@ -4,6 +4,7 @@ import 'package:myfo/components/myfo_tag.dart';
 import 'package:myfo/providers/my_info_provider.dart';
 import 'package:myfo/screens/about/theme_setting_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../themes/myfo_tag_decoration.dart';
 
@@ -27,23 +28,23 @@ class AboutScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20.0, vertical: 16.0),
-                child: const Row(
+                child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('현재 버전',
-                          style: TextStyle(fontWeight: FontWeight.w600)),
-                      Text('1.0.0')
+                      Text(AppLocalizations.of(context)!.about_current_version,
+                          style: const TextStyle(fontWeight: FontWeight.w600)),
+                      const Text('1.0.0')
                     ]),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20.0, vertical: 16.0),
-                child: const Row(
+                child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('피드백',
+                      Text(AppLocalizations.of(context)!.about_feedback,
                           style: TextStyle(fontWeight: FontWeight.w600)),
-                      Text('gkscodus11@gmail.com')
+                      const Text('gkscodus11@gmail.com')
                     ]),
               ),
               Padding(
@@ -54,7 +55,7 @@ class AboutScreen extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          const Text('테마',
+                            Text(AppLocalizations.of(context)!.about_theme,
                               style: TextStyle(fontWeight: FontWeight.w600)),
                           const SizedBox(width: 15),
                           Container(
@@ -62,7 +63,7 @@ class AboutScreen extends StatelessWidget {
                                 horizontal: 12.0, vertical: 3.0),
                             // margin: const EdgeInsets.only(bottom: 4.0),
                             decoration: customDecorations?.defaultBoxDecoration,
-                            child: const Text('업데이트 예정',
+                            child: Text(AppLocalizations.of(context)!.about_update_label,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 12)),
                           )
@@ -71,7 +72,7 @@ class AboutScreen extends StatelessWidget {
                       GestureDetector(
                         child: Row(
                           children: [
-                            Text(my.themeName == 'Default' ? '기본' : '기본'),
+                            Text(my.themeName == 'Default' ? AppLocalizations.of(context)!.about_theme : 'Default'),
                             // const Icon(CupertinoIcons.forward),
                           ],
                         ),

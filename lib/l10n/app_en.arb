@@ -1,0 +1,13 @@
+{
+    "app_title": "myfo",
+    "finished_list_title": "FINISHED",
+    "finished_list_placeholder": "Record your Finished Objects!",
+    "favorite_list_title": "FAVORITE",
+    "favorite_list_placeholder": "Collect your Favorite Objects!",
+    "about_title": "MY",
+    "about_current_version": "Current Version",
+    "about_feedback": "Feedback",
+    "about_theme": "Theme",
+    "about_theme_default": "Default",
+    "about_update_label": "Upcoming Updates"
+}

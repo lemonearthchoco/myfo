@@ -6,6 +6,7 @@ import 'package:myfo/providers/object_log_provider.dart';
 import 'package:myfo/screens/myfo_main_screen.dart';
 import 'package:myfo/themes/default_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: MyfoDefaultTheme.defaultTheme,
         localizationsDelegates: const [
+          AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate, // Cupertino 위젯 로컬라이제이션 지원

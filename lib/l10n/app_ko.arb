@@ -1,0 +1,13 @@
+{
+    "app_title": "myfo",
+    "finished_list_title": "FINISHED",
+    "finished_list_placeholder": "내 작품을 기록해보세요!",
+    "favorite_list_title": "FAVORITE",
+    "favorite_list_placeholder": "좋아하는 작품을 모아보세요!",
+    "about_title": "MY",
+    "about_current_version": "현재 버전",
+    "about_feedback": "피드백",
+    "about_theme": "테마",
+    "about_theme_default": "기본",
+    "about_update_label": "업데이트 예정"
+}
