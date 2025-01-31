@@ -15,6 +15,7 @@ import 'package:myfo/screens/myfo/myfo_image_edit_screen.dart';
 import 'package:myfo/themes/myfo_colors.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../components/myfo_label.dart';
 
@@ -64,9 +65,9 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("정말로 작품을 삭제할까요?"),
-              SizedBox(height: 20),
-              MyfoDivider(
+              Text(AppLocalizations.of(context)!.myfo_delete_confirm_message),
+              const SizedBox(height: 20),
+              const MyfoDivider(
                 height: 2,
               ),
             ],
@@ -76,14 +77,16 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
               onPressed: () {
                 Navigator.of(context).pop(); // 다이얼로그 닫기
               },
-              child: const Text("아니요"),
+              child: Text(AppLocalizations.of(context)!
+                  .myfo_delete_cancel_button_label),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // 다이얼로그 닫기
                 _deleteObjectLog(context); // 삭제 로직 호출
               },
-              child: const Text("네"),
+              child: Text(AppLocalizations.of(context)!
+                  .myfo_delete_confirm_button_label),
             ),
           ],
         );
@@ -97,8 +100,12 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       this.isAvailable = false;
     });
     Navigator.pop(context);
-    provider.deleteLog(widget.objectLogId).then((_) =>
-        {_showToast(context, "삭제 완료", MessageLevel.SUCCESS)}); // Provider에서 삭제
+    provider.deleteLog(widget.objectLogId).then((_) => {
+          _showToast(
+              context,
+              AppLocalizations.of(context)!.myfo_delete_success_message,
+              MessageLevel.SUCCESS)
+        }); // Provider에서 삭제
   }
 
   @override
@@ -138,14 +145,18 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                   value: 'edit',
                   padding: EdgeInsets.zero,
-                  child: Center(child: Text('수정하기'))),
-              const PopupMenuItem<String>(
+                  child: Center(
+                      child: Text(AppLocalizations.of(context)!
+                          .myfo_edit_button_label))),
+              PopupMenuItem<String>(
                 value: 'delete',
                 padding: EdgeInsets.zero,
-                child: Center(child: Text('삭제하기')),
+                child: Center(
+                    child: Text(AppLocalizations.of(context)!
+                        .myfo_delete_button_label)),
               ),
             ],
           )
@@ -339,7 +350,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("사용 기법",
+          Text(AppLocalizations.of(context)!.myfo_techniques_label,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 12,
@@ -368,21 +379,26 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
   Widget _buildFoSection(DateTime? finishedAt) {
     if (finishedAt != null) {
       return _buildListSection(
-          "FO", [DateFormat('yyyy-MM-dd').format(finishedAt)]);
+          AppLocalizations.of(context)!.myfo_finished_at_label,
+          [DateFormat('yyyy-MM-dd').format(finishedAt)]);
     }
-    return _buildListSection("FO", ["-"]);
+    return _buildListSection(
+        AppLocalizations.of(context)!.myfo_finished_at_label, ["-"]);
   }
 
   Widget _buildNeedleSection(List<String> needles) {
-    return _buildListSection("사용 바늘", needles);
+    return _buildListSection(
+        AppLocalizations.of(context)!.myfo_needle_label, needles);
   }
 
   Widget _buildYarnSection(List<String> yarns) {
-    return _buildListSection("사용 실", yarns);
+    return _buildListSection(
+        AppLocalizations.of(context)!.myfo_yarn_label, yarns);
   }
 
   Widget _buildGaugeSection(List<String> gauges) {
-    return _buildListSection("게이지", gauges);
+    return _buildListSection(
+        AppLocalizations.of(context)!.myfo_gauge_label, gauges);
   }
 
   Widget _buildDescriptionSection(String description) {
@@ -391,7 +407,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          MyfoLabel(label: "후기"),
+          MyfoLabel(label: AppLocalizations.of(context)!.myfo_review_label),
           const SizedBox(height: 10),
           if (description.isNotEmpty)
             Text(
@@ -417,7 +433,7 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('패턴',
+            Text(AppLocalizations.of(context)!.myfo_pattern_label,
                 style:
                     const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
             const SizedBox(height: 10),

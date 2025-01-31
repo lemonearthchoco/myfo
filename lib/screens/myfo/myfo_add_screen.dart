@@ -75,7 +75,10 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
 
     if (images != null) {
       if (_uploadedImageUrls.length + images.length > 5) {
-        _showToast(context, "최대 5개까지 업로드 가능합니다.", MessageLevel.ERROR);
+        _showToast(
+            context,
+            AppLocalizations.of(context)!.myfo_image_exceed_message,
+            MessageLevel.ERROR);
       } else {
         _selectedImages = images.map((image) => File(image.path)).toList();
         await _uploadAllImages();
@@ -121,7 +124,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
           _uploadedImageUrls.add(decodedData['imageUrl']); // 서버에서 반환된 이미지 URL
         });
       } else {
-        throw ImageUploadFailException("이미지 업로드 실패!");
+        throw ImageUploadFailException("Image Upload Fail");
       }
     } catch (e) {
       rethrow;
@@ -264,7 +267,9 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 16),
-              Text(AppLocalizations.of(context)!.myfo_needle_input_bottom_sheet_title,
+              Text(
+                  AppLocalizations.of(context)!
+                      .myfo_needle_input_bottom_sheet_title,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
@@ -272,14 +277,17 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _needleInputController,
-                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.myfo_needle_name_input_placeholder),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!
+                        .myfo_needle_name_input_placeholder),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _sizeInputController,
                 // 바늘 사이즈(선택) ex) 4.0mm, 6호
                 decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.myfo_needle_size_input_placeholder),
+                    labelText: AppLocalizations.of(context)!
+                        .myfo_needle_size_input_placeholder),
               ),
               const SizedBox(height: 16),
               SizedBox(
@@ -441,11 +449,17 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
       if (widget.objectLogId != null) {
         // 수정 모드
         provider.updateLog(widget.objectLogId!, log);
-        _showToast(context, "저장 완료", MessageLevel.SUCCESS);
+        _showToast(
+            context,
+            AppLocalizations.of(context)!.myfo_save_success_message,
+            MessageLevel.SUCCESS);
       } else {
         // 추가 모드
         provider.addLog(log);
-        _showToast(context, "저장 완료", MessageLevel.SUCCESS);
+        _showToast(
+            context,
+            AppLocalizations.of(context)!.myfo_save_success_message,
+            MessageLevel.SUCCESS);
       }
 
       Navigator.pop(context);
@@ -569,8 +583,10 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
                     controller: _titleController,
                     label: AppLocalizations.of(context)!
                         .myfo_title_input_placeholder,
-                    validator: (value) =>
-                        value?.isEmpty ?? true ? '작품명을 입력해주세요.' : null,
+                    validator: (value) => value?.isEmpty ?? true
+                        ? AppLocalizations.of(context)!
+                            .myfo_title_input_invalid_message
+                        : null,
                   ),
                   const SizedBox(height: 16),
                   MyfoLabel(
