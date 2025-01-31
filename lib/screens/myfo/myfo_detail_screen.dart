@@ -65,7 +65,10 @@ class _MyfoDetailScreenState extends State<MyfoDetailScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(AppLocalizations.of(context)!.myfo_delete_confirm_message),
+              Text(
+                AppLocalizations.of(context)!.myfo_delete_confirm_message,
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 20),
               const MyfoDivider(
                 height: 2,
