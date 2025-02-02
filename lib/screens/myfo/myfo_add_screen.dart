@@ -336,7 +336,7 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 16),
-              const Text('완성일',
+              Text(AppLocalizations.of(context)!.myfo_finished_at_input_label,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 18)),
               const SizedBox(height: 16),

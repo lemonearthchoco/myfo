@@ -25,21 +25,26 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ObjectLogProvider()..loadLogs(forceReset: false)),
         ChangeNotifierProvider(create: (context) => MyInfoProvider()..loadMyInfo())
       ],
-      child: MaterialApp(
-        title: "myfo",
-        debugShowCheckedModeBanner: false,
-        theme: MyfoDefaultTheme.defaultTheme,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate, // Cupertino 위젯 로컬라이제이션 지원
-        ],
-        supportedLocales: const [
-          Locale('ko'), // 한국어 지원
-          Locale('en'), // 영어 지원 (기본)
-        ],
-        home: const MyfoMainScreen(),
+      child: Consumer<MyInfoProvider>(
+        builder: (context, myInfoProvider, child) {
+          return MaterialApp(
+            title: "myfo",
+            debugShowCheckedModeBanner: false,
+            locale: Locale(myInfoProvider.myInfo.language),
+            theme: MyfoDefaultTheme.defaultTheme,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate, // Cupertino 위젯 로컬라이제이션 지원
+            ],
+            supportedLocales: const [
+              Locale('ko'), // 한국어 지원
+              Locale('en'), // 영어 지원 (기본)
+            ],
+            home: const MyfoMainScreen(),
+          );
+        }
       ),
     );
   }

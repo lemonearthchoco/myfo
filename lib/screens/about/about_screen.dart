@@ -11,6 +11,53 @@ import '../../themes/myfo_tag_decoration.dart';
 class AboutScreen extends StatelessWidget {
   const AboutScreen({Key? key}) : super(key: key);
 
+  void showLanguageSelectionModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
+      ),
+      builder: (context) {
+        return Consumer<MyInfoProvider>(
+          builder: (context, provider, child) {
+            return Container(
+              padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.about_language,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  ListTile(
+                    title: const Text("English"),
+                    trailing: provider.myInfo.language == "en"
+                        ? const Icon(Icons.check, color: Colors.blue)
+                        : null,
+                    onTap: () {
+                      provider.setLanguage("en");
+                      Navigator.pop(context); // 모달 닫기
+                    },
+                  ),
+                  ListTile(
+                    title: const Text("한국어"),
+                    trailing: provider.myInfo.language == "ko"
+                        ? const Icon(Icons.check, color: Colors.blue)
+                        : null,
+                    onTap: () {
+                      provider.setLanguage("ko");
+                      Navigator.pop(context); // 모달 닫기
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +128,24 @@ class AboutScreen extends StatelessWidget {
                         //     MaterialPageRoute(
                         //       builder: (context) => ThemeSettingScreen(),
                         //     )),
+                      )
+                    ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 16.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(AppLocalizations.of(context)!.about_language,
+                          style: TextStyle(fontWeight: FontWeight.w600)),
+                      GestureDetector(
+                        child: Row(
+                          children: [
+                            Text(my.language == 'ko' ? '한국어' : 'English')
+                          ],
+                        ),
+                        onTap: () => showLanguageSelectionModal(context)
                       )
                     ]),
               ),
