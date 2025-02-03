@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myfo/components/myfo_tag.dart';
 import 'package:myfo/providers/my_info_provider.dart';
+import 'package:myfo/screens/about/language_setting_screen.dart';
 import 'package:myfo/screens/about/theme_setting_screen.dart';
+import 'package:myfo/themes/myfo_colors.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,6 +16,7 @@ class AboutScreen extends StatelessWidget {
   void showLanguageSelectionModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: MyfoColors.secondary,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
       ),
@@ -33,7 +36,7 @@ class AboutScreen extends StatelessWidget {
                   ListTile(
                     title: const Text("English"),
                     trailing: provider.myInfo.language == "en"
-                        ? const Icon(Icons.check, color: Colors.blue)
+                        ? const Icon(Icons.check, color: MyfoColors.primary)
                         : null,
                     onTap: () {
                       provider.setLanguage("en");
@@ -43,7 +46,7 @@ class AboutScreen extends StatelessWidget {
                   ListTile(
                     title: const Text("한국어"),
                     trailing: provider.myInfo.language == "ko"
-                        ? const Icon(Icons.check, color: Colors.blue)
+                        ? const Icon(Icons.check, color:  MyfoColors.primary)
                         : null,
                     onTap: () {
                       provider.setLanguage("ko");
@@ -123,11 +126,11 @@ class AboutScreen extends StatelessWidget {
                             // const Icon(CupertinoIcons.forward),
                           ],
                         ),
-                        // onTap: () => Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => ThemeSettingScreen(),
-                        //     )),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ThemeSettingScreen(),
+                            )),
                       )
                     ]),
               ),
@@ -142,10 +145,16 @@ class AboutScreen extends StatelessWidget {
                       GestureDetector(
                         child: Row(
                           children: [
-                            Text(my.language == 'ko' ? '한국어' : 'English')
+                            Text(my.language == 'ko' ? '한국어' : 'English'),
+                            const SizedBox(width: 5),
+                            const Icon(CupertinoIcons.forward)
                           ],
                         ),
-                        onTap: () => showLanguageSelectionModal(context)
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LanguageSettingScreen(),
+                            )),
                       )
                     ]),
               ),

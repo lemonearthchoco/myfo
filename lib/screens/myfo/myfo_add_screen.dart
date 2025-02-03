@@ -354,8 +354,12 @@ class _ObjectLogAddScreenState extends State<ObjectLogAddScreen> {
               SizedBox(
                 width: double.infinity,
                 child: MyfoCtaButton(
-                  label: '선택 완료',
+                  label: AppLocalizations.of(context)!.myfo_finished_at_select_button_label,
                   onPressed: () {
+                    setState(() {
+                      _finishedAt ??= DateTime.now();
+                    });
+
                     Navigator.pop(context); // BottomSheet 닫기
                   },
                   // style: ElevatedButton.styleFrom(
