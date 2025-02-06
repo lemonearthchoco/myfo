@@ -4,6 +4,7 @@ import 'package:myfo/models/object_log.dart';
 import 'package:myfo/providers/object_log_provider.dart';
 import 'package:myfo/screens/myfo/myfo_detail_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../themes/myfo_colors.dart';
 
@@ -21,7 +22,7 @@ class FavoriteObjectListScreen extends StatelessWidget {
             pinned: true, // 스크롤 시 AppBar를 고정
             flexibleSpace: FlexibleSpaceBar(
                 titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
-                title: Text("FAVORITE",
+                title: Text(AppLocalizations.of(context)!.favorite_list_title,
                     // style: GoogleFonts.jost(
                     //   fontSize: 20,
                     //   fontWeight: FontWeight.bold,
@@ -51,7 +52,7 @@ class FavoriteObjectListScreen extends StatelessWidget {
                           const SizedBox(
                             height: 10,
                           ),
-                          Text("좋아하는 작품을 모아보세요!",
+                          Text(AppLocalizations.of(context)!.favorite_list_placeholder,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColorLight)
                               // fontWeight: FontWeight.bold,
