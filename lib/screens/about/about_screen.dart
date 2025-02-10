@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myfo/components/myfo_tag.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:myfo/providers/my_info_provider.dart';
 import 'package:myfo/screens/about/language_setting_screen.dart';
-import 'package:myfo/screens/about/theme_setting_screen.dart';
 import 'package:myfo/themes/myfo_colors.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../themes/myfo_tag_decoration.dart';
 
@@ -83,7 +81,7 @@ class AboutScreen extends StatelessWidget {
                     children: [
                       Text(AppLocalizations.of(context)!.about_current_version,
                           style: const TextStyle(fontWeight: FontWeight.w600)),
-                      const Text('1.0.0')
+                      const Text('1.0.2')
                     ]),
               ),
               Padding(
@@ -126,11 +124,11 @@ class AboutScreen extends StatelessWidget {
                             // const Icon(CupertinoIcons.forward),
                           ],
                         ),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ThemeSettingScreen(),
-                            )),
+                        // onTap: () => Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => ThemeSettingScreen(),
+                        //     )),
                       )
                     ]),
               ),
