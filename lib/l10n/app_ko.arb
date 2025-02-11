@@ -19,7 +19,7 @@
     "myfo_image_upload_success_message": "이미지 업로드 성공",
     "myfo_image_upload_fail_message": "이미지 업로드 실패",
     "myfo_image_exceed_message": "최대 5개까지 업로드 가능합니다.",
-    "myfo_title_input_label": "이미지 업로드 실패",
+    "myfo_title_input_label": "작품명",
     "myfo_title_input_placeholder": "ex) 따뜻한 겨울 스웨터",
     "myfo_title_input_invalid_message": "작품명을 입력해주세요.",
     "myfo_description_input_label": "작품소개",
